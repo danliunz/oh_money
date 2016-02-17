@@ -1,0 +1,57 @@
+The document lists basic requirements for "OhMoney" project
+
+=== Project Statement ===
+
+stuff in New Zealand is not cheap ;), so I need a mobile-friendly web app to 
+help track my daily expense and give decent reports
+
+=== Requirement Breakdown ===
+
+* User sign in and sign up
+
+* Allows users to enter detailed daily expense
+
+  * individual expense item is associated with multiple hierachical tags
+  
+      e.g.
+      At 2016-01-01, "curry" => [:lunch]
+      At 2016-01-02, "curry" => [:dinner, :party]
+      At 2016-01-03, "wine" => [:drink, :at_countdown]
+      
+      tag hierachy
+      :lunch => [:food]
+      :dinner => [:food]
+      :drink => [:food]
+      :food => [:one_off]
+      
+  * A web UI to add/edit/delete categories and their hierachical relationship
+  
+      To speed up manual data entry, prompt based on existing data is available
+      UI must be mobile device friendly
+      
+  * A web UI to add/edit/delete expense items and link them to categories
+      
+      To speed up manual data entry, prompt based on existing data is available
+      UI must be mobile device friendly
+      
+      (optinal) detect similar words (e.g. bike/bicycle)
+
+* Generate reports giving users insight of their expense history
+
+  * View list of expense items
+    Can be filtered by tag(s)
+    Can be filtered by date range
+    Ordered by purchase date
+  
+  * Aggregate report of expense history
+    Can be narrowed down by date range
+    Can be narrowed down by tag(s): support intersection and union of tags
+  
+  * View expense trend
+    Can be narrowed down by date range and tag(s)
+    Break down expense amount into daily/weekly/monthly bracket, show interactive chart
+    
+    
+    
+       
+      
