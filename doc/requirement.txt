@@ -13,26 +13,31 @@ help track my daily expense and give decent reports
 
   * individual expense item is associated with multiple hierachical tags
   
+    No more than 3 levels of hierachy
+    
       e.g.
-      At 2016-01-01, "curry" => [:lunch]
-      At 2016-01-02, "curry" => [:dinner, :party]
-      At 2016-01-03, "wine" => [:drink, :at_countdown]
+      At 2016-01-01, "curry" => [:lunch, :at_curry_pot]
+      At 2016-01-02, "curry" => [:dinner, :at_planet_spice]
+      At 2016-01-03, "wine" => [:beverage, :at_countdown]
+      At 2016-01-03, "ballpen" => [:stationery, :at_newworld]
       
       tag hierachy
       :lunch => [:food]
       :dinner => [:food]
-      :drink => [:food]
-      :food => [:one_off]
       
-  * A web UI to add/edit/delete categories and their hierachical relationship
+  * A web UI to add/edit/delete tags and their hierachical relationship
   
       To speed up manual data entry, prompt based on existing data is available
       UI must be mobile device friendly
+      
+      Provide predefined tags(import data from trademe?)
       
   * A web UI to add/edit/delete expense items and link them to categories
       
       To speed up manual data entry, prompt based on existing data is available
       UI must be mobile device friendly
+      
+      Provide prefefined tags(import data from trademe?)
       
       (optinal) detect similar words (e.g. bike/bicycle)
 
@@ -50,8 +55,18 @@ help track my daily expense and give decent reports
   * View expense trend
     Can be narrowed down by date range and tag(s)
     Break down expense amount into daily/weekly/monthly bracket, show interactive chart
+
+  * All report criteria can be saved into user profile for ease reaccess
+  
+  * Expense watcher
+  
+    User customizes criteria for expense alert, e.g.
+    "if total expense last week exceeds average weekly expense by over"
+    "30%, generates an alert and drops me an email"
     
+    "Set my daily budget to $50, if average expense last week exceeds it,"
+    "generates an alert and drops me an email"
     
-    
+    User can view prior alerts
        
       
