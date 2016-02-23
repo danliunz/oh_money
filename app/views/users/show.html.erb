@@ -1,0 +1,9 @@
+<div class="container">
+  <%= button_to "Sign out", signout_path, class: "btn btn-default" %>
+</div>
+
+<% if Rails.env.development? %>
+  <%= debug(@user) %>
+  <%= debug(session[:user_id]) %>
+<% end %>
+

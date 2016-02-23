@@ -1,0 +1,20 @@
+// Place all the styles related to the Users controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.signup {
+  max-width: 500px;
+}
+
+.signin {
+  max-width: 450px;
+  
+  input.form-control {
+    font-size: 16px;
+    border-radius: 0px;
+  }
+  
+  input[type=submit] {
+    margin-top: 10px;
+  }
+}

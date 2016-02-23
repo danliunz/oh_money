@@ -1,0 +1,18 @@
+<div class="container signin">
+  <% if alert %>
+    <div class="alert alert-danger">
+      <%= alert %>
+    </div>
+  <% end %>
+  
+  <%= form_for @user, url: signin_path, method: :post, html: { id: "signin_form"} do |f| %>
+    <%= f.label :name, "Name", class: "sr-only" %>
+    <%= f.text_field :name, class: "form-control", placeholder: "User name", autofocus: true %>
+    
+    <%= f.label :password, "Password", class: "sr-only" %>
+    <%= f.password_field :password, class: "form-control", placeholder: "Password" %>
+    
+    <%= f.submit "Sign in", class: "btn btn-lg btn-primary btn-block" %>
+  <% end %>
+</div>
+

@@ -1,0 +1,20 @@
+<div class="container">
+  <h3>Welcome to OhMoney, the ultimate expense tracking application</h3>
+  
+  <% if @current_user %>
+    <div class="alert alert-info">
+        You have logged in as <%= @current_user.name %>
+    </div>
+  <% end %>
+  
+  <div class="row">
+    <div class="col-sm-6 col-xs-12">
+      Enter you daily expense
+    </div>
+    <div class="col-sm-6 col-xs-12">
+      View your expense reports
+    </div>
+  </div>
+</div>
+
+
