@@ -1,7 +1,8 @@
 class User < ActiveRecord::Base
   has_secure_password
   
-  validates :name, presence: :true
+  has_one :remember_me, class_name: "Account::RememberMe"
+  
+  validates :name, presence: true
   validates :password, length: 6..20
 end
-

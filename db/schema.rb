@@ -11,7 +11,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160218211237) do
+ActiveRecord::Schema.define(version: 20160223205441) do
+
+  create_table "remember_me", force: true do |t|
+    t.integer  "user_id",                  null: false
+    t.string   "digest_token", limit: 256, null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "remember_me", ["user_id"], name: "index_remember_me_on_user_id", using: :btree
 
   create_table "users", force: true do |t|
     t.string   "name",            limit: 128, null: false

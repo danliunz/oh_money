@@ -1,12 +1,20 @@
 require 'rails_helper'
 
 RSpec.describe WelcomeController, type: :controller do
-
+  fixtures :users
+  let(:user) { users(:danliu) }
+  
   describe "GET #index" do
-    it "returns http success" do
+    it "sets current user by remember-me" do
+      token = Security::RandomToken.new
+      user.create_remember_me!(digest_token: token.digest)
+      
+      cookies.signed[:remember_me_user_id] = user.id
+      cookies[:remember_me_token] = token.to_s
+      
       get :index
-      expect(response).to have_http_status(:success)
+      
+      expect(assigns[:current_user].id).to eq(user.id)
     end
   end
-
 end

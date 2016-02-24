@@ -21,6 +21,12 @@ class UsersController < ApplicationController
     @user = User.find_by_name(user_params[:name])
     if @user && @user.authenticate(user_params[:password])
       create_user_session
+      if params[:remember_me]
+        remember_user
+      else
+        forget_user
+      end
+      
       redirect_to root_url
     else
       @user ||= User.new
@@ -51,5 +57,21 @@ class UsersController < ApplicationController
   
   def destroy_user_session
     @_current_user = (session[:current_user_id] = nil)
+  end
+  
+  def remember_user
+    secure_token = Security::RandomToken.new
+    
+    @user.create_remember_me!(digest_token: secure_token.digest)
+    
+    cookies.permanent.signed[:remember_me_user_id] = @user.id
+    cookies.permanent[:remember_me_token] = secure_token.to_s
+  end
+  
+  def forget_user
+    Account::RememberMe.where(user: @user).delete_all
+    
+    cookies.delete(:remember_me_user_id)
+    cookies.delete(:remember_me_token)
   end
 end

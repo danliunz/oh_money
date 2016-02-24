@@ -7,7 +7,9 @@ help track my daily expense and give decent reports
 
 === Requirement Breakdown ===
 
-* User sign in and sign up
+* User sign in and sign up (with remember-me mechanism)
+
+  (optional) try not to use existing gem like 'devise'
 
 * Allows users to enter detailed daily expense
 

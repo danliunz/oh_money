@@ -8,7 +8,22 @@ class ApplicationController < ActionController::Base
   private
   
   def set_current_user
-    @current_user ||= session[:current_user_id] && 
-      User.find_by(id: session[:current_user_id])
-  end 
+    user_id = session[:current_user_id]
+    if user_id
+      @current_user = User.find_by(id: user_id)
+      return if @current_user
+    end
+    
+    user_id = cookies.signed[:remember_me_user_id]
+    if user_id
+      user = User.find_by(id: user_id)
+      if user
+        if Security::RandomToken.same?(
+            cookies[:remember_me_token], user.remember_me.digest_token
+           )
+          @current_user = user
+        end
+      end
+    end
+  end
 end

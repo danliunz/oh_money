@@ -14,3 +14,8 @@
 # ActiveSupport::Inflector.inflections(:en) do |inflect|
 #   inflect.acronym 'RESTful'
 # end
+
+# remember-me policy in user authentication
+ActiveSupport::Inflector.inflections(:en) do |inflect|
+  inflect.uncountable %w{remember_me}
+end
