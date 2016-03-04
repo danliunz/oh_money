@@ -4,6 +4,7 @@ RSpec.describe WelcomeController, type: :controller do
   fixtures :users
   let(:user) { users(:danliu) }
   
+  # TODO: move the test case to better place
   describe "GET #index" do
     it "sets current user by remember-me" do
       token = Security::RandomToken.new
@@ -11,6 +12,7 @@ RSpec.describe WelcomeController, type: :controller do
       
       cookies.signed[:remember_me_user_id] = user.id
       cookies[:remember_me_token] = token.to_s
+      cookies.signed[:remember_me_created_at] = Time.now.to_i
       
       get :index
       

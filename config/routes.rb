@@ -1,8 +1,9 @@
 Rails.application.routes.draw do
-  
-  get 'welcome/index'
-
   root 'welcome#index'
+  
+  get 'welcome/index' => "welcome#index"
+  
+  # user authentication
   get 'users/signup' => 'users#signup_form', as: :signup
   post 'users/signup' => 'users#signup'
   get 'users/signin' => 'users#signin_form', as: :signin

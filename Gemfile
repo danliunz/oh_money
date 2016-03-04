@@ -27,11 +27,12 @@ gem 'sdoc', '~> 0.4.0',          group: :doc
 gem 'spring',        group: :development
 
 # Test
-group :development, :test do
+group :test do
   gem 'rspec-rails'
   gem 'capybara', '>= 2.4.0'
   gem 'selenium-webdriver'
   gem 'database_cleaner', '~> 1.5', '>= 1.5.1'
+  gem 'cucumber-rails', :require => false
 end
 
 group :development, :test do

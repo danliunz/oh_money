@@ -3,11 +3,31 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 .signup {
-  max-width: 500px;
+  margin-top: 10px;
+  background-color: #f1f1f1;
+  max-width: 700px;
 }
 
 .signin {
+  margin-top: 10px;
+  padding-top: 10px;
+  padding-bottom: 20px;
+  background-color: #f1f1f1;
   max-width: 450px;
+  border-radius: 5px;
+  border: 1px solid #e4e1e1;
+  
+  .alert {
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .signin-header {
+    padding-bottom: 10px;
+    text-align: center;
+    font-size: 1.5em;
+    font-weight: 300;
+  }
   
   input.form-control {
     font-size: 16px;

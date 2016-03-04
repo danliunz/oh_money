@@ -1,11 +1,17 @@
 <div class="container">
   <h3>Welcome to <em>OhMoney</em>, the ultimate expense tracker</h3>
   
-  <% if @current_user %>
-    <div class="alert alert-info">
-        You have logged in as <%= @current_user.name %>
-    </div>
-  <% end %>
+  <div class="alert alert-info">
+    <% if @current_user %>
+      You have logged in as <%= @current_user.name %>
+      <span class="pull-right">
+        <%= link_to "Sign out", signout_path, method: :post %>
+      </span>
+    <% else %>
+      <%= link_to "Sign in", signin_path, class: "btn btn-default" %>
+      <%= link_to "Sign up", signup_path, class: "btn btn-default" %>
+    <% end %>
+  </div>
   
   <div class="row">
     <div class="col-sm-6 col-xs-12">

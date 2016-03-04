@@ -63,7 +63,7 @@ RSpec.describe UsersController, type: :controller do
          expect(flash.now[:alert]).to match(/invalid/i)
       end
       
-      context "with invalid user name" do
+      context "with non-existing username" do
         let(:invalid_credential) do
           { user: { name: "oblivion", password: "do not matter" } }
         end
@@ -84,6 +84,32 @@ RSpec.describe UsersController, type: :controller do
           expect_render_signin_form_with_alert
         end
       end
+    end
+  end
+  
+  describe "#signout" do
+    fixtures :users
+    let(:user) { users(:danliu) }
+    let(:valid_crendential) do
+      { user: { name: user.name, password: "danliu" } }
+    end
+      
+    before(:each) do 
+      post :signin, valid_crendential
+      post :signout
+    end
+    
+    it "removes current user id from session" do
+      expect(session[:current_user_id]).to be_nil
+    end
+    
+    it "removes remember-me data from cookie" do
+      expect(cookies[:remember_me_user_id]).to be_nil
+      expect(cookies[:remember_me_token]).to be_nil
+    end
+    
+    it "removes remember-me token from DB" do
+      expect(Account::RememberMe.find_by(user: user)).to be_nil
     end
   end
 end

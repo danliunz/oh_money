@@ -1,16 +1,29 @@
 <div class="container signin">
+  <div class="signin-header">
+    Sign in to OhMoney
+  </div>
+  
   <% if alert %>
-    <div class="alert alert-danger">
-      <%= alert %>
-    </div>
+    <div class="alert alert-danger"> <%= alert %></div>
   <% end %>
   
   <%= form_for @user, url: signin_path, method: :post, html: { id: "signin_form"} do |f| %>
-    <%= f.label :name, "Name", class: "sr-only" %>
-    <%= f.text_field :name, class: "form-control", placeholder: "User name", autofocus: true %>
+    <div class="form-group">
+      <%= f.label :name, "Username" %>
+      <%= f.text_field :name, class: "form-control", autofocus: true %>
+    </div>
     
-    <%= f.label :password, "Password", class: "sr-only" %>
-    <%= f.password_field :password, class: "form-control", placeholder: "Password" %>
+    <div class="form-group">
+      <%= f.label :password, "Password" %>
+      <%= f.password_field :password, class: "form-control" %>
+    </div>
+    
+    <div class="checbox">
+      <label>
+        <input type="checkbox" name="remember_me"/>
+        Remember me
+      </label>
+    </div>
     
     <%= f.submit "Sign in", class: "btn btn-lg btn-primary btn-block" %>
   <% end %>

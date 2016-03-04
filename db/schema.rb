@@ -11,10 +11,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160223205441) do
+ActiveRecord::Schema.define(version: 20160302031212) do
 
   create_table "remember_me", force: true do |t|
-    t.integer  "user_id",                  null: false
+    t.integer  "user_id"
     t.string   "digest_token", limit: 256, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
