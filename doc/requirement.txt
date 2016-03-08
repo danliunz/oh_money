@@ -2,7 +2,7 @@ The document lists basic requirements for "OhMoney" project
 
 === Project Statement ===
 
-stuff in New Zealand is not cheap ;), so I need a mobile-friendly web app to 
+stuff in New Zealand is not cheap ;), so I need a mobile-friendly web app to
 help track my daily expense and give decent reports
 
 === Requirement Breakdown ===
@@ -11,37 +11,39 @@ help track my daily expense and give decent reports
 
   (optional) try not to use existing gem like 'devise'
 
-* Allows users to enter detailed daily expense
+* Allows users to enter entries of daily expense
 
-  * individual expense item is associated with multiple hierachical tags
-  
-    No more than 3 levels of hierachy
-    
-      e.g.
-      At 2016-01-01, "curry" => [:lunch, :at_curry_pot]
-      At 2016-01-02, "curry" => [:dinner, :at_planet_spice]
-      At 2016-01-03, "wine" => [:beverage, :at_countdown]
-      At 2016-01-03, "ballpen" => [:stationery, :at_newworld]
-      
-      tag hierachy
-      :lunch => [:food]
-      :dinner => [:food]
-      
-  * A web UI to add/edit/delete tags and their hierachical relationship
-  
-      To speed up manual data entry, prompt based on existing data is available
+  * expense entry can be associated with multiple tags
+
+    e.g.
+    At 2016-03-09, "wine" => ["@countdown", "wedding anniversary"]
+    At 2016-04-06, "chocolate cake" => ["@chocalate company", "birthday celebration", "@Te Aro"]
+
+  * purchased items can form hierachy
+
+    e.g.
+    Item "wine" belongs to item "drink" which iteself represents an item of broader category
+    Item "beef steak" belongs to item "meat" which in turns belongs to "food"
+
+    One item can belongs to multiple items. "beaf steak" can also belong to item "unhealthy food"
+
+  * A web UI to add/edit/delete items and their hierachical relationship
+
+      To speed up manual data entry, prompt based on existing data
       UI must be mobile device friendly
-      
-      Provide predefined tags(import data from trademe?)
-      
-  * A web UI to add/edit/delete expense items and link them to categories
-      
-      To speed up manual data entry, prompt based on existing data is available
+
+      Provide predefined items(import data from trademe?)
+
+  * A web UI to add/edit/delete expense entry with optional tags
+
+      To speed up manual data entry, prompt based on existing data
       UI must be mobile device friendly
-      
+
       Provide prefefined tags(import data from trademe?)
-      
+
       (optinal) detect similar words (e.g. bike/bicycle)
+
+  * A web UI to add/edit/delete expense entry tags
 
 * Generate reports giving users insight of their expense history
 
@@ -49,26 +51,26 @@ help track my daily expense and give decent reports
     Can be filtered by tag(s)
     Can be filtered by date range
     Ordered by purchase date
-  
+
   * Aggregate report of expense history
     Can be narrowed down by date range
     Can be narrowed down by tag(s): support intersection and union of tags
-  
+
   * View expense trend
     Can be narrowed down by date range and tag(s)
     Break down expense amount into daily/weekly/monthly bracket, show interactive chart
 
   * All report criteria can be saved into user profile for ease reaccess
-  
+
   * Expense watcher
-  
+
     User customizes criteria for expense alert, e.g.
     "if total expense last week exceeds average weekly expense by over"
     "30%, generates an alert and drops me an email"
-    
+
     "Set my daily budget to $50, if average expense last week exceeds it,"
     "generates an alert and drops me an email"
-    
+
     User can view prior alerts
-       
-      
+
+
