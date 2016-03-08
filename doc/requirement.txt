@@ -47,20 +47,20 @@ help track my daily expense and give decent reports
 
 * Generate reports giving users insight of their expense history
 
-  * View list of expense items
+  * View expense entries
     Can be filtered by tag(s)
     Can be filtered by date range
     Ordered by purchase date
 
   * Aggregate report of expense history
-    Can be narrowed down by date range
-    Can be narrowed down by tag(s): support intersection and union of tags
+    History within certain date range
+    History for specified entry tags or item category
 
   * View expense trend
-    Can be narrowed down by date range and tag(s)
-    Break down expense amount into daily/weekly/monthly bracket, show interactive chart
+    Group expense by day/week/month
+    Show expense fluctuation over time
 
-  * All report criteria can be saved into user profile for ease reaccess
+  * Report criteria can be saved to user profile for ease reaccess
 
   * Expense watcher
 
