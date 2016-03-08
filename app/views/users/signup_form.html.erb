@@ -1,14 +1,14 @@
 <div class="container signup">
   <h3 class="text-center">Create Your Account</h3>
   <hr/>
-  
-  <%= form_for @user, url: signup_path, html: { id: "signup_form", class: "form-horizontal" } do |f| %>
+
+  <%= form_for @user, as: :user, url: signup_path, html: { id: "signup_form", class: "form-horizontal" } do |f| %>
     <div class="form-group">
       <%= f.label :name, "Name", class: "col-sm-4 control-label" %>
       <div class="col-sm-8">
         <%= f.text_field :name, class: "form-control" %>
       </div>
-      
+
       <div class="col-sm-offset-4 col-sm-8 text-danger">
         <% @user.errors[:name].each do |msg| %>
           <%= "name " + msg %>
@@ -16,7 +16,7 @@
         <% end %>
       </div>
     </div>
-    
+
     <div class="form-group">
       <%= f.label :password, "Password", class: "col-sm-4 control-label" %>
       <div class="col-sm-8">
@@ -30,7 +30,7 @@
         <% end %>
       </div>
     </div>
-    
+
     <div class="form-group">
       <%= f.label :password_confirmation, "Confirm Password", class: "col-sm-4 control-label" %>
       <div class="col-sm-8">
@@ -44,7 +44,7 @@
         <% end %>
       </div>
     </div>
-    
+
     <div class="form-group">
       <div class="checkbox col-sm-offset-4 col-sm-8">
         <label>
@@ -53,12 +53,12 @@
         </label>
       </div>
     </div>
- 
+
     <div class="form-group">
       <div class="col-sm-offset-4 col-sm-8">
         <%= f.submit "Sign up", class: "btn btn-primary" %>
       </div>
     </div>
-    
+
   <% end %>
 </div>

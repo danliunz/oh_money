@@ -1,5 +1,5 @@
 def register_user(username, password)
-  @user = User.create!(name: username, password: password)
+  @user = Account::User.create!(name: username, password: password)
 end
 
 def sign_in(username, password)
@@ -11,7 +11,7 @@ def sign_in(username, password)
 end
 
 Given(/^no signed\-up user named "([^"]*)"$/) do |username|
-  User.delete_all(name: "diablo")
+  Account::User.delete_all(name: "diablo")
 end
 
 Given(/^a user signed\-up with name "([^"]*)" and password "([^"]*)"$/) do |username, password|

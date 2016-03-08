@@ -4,7 +4,7 @@ RSpec.describe UsersController, type: :controller do
   describe "GET #signup" do
     it "assigns a new user record" do
       get :signup_form
-      expect(assigns[:user]).to be_a_new(User)
+      expect(assigns[:user]).to be_a_new(Account::User)
     end
 
     it "returns http success" do
