@@ -27,6 +27,8 @@ help track my daily expense and give decent reports
 
     One item can belongs to multiple items. "beaf steak" can also belong to item "unhealthy food"
 
+    Keep hierachy to at most 3 levels deep
+
   * A web UI to add/edit/delete items and their hierachical relationship
 
       To speed up manual data entry, prompt based on existing data

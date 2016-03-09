@@ -2,7 +2,10 @@ class Account::User < ActiveRecord::Base
   NAME_LENGTH_RANGE =  3..64
   PASSWORD_LENGTH_RANGE = 6..64
 
-  has_one :remember_me, class_name: "Account::RememberMe"
+  has_one :remember_me
+
+  # Each user has his own ItemTypes
+  has_many :item_types, dependent: :destroy
 
   validates_length_of :name, within: NAME_LENGTH_RANGE
 
