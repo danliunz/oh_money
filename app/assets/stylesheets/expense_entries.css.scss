@@ -9,7 +9,13 @@
   border: 0px;
   padding-left: 0px;
 
-  .label {
+  a[data-toggle="popover"] {
     margin-right: 6px;
+    foint-size: 75%;
+    padding: 3px 6px;
   }
+}
+
+.popover-content {
+  padding: 6px 3px;
 }
