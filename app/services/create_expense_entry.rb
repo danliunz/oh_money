@@ -7,14 +7,20 @@ class CreateExpenseEntry
   end
 
   def call
-    @expense_entry.user = @user
-    @expense_entry.item_type = find_or_create_item_type
-    @expense_entry.cost = cost_in_cents
-    @expense_entry.purchase_date = purchase_date
+    ActiveRecord::Base.transaction do
+      @expense_entry.user = @user
+      @expense_entry.item_type = find_or_create_item_type
+      @expense_entry.cost = cost_in_cents
+      @expense_entry.purchase_date = purchase_date
 
-    add_tags_to_expense_entry
+      add_tags_to_expense_entry
 
-    @expense_entry.save
+      @expense_entry.save!
+
+      true
+    end
+  rescue
+    false
   end
 
   def value
