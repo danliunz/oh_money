@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160309033749) do
+ActiveRecord::Schema.define(version: 20160311003252) do
 
   create_table "expense_entries", force: true do |t|
     t.integer  "item_type_id",               null: false
@@ -23,7 +23,7 @@ ActiveRecord::Schema.define(version: 20160309033749) do
     t.datetime "updated_at"
   end
 
-  add_index "expense_entries", ["item_type_id"], name: "index_expense_entries_on_item_type_id", using: :btree
+  add_index "expense_entries", ["user_id", "item_type_id"], name: "index_expense_entries_on_user_id_and_item_type_id", using: :btree
 
   create_table "expense_entry_tags", id: false, force: true do |t|
     t.integer "expense_entry_id", null: false
@@ -65,9 +65,10 @@ ActiveRecord::Schema.define(version: 20160309033749) do
     t.string   "description", limit: 1024
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "user_id",                  null: false
   end
 
-  add_index "tags", ["name"], name: "index_tags_on_name", unique: true, using: :btree
+  add_index "tags", ["user_id", "name"], name: "index_tags_on_user_id_and_name", unique: true, using: :btree
 
   create_table "users", force: true do |t|
     t.string   "name",            limit: 128, null: false

@@ -1,0 +1,99 @@
+<div class="container">
+  <h3 class="text-center">Enter Your Expense</h3>
+
+  <hr/>
+
+  <%= form_for @expense_entry,
+        url: create_expense_entry_path,
+        html: { class: "form-horizontal" } do |f| %>
+    <%= f.fields_for @expense_entry.item_type do |item_type_fields| %>
+
+      <!-- Item Type -->
+      <div class="form-group">
+        <%= item_type_fields.label :name, "What", class: "col-sm-4 control-label" %>
+        <div class="col-sm-8">
+          <%= item_type_fields.text_field :name, class: "form-control" %>
+        </div>
+
+        <div class="col-sm-offset-4 col-sm-8 text-danger">
+          <% item_type_fields.object.errors[:name].each do |msg| %>
+            <%= msg %>
+            <br/>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
+    <!-- Cost -->
+    <div class="form-group">
+      <%= f.label :cost, "Cost", class: "col-sm-4 control-label" %>
+      <div class="col-sm-8">
+        <%= f.text_field :cost,
+              value: f.object.cost ? f.object.cost / ExpenseEntry::CENTS_MULTIPLIER : "",
+              class: "form-control" %>
+      </div>
+
+      <div class="col-sm-offset-4 col-sm-8 text-danger">
+        <% @expense_entry.errors[:cost].each do |msg| %>
+          <%= msg %>
+          <br/>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Purchase Date -->
+    <div class="form-group">
+      <%= f.label :purchase_date, "When", class: "col-sm-4 control-label" %>
+      <div class="col-sm-8">
+        <%= f.text_field :purchase_date, class: "form-control" %>
+      </div>
+
+      <div class="col-sm-offset-4 col-sm-8 text-danger">
+        <% @expense_entry.errors[:purchase_date].each do |msg| %>
+          <%= msg %>
+          <br/>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Tags -->
+    <div class="form-group">
+      <%= f.label :tags, "Tags", class: "col-sm-4 control-label" %>
+
+      <div class="col-sm-8">
+        <div class="input-group">
+          <input id="expense_entry_tag_input" type="text" class="form-control" placeholder="Enter a tag" />
+          <span class="input-group-btn">
+            <button id="add_expense_entry_tag_btn" type="button" class="btn btn-default">Add</button>
+          </span>
+        </div>
+      </div>
+
+      <div class="col-sm-offset-4 col-sm-8">
+        <div class="form-control tags-panel">
+          <% @expense_entry.tags.each do |tag| %>
+            <span class="label label-success"><%= tag.name %></span>
+            <%= f.fields_for 'tags[]', tag do |tag_fields| %>
+              <%= tag_fields.hidden_field :name %>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="col-sm-offset-4 col-sm-8 text-danger">
+        <% @expense_entry.tags.each do |tag| %>
+          <% if tag.invalid? %>
+            Invalid tag <%= tag.name %>: <%= tag.errors.full_messages.join(" | ") %>
+            <br/>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-offset-4 col-sm-8">
+        <%= f.submit "Submit", class: "btn btn-primary" %>
+      </div>
+    </div>
+  <% end %>
+</div>

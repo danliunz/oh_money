@@ -1,8 +1,8 @@
 Rails.application.routes.draw do
   root 'welcome#index'
-  
+
   get 'welcome/index' => "welcome#index"
-  
+
   # user authentication
   get 'users/signup' => 'users#signup_form', as: :signup
   post 'users/signup' => 'users#signup'
@@ -10,8 +10,12 @@ Rails.application.routes.draw do
   post 'users/signin' => 'users#signin'
   post 'users/signout' => 'users#signout', as: :signout
   get 'users/:id' => 'users#show', as: :show_user
- 
-  
+
+  # expense entry
+  get 'expense_entries/create' => 'expense_entries#create_form',
+    as: :create_expense_entry
+  post 'expense_entries/create' => 'expense_entries#create'
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

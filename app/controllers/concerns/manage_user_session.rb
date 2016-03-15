@@ -17,6 +17,10 @@ module ManageUserSession
     !!@current_user
   end
 
+  def current_user
+    @current_user
+  end
+
   def create_session(user)
     session[:current_user_id] = user.id
     @current_user = user
