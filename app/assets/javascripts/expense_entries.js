@@ -2,8 +2,8 @@ $(document).ready(function() {
   init_add_tag();
 });
 
-function add_tag() {
-  tag = $('#tag_input').val().trim();
+function add_tag(tag) {
+  tag = tag ? tag : $('#tag_input').val().trim();
   if (!tag) return;
 
   if (tag) {
@@ -12,7 +12,7 @@ function add_tag() {
       'data-toggle="popover" ' +
       '>' +
         tag +
-      '</span>'
+      '</a>'
     ).append(
       '<input type="hidden" name="expense_entry[tags][][name]"' +
       '       value="' + tag + '" />'

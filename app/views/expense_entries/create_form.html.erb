@@ -84,15 +84,14 @@
 
       <div class="col-sm-offset-4 col-sm-8">
         <div class="form-control tags-panel">
-          <% @expense_entry.tags.each do |tag| %>
-            <span class="label label-success" data-toggle="popover"
-              data-trigger="focus" data-content="remove">
-              <%= tag.name %>
-            </span>
-            <%= f.fields_for 'tags[]', tag do |tag_fields| %>
-              <%= tag_fields.hidden_field :name %>
-            <% end %>
-          <% end %>
+          <!-- popover of the tag element must be initialized by javascript -->
+          <script>
+            $(document).ready(function() {
+              <% @expense_entry.tags.each do |tag| %>
+                add_tag(<%= tag.name %>);
+              <% end %>
+            });
+          </script>
         </div>
       </div>
 
