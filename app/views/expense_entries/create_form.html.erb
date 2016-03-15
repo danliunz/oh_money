@@ -45,7 +45,20 @@
     <div class="form-group">
       <%= f.label :purchase_date, "When", class: "col-sm-4 control-label" %>
       <div class="col-sm-8">
-        <%= f.text_field :purchase_date, class: "form-control" %>
+        <div id="purchase_date_picker" class="input-group date">
+          <%= f.text_field :purchase_date, class: "form-control", readonly: "true" %>
+          <span class="input-group-addon">
+            <span class="glyphicon glyphicon-calendar"/>
+          </span>
+        </div>
+
+        <script type="text/javascript">
+          $(function() {
+            $('#purchase_date_picker').datetimepicker(
+              { format: 'YYYY-MM-DD', ignoreReadonly: true }
+            );
+          });
+        </script>
       </div>
 
       <div class="col-sm-offset-4 col-sm-8 text-danger">

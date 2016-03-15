@@ -26,6 +26,10 @@ gem 'sdoc', '~> 0.4.0',          group: :doc
 # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
 gem 'spring',        group: :development
 
+# use bootstrap3 datetime picker
+gem 'momentjs-rails', '>= 2.9.0'
+gem 'bootstrap3-datetimepicker-rails', '~> 4.17.37'
+
 # Test
 group :test do
   gem 'rspec-rails'
@@ -36,7 +40,7 @@ group :test do
 end
 
 group :development, :test do
-  # insert a line 'debugger' into code to inspect application state
+  # insert a line 'byebug' into code to inspect application state
   # through server prompt
   gem 'byebug'
 end

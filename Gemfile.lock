@@ -30,6 +30,8 @@ GEM
     addressable (2.4.0)
     arel (5.0.1.20140414130214)
     bcrypt (3.1.11)
+    bootstrap3-datetimepicker-rails (4.17.37)
+      momentjs-rails (>= 2.8.1)
     builder (3.2.2)
     byebug (8.2.2)
     capybara (2.6.2)
@@ -85,6 +87,8 @@ GEM
     mime-types (2.99.1)
     mini_portile2 (2.0.0)
     minitest (5.8.4)
+    momentjs-rails (2.11.0)
+      railties (>= 3.1)
     multi_json (1.11.2)
     multi_test (0.1.2)
     mysql2 (0.3.20)
@@ -172,6 +176,7 @@ PLATFORMS
 
 DEPENDENCIES
   bcrypt (~> 3.1.7)
+  bootstrap3-datetimepicker-rails (~> 4.17.37)
   byebug
   capybara (>= 2.4.0)
   coffee-rails (~> 4.0.0)
@@ -179,6 +184,7 @@ DEPENDENCIES
   database_cleaner (~> 1.5, >= 1.5.1)
   jbuilder (~> 2.0)
   jquery-rails
+  momentjs-rails (>= 2.9.0)
   mysql2 (~> 0.3.18)
   rails (~> 4.1.0)
   rspec-rails
