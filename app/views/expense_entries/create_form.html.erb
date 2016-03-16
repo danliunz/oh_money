@@ -5,14 +5,20 @@
 
   <%= form_for @expense_entry,
         url: create_expense_entry_path,
-        html: { class: "form-horizontal" } do |f| %>
+        html: { class: "form-horizontal", autocomplete: "off" } do |f| %>
     <%= f.fields_for @expense_entry.item_type do |item_type_fields| %>
 
       <!-- Item Type -->
       <div class="form-group">
         <%= item_type_fields.label :name, "What", class: "col-sm-4 control-label" %>
         <div class="col-sm-8">
-          <%= item_type_fields.text_field :name, class: "form-control" %>
+          <div class="item_types_panel">
+            <%= item_type_fields.text_field :name, class: "form-control" %>
+
+            <!-- dropdown menu for auto-complete-->
+            <ul class="dropdown-menu">
+            </ul>
+          </div>
         </div>
 
         <div class="col-sm-offset-4 col-sm-8 text-danger">
@@ -88,7 +94,7 @@
           <script>
             $(document).ready(function() {
               <% @expense_entry.tags.each do |tag| %>
-                add_tag(<%= tag.name %>);
+                add_tag('<%= tag.name %>');
               <% end %>
             });
           </script>

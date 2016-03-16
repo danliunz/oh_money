@@ -24,6 +24,5 @@ class ExpenseEntriesController < ApplicationController
     params
       .require(:expense_entry)
       .permit(:cost, :purchase_date, item_type: :name, tags: [:name])
-
   end
 end

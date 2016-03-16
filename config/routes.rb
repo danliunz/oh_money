@@ -11,6 +11,9 @@ Rails.application.routes.draw do
   post 'users/signout' => 'users#signout', as: :signout
   get 'users/:id' => 'users#show', as: :show_user
 
+  # item types
+  get 'item_types/suggestions' => 'item_types#suggestions'
+
   # expense entry
   get 'expense_entries/create' => 'expense_entries#create_form',
     as: :create_expense_entry
