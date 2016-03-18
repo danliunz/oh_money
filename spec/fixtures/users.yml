@@ -1,4 +1,12 @@
 danliu:
   name: danliu
   password_digest: <%= BCrypt::Password.create("danliu") %>
-  
+
+jennifer:
+  name: jennifer
+  password_digest: <%= BCrypt::Password.create("jennifer") %>
+
+nobody:
+  name: nobody
+  password_digest: <%= BCrypt::Password.create("nobody") %>
+

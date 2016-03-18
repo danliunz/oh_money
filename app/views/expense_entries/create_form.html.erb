@@ -12,12 +12,15 @@
       <div class="form-group">
         <%= item_type_fields.label :name, "What", class: "col-sm-4 control-label" %>
         <div class="col-sm-8">
-          <div class="item_types_panel">
+          <div class="item-types-panel">
             <%= item_type_fields.text_field :name, class: "form-control" %>
 
             <!-- dropdown menu for auto-complete-->
-            <ul class="dropdown-menu">
-            </ul>
+            <div class="dropdown">
+              <button style="display: none" type="button" data-toggle="dropdown"></button>
+              <ul class="dropdown-menu">
+              </ul>
+            </div>
           </div>
         </div>
 
@@ -80,11 +83,20 @@
       <%= f.label :tags, "Tags", class: "col-sm-4 control-label" %>
 
       <div class="col-sm-8">
-        <div class="input-group">
-          <input id="tag_input" type="text" class="form-control" placeholder="Enter a tag" />
-          <span class="input-group-btn">
-            <button id="add_tag_btn" type="button" class="btn btn-default">Add</button>
-          </span>
+        <div class="tag-input-panel">
+          <div class="input-group">
+            <input id="tag_input" type="text" class="form-control" placeholder="Enter a tag" />
+            <span class="input-group-btn">
+              <button id="add_tag_btn" type="button" class="btn btn-default">Add</button>
+            </span>
+          </div>
+
+          <!-- dropdown menu for auto-complete-->
+          <div class="dropdown">
+            <button style="display: none" type="button" data-toggle="dropdown"></button>
+            <ul class="dropdown-menu">
+            </ul>
+          </div>
         </div>
       </div>
 

@@ -2,3 +2,19 @@ wine:
   name: wine
   user: danliu
   description: wine
+
+beer:
+  name: beer
+  user: danliu
+
+ginger_beer:
+  name: "ginger beer"
+  user: danliu
+
+craft_beer:
+  name: "craft beer"
+  user: danliu
+
+beer_I_do_not_like:
+  name: "beer I don't like"
+  user: jennifer

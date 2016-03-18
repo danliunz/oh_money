@@ -12,4 +12,11 @@ class ItemType < ActiveRecord::Base
 
   validates_presence_of :name, :user
   validates_uniqueness_of :name, scope: :user_id, if: proc { errors.empty? }
+
+  scope :names_matching_prefix, ->(name_prefix, owner) {
+    where(user: owner)
+    .where("name LIKE ?", "#{name_prefix}%")
+    .order(name: :asc)
+    .pluck(:name)
+  }
 end
