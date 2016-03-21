@@ -4,13 +4,18 @@ RSpec.describe ItemType, type: :model do
   fixtures :users, :item_types
 
   describe "#names_matching_prefix" do
+    before(:each) { @names = ItemType.names_matching_prefix(prefix, user) }
+
     context "when some item type's name matches the prefix and owned by specified user" do
       let(:prefix) { "beer" }
       let(:user) { users(:danliu) }
 
       it "returns the matching type names" do
-        names = ItemType.names_matching_prefix(prefix, user)
-        expect(names).to contain_exactly("beer")
+        expect(@names).to contain_exactly("beer", "beer pong")
+      end
+
+      it "returns the names in ascending alphabetic order" do
+        expect(@names).to eq(["beer", "beer pong"])
       end
     end
 
@@ -18,19 +23,17 @@ RSpec.describe ItemType, type: :model do
       let(:prefix) { "beer" }
       let(:user) { users(:nobody) }
 
-      it "returns empty" do
-        names = ItemType.names_matching_prefix(prefix, user)
-        expect(names).to be_empty
+      it "returns nothing" do
+        expect(@names).to be_empty
       end
     end
 
     context "when no item type's name matches the prefix" do
       let(:prefix) { "block hole" }
-      let(:user) { users(:nobody) }
+      let(:user) { users(:danliu) }
 
-      it "returns empty" do
-        names = ItemType.names_matching_prefix(prefix, user)
-        expect(names).to be_empty
+      it "returns nothing" do
+        expect(@names).to be_empty
       end
     end
   end

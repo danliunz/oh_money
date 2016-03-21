@@ -7,6 +7,10 @@ beer:
   name: beer
   user: danliu
 
+beer_pong:
+  name: "beer pong"
+  user: danliu
+
 ginger_beer:
   name: "ginger beer"
   user: danliu

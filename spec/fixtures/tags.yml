@@ -2,6 +2,10 @@ at_countdown:
   name: '@countdown'
   user: danliu
 
+at_newworld:
+  name: '@newworld'
+  user: danliu
+
 birthday:
   name: birthday
   user: danliu

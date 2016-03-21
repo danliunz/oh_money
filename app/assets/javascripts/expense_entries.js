@@ -70,33 +70,6 @@ function init_tag_autocomplete() {
     '/tags/suggestions.json',
     display_tag_suggestions
   );
-
-  // get suggested names from server based on user input
-  var $input = $('#tag_input');
-  $input.on('input', function(event) {
-    var prefix = $(this).val().trim();
-    if (prefix) {
-      $.get('/tags/suggestions.json', { prefix: prefix },
-        display_tag_suggestions
-      );
-    } else {
-      display_tag_suggestions([]);
-    }
-  });
-
-  // pressing 'arrow-down' key in text input moves focus to dropdown menu
-  var $dropdown_menu = $('.tag-input-panel .dropdown-menu');
-
-  $input.keydown(function(event) {
-    if (event.which === 40) { // 'arrow-down' key
-      $dropdown_menu.find('li:first-child a').focus();
-    }
-  });
-
-  // fill text input when suggested name is clicked
-  $dropdown_menu.on('click', 'a', function(event) {
-    $input.val($(this).text()).focus();
-  });
 }
 
 function display_tag_suggestions(suggested_names) {
