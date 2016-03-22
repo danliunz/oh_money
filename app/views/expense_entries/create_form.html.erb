@@ -3,6 +3,14 @@
 
   <hr/>
 
+  <% if notice %>
+    <row>
+      <div class="col-sm-offset-3 col-sm-8 alert alert-success">
+        <%= notice %>
+      </div>
+    </row>
+  <% end %>
+
   <%= form_for @expense_entry,
         url: create_expense_entry_path,
         html: { class: "form-horizontal", autocomplete: "off" } do |f| %>
@@ -10,7 +18,7 @@
 
       <!-- Item Type -->
       <div class="form-group">
-        <%= item_type_fields.label :name, "What", class: "col-sm-4 control-label" %>
+        <%= item_type_fields.label :name, "What", class: "col-sm-3 control-label" %>
         <div class="col-sm-8">
           <div class="item-types-panel">
             <%= item_type_fields.text_field :name, class: "form-control" %>
@@ -24,7 +32,7 @@
           </div>
         </div>
 
-        <div class="col-sm-offset-4 col-sm-8 text-danger">
+        <div class="col-sm-offset-3 col-sm-8 text-danger">
           <% item_type_fields.object.errors[:name].each do |msg| %>
             <%= msg %>
             <br/>
@@ -35,14 +43,14 @@
 
     <!-- Cost -->
     <div class="form-group">
-      <%= f.label :cost, "Cost", class: "col-sm-4 control-label" %>
+      <%= f.label :cost, "Cost", class: "col-sm-3 control-label" %>
       <div class="col-sm-8">
         <%= f.text_field :cost,
               value: f.object.cost ? f.object.cost / ExpenseEntry::CENTS_MULTIPLIER : "",
               class: "form-control" %>
       </div>
 
-      <div class="col-sm-offset-4 col-sm-8 text-danger">
+      <div class="col-sm-offset-3 col-sm-8 text-danger">
         <% @expense_entry.errors[:cost].each do |msg| %>
           <%= msg %>
           <br/>
@@ -52,7 +60,7 @@
 
     <!-- Purchase Date -->
     <div class="form-group">
-      <%= f.label :purchase_date, "When", class: "col-sm-4 control-label" %>
+      <%= f.label :purchase_date, "When", class: "col-sm-3 control-label" %>
       <div class="col-sm-8">
         <div id="purchase_date_picker" class="input-group date">
           <%= f.text_field :purchase_date, class: "form-control", readonly: "true" %>
@@ -70,7 +78,7 @@
         </script>
       </div>
 
-      <div class="col-sm-offset-4 col-sm-8 text-danger">
+      <div class="col-sm-offset-3 col-sm-8 text-danger">
         <% @expense_entry.errors[:purchase_date].each do |msg| %>
           <%= msg %>
           <br/>
@@ -80,7 +88,7 @@
 
     <!-- Tags -->
     <div class="form-group">
-      <%= f.label :tags, "Tags", class: "col-sm-4 control-label" %>
+      <%= f.label :tags, "Tags", class: "col-sm-3 control-label" %>
 
       <div class="col-sm-8">
         <div class="tag-input-panel">
@@ -100,7 +108,7 @@
         </div>
       </div>
 
-      <div class="col-sm-offset-4 col-sm-8">
+      <div class="col-sm-offset-3 col-sm-8">
         <div class="form-control tags-panel">
           <!-- popover of the tag element must be initialized by javascript -->
           <script>
@@ -113,7 +121,7 @@
         </div>
       </div>
 
-      <div class="col-sm-offset-4 col-sm-8 text-danger">
+      <div class="col-sm-offset-3 col-sm-8 text-danger">
         <% @expense_entry.tags.each do |tag| %>
           <% if tag.invalid? %>
             Invalid tag <%= tag.name %>: <%= tag.errors.full_messages.join(" | ") %>
@@ -124,7 +132,7 @@
     </div>
 
     <div class="form-group">
-      <div class="col-sm-offset-4 col-sm-8">
+      <div class="col-sm-offset-3 col-sm-8">
         <%= f.submit "Submit", class: "btn btn-primary" %>
       </div>
     </div>

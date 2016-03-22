@@ -11,7 +11,9 @@ class ExpenseEntriesController < ApplicationController
       CreateExpenseEntry.new(expense_entry_params, current_user)
 
     if create_expense_entry.call
-      redirect_to create_expense_entry_url
+      expense_entry = create_expense_entry.value
+      redirect_to create_expense_entry_url,
+        notice: "Expense entry saved for #{expense_entry.item_type.name}"
     else
       @expense_entry = create_expense_entry.value
       render "create_form"

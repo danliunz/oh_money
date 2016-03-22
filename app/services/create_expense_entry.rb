@@ -16,7 +16,6 @@ class CreateExpenseEntry
       add_tags_to_expense_entry
 
       @expense_entry.save!
-
       true
     end
   rescue
