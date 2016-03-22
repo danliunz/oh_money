@@ -1,0 +1,15 @@
+<div class="form-group">
+  <%= form_builder.label :cost, "Cost", class: "col-sm-3 control-label" %>
+  <div class="col-sm-8">
+    <%= form_builder.text_field :cost, class: "form-control",
+      value: form_builder.object.cost ? form_builder.object.cost / ExpenseEntry::CENTS_MULTIPLIER : ""
+    %>
+  </div>
+
+  <div class="col-sm-offset-3 col-sm-8 text-danger">
+    <% form_builder.object.errors[:cost].each do |msg| %>
+      <%= msg %>
+      <br/>
+    <% end %>
+  </div>
+</div>

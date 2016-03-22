@@ -14,122 +14,14 @@
   <%= form_for @expense_entry,
         url: create_expense_entry_path,
         html: { class: "form-horizontal", autocomplete: "off" } do |f| %>
-    <%= f.fields_for @expense_entry.item_type do |item_type_fields| %>
 
-      <!-- Item Type -->
-      <div class="form-group">
-        <%= item_type_fields.label :name, "What", class: "col-sm-3 control-label" %>
-        <div class="col-sm-8">
-          <div class="item-types-panel">
-            <%= item_type_fields.text_field :name, class: "form-control" %>
+    <%= render partial: "item_type_of_create_form", locals: { form_builder: f } %>
 
-            <!-- dropdown menu for auto-complete-->
-            <div class="dropdown">
-              <button style="display: none" type="button" data-toggle="dropdown"></button>
-              <ul class="dropdown-menu">
-              </ul>
-            </div>
-          </div>
-        </div>
+    <%= render partial: "cost_of_create_form", locals: { form_builder: f } %>
 
-        <div class="col-sm-offset-3 col-sm-8 text-danger">
-          <% item_type_fields.object.errors[:name].each do |msg| %>
-            <%= msg %>
-            <br/>
-          <% end %>
-        </div>
-      </div>
-    <% end %>
+    <%= render partial: "purchase_date_of_create_form", locals: { form_builder: f } %>
 
-    <!-- Cost -->
-    <div class="form-group">
-      <%= f.label :cost, "Cost", class: "col-sm-3 control-label" %>
-      <div class="col-sm-8">
-        <%= f.text_field :cost,
-              value: f.object.cost ? f.object.cost / ExpenseEntry::CENTS_MULTIPLIER : "",
-              class: "form-control" %>
-      </div>
-
-      <div class="col-sm-offset-3 col-sm-8 text-danger">
-        <% @expense_entry.errors[:cost].each do |msg| %>
-          <%= msg %>
-          <br/>
-        <% end %>
-      </div>
-    </div>
-
-    <!-- Purchase Date -->
-    <div class="form-group">
-      <%= f.label :purchase_date, "When", class: "col-sm-3 control-label" %>
-      <div class="col-sm-8">
-        <div id="purchase_date_picker" class="input-group date">
-          <%= f.text_field :purchase_date, class: "form-control", readonly: "true" %>
-          <span class="input-group-addon">
-            <span class="glyphicon glyphicon-calendar"/>
-          </span>
-        </div>
-
-        <script type="text/javascript">
-          $(function() {
-            $('#purchase_date_picker').datetimepicker(
-              { format: 'YYYY-MM-DD', ignoreReadonly: true }
-            );
-          });
-        </script>
-      </div>
-
-      <div class="col-sm-offset-3 col-sm-8 text-danger">
-        <% @expense_entry.errors[:purchase_date].each do |msg| %>
-          <%= msg %>
-          <br/>
-        <% end %>
-      </div>
-    </div>
-
-    <!-- Tags -->
-    <div class="form-group">
-      <%= f.label :tags, "Tags", class: "col-sm-3 control-label" %>
-
-      <div class="col-sm-8">
-        <div class="tag-input-panel">
-          <div class="input-group">
-            <input id="tag_input" type="text" class="form-control" placeholder="Enter a tag" />
-            <span class="input-group-btn">
-              <button id="add_tag_btn" type="button" class="btn btn-default">Add</button>
-            </span>
-          </div>
-
-          <!-- dropdown menu for auto-complete-->
-          <div class="dropdown">
-            <button style="display: none" type="button" data-toggle="dropdown"></button>
-            <ul class="dropdown-menu">
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-sm-offset-3 col-sm-8">
-        <div class="form-control tags-panel">
-          <!-- popover of the tag element must be initialized by javascript -->
-          <script>
-            $(document).ready(function() {
-              <% @expense_entry.tags.each do |tag| %>
-                add_tag('<%= tag.name %>');
-              <% end %>
-            });
-          </script>
-        </div>
-      </div>
-
-      <div class="col-sm-offset-3 col-sm-8 text-danger">
-        <% @expense_entry.tags.each do |tag| %>
-          <% if tag.invalid? %>
-            Invalid tag <%= tag.name %>: <%= tag.errors.full_messages.join(" | ") %>
-            <br/>
-          <% end %>
-        <% end %>
-      </div>
-    </div>
+    <%= render partial: "tags_of_create_form", locals: { form_builder: f } %>
 
     <div class="form-group">
       <div class="col-sm-offset-3 col-sm-8">

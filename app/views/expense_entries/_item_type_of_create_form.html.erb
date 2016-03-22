@@ -1,0 +1,23 @@
+<%= form_builder.fields_for form_builder.object.item_type do |item_type_fields| %>
+  <div class="form-group">
+    <%= item_type_fields.label :name, "What", class: "col-sm-3 control-label" %>
+    <div class="col-sm-8">
+      <div class="item-types-panel">
+        <%= item_type_fields.text_field :name, class: "form-control" %>
+
+        <!-- dropdown menu for auto-complete-->
+        <div class="dropdown">
+          <button style="display: none" type="button" data-toggle="dropdown"></button>
+          <ul class="dropdown-menu"></ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-offset-3 col-sm-8 text-danger">
+      <% item_type_fields.object.errors[:name].each do |msg| %>
+      <%= msg %>
+      <br/>
+      <% end %>
+    </div>
+  </div>
+<% end %>

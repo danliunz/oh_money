@@ -1,0 +1,25 @@
+<div class="form-group">
+  <%= form_builder.label :purchase_date, "When", class: "col-sm-3 control-label" %>
+  <div class="col-sm-8">
+    <div id="purchase_date_picker" class="input-group date">
+      <%= form_builder.text_field :purchase_date, class: "form-control", readonly: "true" %>
+      <span class="input-group-addon"> <span class="glyphicon glyphicon-calendar"/> </span>
+    </div>
+
+    <script type="text/javascript">
+      $(function() {
+        $('#purchase_date_picker').datetimepicker({
+          format : 'YYYY-MM-DD',
+          ignoreReadonly : true
+        });
+      });
+    </script>
+  </div>
+
+  <div class="col-sm-offset-3 col-sm-8 text-danger">
+    <% form_builder.object.errors[:purchase_date].each do |msg| %>
+      <%= msg %>
+      <br/>
+    <% end %>
+  </div>
+</div>

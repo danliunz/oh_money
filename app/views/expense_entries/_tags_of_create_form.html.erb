@@ -1,0 +1,44 @@
+<div class="form-group">
+  <%= form_builder.label :tags, "Tags", class: "col-sm-3 control-label" %>
+
+  <div class="col-sm-8">
+    <div class="tag-input-panel">
+      <div class="input-group">
+        <input id="tag_input" type="text" class="form-control" placeholder="Enter a tag" />
+        <span class="input-group-btn">
+          <button id="add_tag_btn" type="button" class="btn btn-default">
+            Add
+          </button> </span>
+      </div>
+
+      <!-- dropdown menu for auto-complete-->
+      <div class="dropdown">
+        <button style="display: none" type="button" data-toggle="dropdown"></button>
+        <ul class="dropdown-menu"></ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- popover to remove tag -->
+  <div class="col-sm-offset-3 col-sm-8">
+    <div class="form-control tags-panel">
+      <!-- popover of the tag element must be initialized by javascript -->
+      <script>
+        $(document).ready(function() {
+          <% form_builder.object.tags.each do |tag| %>
+            add_tag('<%= tag.name %>');
+          <% end %>
+        });
+      </script>
+    </div>
+  </div>
+
+  <div class="col-sm-offset-3 col-sm-8 text-danger">
+    <% @expense_entry.tags.each do |tag| %>
+      <% if tag.invalid? %>
+        Invalid tag <%= tag.name %>: <%= tag.errors.full_messages.join(" | ") %>
+        <br/>
+      <% end %>
+    <% end %>
+  </div>
+</div>
