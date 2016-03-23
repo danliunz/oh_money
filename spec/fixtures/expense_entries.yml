@@ -1,0 +1,41 @@
+entry_1:
+  user: danliu
+  item_type: wine
+  cost: 1000
+  purchase_date: 2016-01-01
+
+entry_2:
+  user: danliu
+  item_type: beer
+  cost: 2000
+  purchase_date: 2016-01-01
+
+entry_3:
+  user: danliu
+  item_type: wine
+  cost: 1000
+  purchase_date: 2016-01-02
+
+entry_4:
+  user: danliu
+  item_type: ginger_beer
+  cost: 500
+  purchase_date: 2016-01-03
+
+entry_5:
+  user: danliu
+  item_type: beer_pong
+  cost: 1510
+  purchase_date: 2016-01-03
+
+entry_6:
+  user: danliu
+  item_type: craft_beer
+  cost: 450
+  purchase_date: 2016-01-05
+
+entry_7:
+  user: jennifer
+  item_type: wine
+  cost: 1500
+  purchase_date: 2016-01-01
