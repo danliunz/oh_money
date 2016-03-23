@@ -2,6 +2,7 @@
   <%= form_builder.label :cost, "Cost", class: "col-sm-3 control-label" %>
   <div class="col-sm-8">
     <%= form_builder.text_field :cost, class: "form-control",
+      placeholder: "How much did you spend",
       value: form_builder.object.cost ? form_builder.object.cost / ExpenseEntry::CENTS_MULTIPLIER : ""
     %>
   </div>

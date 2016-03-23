@@ -19,4 +19,15 @@ class ItemType < ActiveRecord::Base
     .order(name: :asc)
     .pluck(:name)
   }
+
+  def descendant_types
+    descendants = []
+    descendants.concat(children)
+
+    children.each do |child|
+      descendants.concat(child.descendant_types)
+    end
+
+    descendants
+  end
 end

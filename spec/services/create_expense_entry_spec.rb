@@ -25,7 +25,7 @@ RSpec.describe CreateExpenseEntry, type: :service do
       it "persists a valid expense entry into DB" do
         new_entry = ExpenseEntry
           .where(user: user, item_type: item_types(:wine))
-          .first
+          .last
 
         expect(new_entry.user.name).to eq("danliu")
         expect(new_entry.item_type.name).to eq("wine")

@@ -19,6 +19,11 @@ craft_beer:
   name: "craft beer"
   user: danliu
 
+drink:
+  name: drink
+  user: danlilu
+
 beer_I_do_not_like:
   name: "beer I don't like"
   user: jennifer
+

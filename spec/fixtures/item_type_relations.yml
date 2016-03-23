@@ -1,0 +1,16 @@
+rel_1:
+  parent: drink
+  child: wine
+
+rel_2:
+  parent: drink
+  child: beer
+
+rel_3:
+  parent: beer
+  child: ginger_beer
+
+rel_4:
+  parent: beer
+  child: craft_beer
+
