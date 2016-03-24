@@ -7,10 +7,15 @@ class CreateExpenseReport
   end
 
   def aggregate_by_day
-    report = ExpenseReport.new(@user, @root_item_type, @begin_date, @end_date)
+    report = ExpenseReport.new(@user, @root_item_type)
 
     item_types = item_type_and_its_descendants
-    report.expense_history = expense_history(item_types)
+
+    expense_history = expense_history(item_types)
+    report.expense_history = expense_history
+
+    report.begin_date = @begin_date || begin_date_of(expense_history)
+    report.end_date = @end_date || end_date_of(expense_history)
 
     report
   end
@@ -23,6 +28,7 @@ class CreateExpenseReport
     end
   end
 
+  # returns array of [purchase_date, total_cost_in_cents]
   def expense_history(item_types)
     relation = ExpenseEntry.where(user: @user)
 
@@ -40,6 +46,17 @@ class CreateExpenseReport
 
     relation
       .group(:purchase_date)
+      .order(purchase_date: :asc)
       .pluck(:purchase_date, 'SUM(cost) as cost')
+  end
+
+  def begin_date_of(expense_history)
+    time = expense_history.first.first
+    Date.new(time.year, time.month, time.day)
+  end
+
+  def end_date_of(expense_history)
+    time = expense_history.last.first
+    Date.new(time.year, time.month, time.day)
   end
 end

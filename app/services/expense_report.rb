@@ -1,7 +1,8 @@
 class ExpenseReport
-  attr_reader :user, :root_item_type, :begin_date, :end_date, :expense_history
+  attr_reader :user, :root_item_type, :expense_history
+  attr_accessor :begin_date, :end_date
 
-  def initialize(user, root_item_type, begin_date, end_date)
+  def initialize(user, root_item_type = nil, begin_date = nil, end_date = nil)
     @user = user
     @root_item_type = root_item_type
     @begin_date= begin_date

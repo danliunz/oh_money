@@ -41,6 +41,8 @@ GEM
       rack (>= 1.0.0)
       rack-test (>= 0.5.4)
       xpath (~> 2.0)
+    chart-js-rails (0.0.9)
+      railties (> 3.1)
     childprocess (0.5.9)
       ffi (~> 1.0, >= 1.0.11)
     coffee-rails (4.0.1)
@@ -179,6 +181,7 @@ DEPENDENCIES
   bootstrap3-datetimepicker-rails (~> 4.17.37)
   byebug
   capybara (>= 2.4.0)
+  chart-js-rails
   coffee-rails (~> 4.0.0)
   cucumber-rails
   database_cleaner (~> 1.5, >= 1.5.1)

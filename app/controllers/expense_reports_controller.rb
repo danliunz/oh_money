@@ -53,11 +53,22 @@ class ExpenseReportsController < ApplicationController
         validate_params.begin_date, validate_params.end_date
       )
 
-      report = create_report.aggregate_by_day
+      @report = create_report.aggregate_by_day
 
-      render json: report
+      respond_to do |format|
+        format.html
+        format.json { render json: @report }
+      end
+
     else
-      render json: { error: validate_params.error }
+      respond_to do |format|
+        format.html { @error = validate_params.error }
+        format.json { render json: { error: validate_params.error } }
+      end
     end
+  end
+
+  def spec_form
+    @expense_report = ExpenseReport.new(current_user)
   end
 end

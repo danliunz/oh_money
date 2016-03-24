@@ -23,6 +23,7 @@ Rails.application.routes.draw do
   post 'expense_entries/create' => 'expense_entries#create'
 
   # expense report
+  get 'expense_reports/spec_form' => 'expense_reports#spec_form'
   get 'expense_reports/aggregate_by_day' => 'expense_reports#aggregate_by_day'
 
   # The priority is based upon order of creation: first created -> highest priority.
