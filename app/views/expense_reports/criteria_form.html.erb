@@ -2,7 +2,15 @@
   <h3 class="text-center">Choose Report Criteria</h3>
   <hr/>
 
-  <%= form_for @expense_report, method: :get,
+   <% if alert %>
+    <row>
+      <div class="col-sm-offset-3 col-sm-8 alert alert-danger">
+        <%= alert %>
+      </div>
+    </row>
+  <% end %>
+
+  <%= form_for @report, method: :get,
     url: create_expense_report_path,
     html: { class: "form-horizontal", autocomplete: "off" } do |f| %>
 

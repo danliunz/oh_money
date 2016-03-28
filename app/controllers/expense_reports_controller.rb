@@ -59,17 +59,22 @@ class ExpenseReportsController < ApplicationController
         format.html
         format.json { render json: @report }
       end
-
     else
       respond_to do |format|
-        format.html { @error = validate_params.error }
+        format.html do
+          flash.alert = validate_params.error
+          @report = ExpenseReport.new(current_user, ItemType.new)
+
+          render "criteria_form"
+        end
+
         format.json { render json: { error: validate_params.error } }
       end
     end
   end
 
   def criteria_form
-    @expense_report = ExpenseReport.new(current_user, ItemType.new)
+    @report = ExpenseReport.new(current_user, ItemType.new)
   end
 
   private
