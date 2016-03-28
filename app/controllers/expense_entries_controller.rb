@@ -16,6 +16,8 @@ class ExpenseEntriesController < ApplicationController
         notice: "expense entry for #{expense_entry.item_type.name} is saved"
     else
       @expense_entry = create_expense_entry.value
+      flash.alert = create_expense_entry.error
+
       render "create_form"
     end
   end

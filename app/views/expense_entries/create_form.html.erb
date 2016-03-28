@@ -8,6 +8,13 @@
       </div>
     </row>
   <% end %>
+  <% if alert %>
+    <row>
+      <div class="col-sm-offset-3 col-sm-8 alert alert-danger">
+        <%= alert %>
+      </div>
+    </row>
+  <% end %>
 
   <%= form_for @expense_entry,
     url: create_expense_entry_path,

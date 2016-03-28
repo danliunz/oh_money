@@ -1,4 +1,6 @@
 class CreateExpenseEntry
+  attr_reader :error
+
   def initialize(params, user)
     @params = params
     @user = user
@@ -19,6 +21,7 @@ class CreateExpenseEntry
       true
     end
   rescue
+    @error = "Fail to save expense entry"
     false
   end
 
