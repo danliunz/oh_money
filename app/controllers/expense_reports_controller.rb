@@ -63,7 +63,7 @@ class ExpenseReportsController < ApplicationController
       respond_to do |format|
         format.html do
           flash.alert = validate_params.error
-          @report = ExpenseReport.new(current_user, ItemType.new)
+          create_blank_report
 
           render "criteria_form"
         end
@@ -74,12 +74,16 @@ class ExpenseReportsController < ApplicationController
   end
 
   def criteria_form
-    @report = ExpenseReport.new(current_user, ItemType.new)
+    create_blank_report
   end
 
   private
 
   def expense_report_params
     params[:expense_report] || {}
+  end
+
+  def create_blank_report
+    @report = ExpenseReport.new(current_user, ItemType.new)
   end
 end
