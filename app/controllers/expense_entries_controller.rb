@@ -13,7 +13,7 @@ class ExpenseEntriesController < ApplicationController
     if create_expense_entry.call
       expense_entry = create_expense_entry.value
       redirect_to create_expense_entry_url,
-        notice: "Expense entry saved for #{expense_entry.item_type.name}"
+        notice: "expense entry for #{expense_entry.item_type.name} is saved"
     else
       @expense_entry = create_expense_entry.value
       render "create_form"

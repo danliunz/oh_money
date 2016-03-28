@@ -1,4 +1,4 @@
-<%= form_builder.fields_for form_builder.object.item_type do |item_type_fields| %>
+<%= form_builder.fields_for field_name, form_builder.object.send(field_name) do |item_type_fields| %>
   <div class="form-group">
     <%= item_type_fields.label :name, "What", class: "col-sm-3 control-label" %>
     <div class="col-sm-8">

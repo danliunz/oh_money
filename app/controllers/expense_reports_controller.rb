@@ -14,7 +14,7 @@ class ExpenseReportsController < ApplicationController
     private
 
     def validate_and_set_root_item_type
-      item_type_name = @params[:root_item_type]
+      item_type_name = @params[:root_item_type] && @params[:root_item_type][:name]
       if item_type_name.blank?
         @root_item_type = nil
       else
@@ -45,7 +45,7 @@ class ExpenseReportsController < ApplicationController
   end
 
   def aggregate_by_day
-    validate_params = ValidateParams.new(params)
+    validate_params = ValidateParams.new(expense_report_params)
 
     if validate_params.call
       create_report = CreateExpenseReport.new(
@@ -68,7 +68,13 @@ class ExpenseReportsController < ApplicationController
     end
   end
 
-  def spec_form
-    @expense_report = ExpenseReport.new(current_user)
+  def criteria_form
+    @expense_report = ExpenseReport.new(current_user, ItemType.new)
+  end
+
+  private
+
+  def expense_report_params
+    params[:expense_report] || {}
   end
 end

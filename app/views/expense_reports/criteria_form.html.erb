@@ -1,0 +1,24 @@
+<div class="container-fluid">
+  <h3 class="text-center">Choose Report Criteria</h3>
+  <hr/>
+
+  <%= form_for @expense_report, method: :get,
+    url: create_expense_report_path,
+    html: { class: "form-horizontal", autocomplete: "off" } do |f| %>
+
+    <%= render partial: "/shared/item_type_input",
+      locals: { form_builder: f,  field_name: "root_item_type" } %>
+
+    <%= render partial: "/shared/date_input",
+      locals: { form_builder: f, field_name: :begin_date } %>
+
+    <%= render partial: "/shared/date_input",
+      locals: { form_builder: f, field_name: :end_date } %>
+
+    <div class="form-group">
+      <div class="col-sm-offset-3 col-sm-8">
+        <%= f.submit "Create Report", class: "btn btn-primary" %>
+      </div>
+    </div>
+  <% end %>
+</div>

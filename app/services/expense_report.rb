@@ -1,4 +1,6 @@
 class ExpenseReport
+  include ActiveModel::Model
+
   attr_reader :user, :root_item_type, :expense_history
   attr_accessor :begin_date, :end_date
 
