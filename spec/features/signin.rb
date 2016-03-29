@@ -8,7 +8,7 @@ RSpec.describe "User Signin", :type => :feature, :js => true do
 
   context "when valid user credential is given" do
     it "signs in the user" do
-      signin("danliu", "danlilu")
+      signin("danliu", "danliu")
 
       expect(page).to have_content("danliu")
       expect(page).to have_css('a[href="/users/signout"]')

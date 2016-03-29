@@ -3,8 +3,9 @@ class ExpenseReport
   include ActiveModel::Model
 
   attr_reader :user, :root_item_type, :expense_history
-  attr_accessor :begin_date, :end_date
+  attr_accessor :begin_date, :end_date, :tag
 
+  # TODO: remove it and replace it with activemodel initializer
   def initialize(user, root_item_type = nil, begin_date = nil, end_date = nil)
     @user = user
     @root_item_type = root_item_type

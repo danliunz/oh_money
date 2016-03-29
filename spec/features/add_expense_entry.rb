@@ -5,30 +5,13 @@ RSpec.describe "Add expense entry", :type => :feature, :js => true do
   include SigninHelper
   before(:each) { signin("danliu", "danliu") }
 
-  def enter_expense_entry_and_submit_form(item_type, cost, tags = [], choose_date = true)
-    visit "/expense_entries/create"
-
-    fill_in "What", with: item_type
-    fill_in "Cost", with: cost
-
-    # click on the 'calendar' icon automatically fills in current date
-    find(".glyphicon-calendar").click if choose_date
-
-    Array(tags).each do |tag|
-      fill_in "tag_input", with: "@countdown"
-      click_on "Add"
-    end
-
-    click_on "Submit"
-  end
-
   fixtures :users, :item_types, :tags
 
   context "when valid parameters are given" do
     it "prompts that an expense entry is saved" do
       enter_expense_entry_and_submit_form("wine", 10.5, "@countdown")
 
-      expect(page).to have_content("Expense entry saved for wine")
+      expect(page).to have_content("expense entry for wine is saved")
     end
 
     it "redirects to a blank form for entering new entry" do
@@ -65,5 +48,33 @@ RSpec.describe "Add expense entry", :type => :feature, :js => true do
 
       expect(all(".text-danger").at(2).text).to include("not valid date")
     end
+  end
+
+  context "when duplicate tags are given" do
+    it "fails to save the expense entry" do
+      enter_expense_entry_and_submit_form(
+        "wine", 30, ["@countdown", "@countdown"]
+      )
+
+      expect(find('.alert-danger').text).to include("Fail to save expense entry")
+    end
+  end
+  private
+
+  def enter_expense_entry_and_submit_form(item_type, cost, tags = [], choose_date = true)
+    visit "/expense_entries/create"
+
+    fill_in "What", with: item_type
+    fill_in "Cost", with: cost
+
+    # click on the 'calendar' icon automatically fills in current date
+    find(".glyphicon-calendar").click if choose_date
+
+    Array(tags).each do |tag|
+      fill_in "tag_input", with: "@countdown"
+      click_on "Add"
+    end
+
+    click_on "Submit"
   end
 end

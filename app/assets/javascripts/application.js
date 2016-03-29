@@ -15,4 +15,4 @@
 //= require bootstrap
 //= require moment
 //= require bootstrap-datetimepicker
-//= require_tree .
+//= require auto_complete
