@@ -1,4 +1,7 @@
 class UsersController < ApplicationController
+  skip_before_action :require_user_signin,
+    only: [:signup_form, :signup, :signin_form, :signin]
+
   def signup_form
     @user = Account::User.new
   end
@@ -30,7 +33,7 @@ class UsersController < ApplicationController
         forget_user(@user)
       end
 
-      redirect_to root_url
+      redirect_after_user_signin
     else
       @user ||= Account::User.new
       flash.now[:alert] = "Invalid user name or password"
@@ -53,5 +56,16 @@ class UsersController < ApplicationController
 
   def user_params
     params.require(:user).permit(:name, :password, :password_confirmation)
+  end
+
+  def redirect_after_user_signin
+    if session[:unauthorized_url]
+      original_url = session[:unauthorized_url]
+      session[:unauthorized_url] = nil
+
+      redirect_to original_url
+    else
+      redirect_to root_url
+    end
   end
 end

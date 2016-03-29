@@ -10,10 +10,9 @@ class CreateExpenseReport
     report = ExpenseReport.new(@user, @root_item_type)
 
     item_types = item_type_and_its_descendants
-
     expense_history = expense_history(item_types)
-    report.expense_history = expense_history
 
+    report.expense_history = expense_history
     report.begin_date = @begin_date || begin_date_of(expense_history)
     report.end_date = @end_date || end_date_of(expense_history)
 
@@ -51,6 +50,7 @@ class CreateExpenseReport
   end
 
   def begin_date_of(expense_history)
+    # TODO: .first.first too confusing
     time = expense_history.first.first
     Date.new(time.year, time.month, time.day)
   end

@@ -23,7 +23,8 @@ Rails.application.routes.draw do
   post 'expense_entries/create' => 'expense_entries#create'
 
   # expense report
-  get 'expense_reports/criteria_form' => 'expense_reports#criteria_form'
+  get 'expense_reports/criteria_form' => 'expense_reports#criteria_form',
+    as: :expense_report_form
   get 'expense_reports/aggregate_by_day' => 'expense_reports#aggregate_by_day',
     as: :create_expense_report
 

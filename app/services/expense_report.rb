@@ -1,4 +1,5 @@
 class ExpenseReport
+  # TODO: maybe a presenter? and get rid of the model concept here
   include ActiveModel::Model
 
   attr_reader :user, :root_item_type, :expense_history

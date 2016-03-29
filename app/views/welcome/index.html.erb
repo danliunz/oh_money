@@ -1,9 +1,9 @@
 <div class="container">
   <h3>Welcome to <em>OhMoney</em>, the ultimate expense tracker</h3>
-  
+
   <div class="alert alert-info">
     <% if @current_user %>
-      You have logged in as <%= @current_user.name %>
+      Welcome, <%= @current_user.name %>
       <span class="pull-right">
         <%= link_to "Sign out", signout_path, method: :post %>
       </span>
@@ -12,13 +12,15 @@
       <%= link_to "Sign up", signup_path, class: "btn btn-default" %>
     <% end %>
   </div>
-  
+
   <div class="row">
     <div class="col-sm-6 col-xs-12">
-      Enter you daily expense
+      <%= link_to "Enter daily expense", create_expense_entry_path,
+        class: "btn btn-default" %>
     </div>
     <div class="col-sm-6 col-xs-12">
-      View your expense reports
+      <%= link_to "Create expense report", expense_report_form_path,
+        class: "btn btn-default" %>
     </div>
   </div>
 </div>

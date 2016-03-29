@@ -21,6 +21,13 @@ module ManageUserSession
     @current_user
   end
 
+  def require_user_signin
+    unless user_signed_in?
+      session[:unauthorized_url] = request.original_url
+      redirect_to signin_url, alert: "You must sign in first"
+    end
+  end
+
   def create_session(user)
     session[:current_user_id] = user.id
     @current_user = user

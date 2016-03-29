@@ -10,6 +10,7 @@ class ItemType < ActiveRecord::Base
   belongs_to :user, class_name: "Account::User"
   has_many :expense_entries, inverse_of: :item_type, dependent: :destroy
 
+  # TODO: remove dependence between the 2 validations below or make the code more readable
   validates_presence_of :name, :user
   validates_uniqueness_of :name, scope: :user_id, if: proc { errors.empty? }
 
@@ -20,6 +21,9 @@ class ItemType < ActiveRecord::Base
     .pluck(:name)
   }
 
+  # TODO: check circular dependency here
+  # TODO: check circular dependency when editing relationship between ItemType
+  # TODO: move this to service as the method below deals with multiple objects
   def descendant_types
     descendants = []
     descendants.concat(children)
