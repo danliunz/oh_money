@@ -8,13 +8,7 @@
   <title>OhMoney</title>
 
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
-
   <%= javascript_include_tag 'application' %>
-  <%= javascript_include_tag 'canvasjs.min' %>
-
-  <!-- only include controller specific javascript file -->
-  <%= javascript_include_tag params[:controller] %>
-
   <%= csrf_meta_tags %>
 </head>
 <body>

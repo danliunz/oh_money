@@ -15,4 +15,5 @@
 //= require bootstrap
 //= require moment
 //= require bootstrap-datetimepicker
+//= require canvasjs.min
 //= require auto_complete

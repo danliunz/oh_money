@@ -1,6 +1,6 @@
 class ExpenseReportsController < ApplicationController
   class ValidateParams
-    attr_reader :error, :root_item_type, :begin_date, :end_date
+    attr_reader :error, :root_item_type, :begin_date, :end_date, :tag
 
     def initialize(params)
       @params = params
