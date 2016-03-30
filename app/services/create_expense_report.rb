@@ -7,7 +7,7 @@ class CreateExpenseReport
   end
 
   def aggregate_by_day
-    report = ExpenseReport.new(@user, @root_item_type)
+    report = ExpenseReport.new(user: @user, root_item_type: @root_item_type)
 
     item_types = item_type_and_its_descendants
     expense_history = expense_history(item_types)

@@ -84,6 +84,6 @@ class ExpenseReportsController < ApplicationController
   end
 
   def create_blank_report
-    @report = ExpenseReport.new(current_user, ItemType.new)
+    @report = ExpenseReport.new(user: current_user, root_item_type: ItemType.new)
   end
 end

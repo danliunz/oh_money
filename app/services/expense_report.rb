@@ -1,17 +1,15 @@
 class ExpenseReport
-  # TODO: maybe a presenter? and get rid of the model concept here
   include ActiveModel::Model
 
-  attr_reader :user, :root_item_type, :expense_history
-  attr_accessor :begin_date, :end_date, :tag
+  # TODO: use attr_accessor and default implementation
+  attr_reader :expense_history
+  attr_accessor :user, :root_item_type, :tag, :begin_date, :end_date
 
-  # TODO: remove it and replace it with activemodel initializer
-  def initialize(user, root_item_type = nil, begin_date = nil, end_date = nil)
-    @user = user
-    @root_item_type = root_item_type
-    @begin_date= begin_date
-    @end_date = end_date
-    @expense_history = Hash.new(0)
+
+  def initialize(attributes = {})
+    super
+
+    @expense_history ||= Hash.new(0)
   end
 
   # _expense_history_ : array of [purchase_date, cost_in_cents]
