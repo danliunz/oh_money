@@ -1,9 +1,10 @@
-<%= form_builder.fields_for field_name, form_builder.object.send(field_name) do |item_type_fields| %>
+<%= form_builder.fields_for form_builder.object.tag do |tag_fields| %>
   <div class="form-group">
-    <%= item_type_fields.label :name, "What", class: "col-sm-3 control-label" %>
+    <%= tag_fields.label :name, "Tag", class: "col-sm-3 control-label" %>
     <div class="col-sm-8">
-      <div class="item-types-panel">
-        <%= item_type_fields.text_field :name, class: "form-control", placeholder: "What did you buy" %>
+      <div class="tag-input-panel">
+        <%= tag_fields.text_field :name, id: "tag_input", class: "form-control",
+          placeholder: "Tag of the purchases" %>
 
         <!-- dropdown menu for auto-complete-->
         <div class="dropdown">
@@ -14,7 +15,7 @@
     </div>
 
     <div class="col-sm-offset-3 col-sm-8 text-danger">
-      <% item_type_fields.object.errors[:name].each do |msg| %>
+      <% tag_fields.object.errors[:name].each do |msg| %>
         <%= msg %><br/>
       <% end %>
     </div>

@@ -34,4 +34,11 @@ class ItemType < ActiveRecord::Base
 
     descendants
   end
+
+  def as_json
+    {
+      name: name,
+      description: description
+    }
+  end
 end

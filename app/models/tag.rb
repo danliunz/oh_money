@@ -10,4 +10,8 @@ class Tag < ActiveRecord::Base
     .order(name: :asc)
     .pluck(:name)
   }
+
+  def as_json
+    { name: name, description: description }
+  end
 end

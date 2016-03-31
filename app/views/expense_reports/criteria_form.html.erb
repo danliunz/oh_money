@@ -19,20 +19,7 @@
     <%= render partial: "/shared/item_type_input",
       locals: { form_builder: f,  field_name: "root_item_type" } %>
 
-    <div class="form-group">
-      <%= f.label :tag, "Tag", class: "col-sm-3 control-label" %>
-      <div class="col-sm-8">
-        <div class="tag-input-panel">
-          <%= f.text_field :tag, id: "tag_input", class: "form-control", placeholder: "Tag for the purchases" %>
-
-          <!-- dropdown menu for auto-complete-->
-          <div class="dropdown">
-            <button style="display: none" type="button" data-toggle="dropdown"></button>
-            <ul class="dropdown-menu"></ul>
-          </div>
-        </div>
-      </div>
-    </div>
+    <%= render partial: "tag_input", locals: { form_builder: f } %>
 
     <%= render partial: "/shared/date_input",
       locals: { form_builder: f, field_name: :begin_date, label_text: "Begin date" } %>

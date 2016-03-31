@@ -1,9 +1,6 @@
 class ExpenseEntriesController < ApplicationController
   def create_form
-    @expense_entry = ExpenseEntry.new(
-      item_type: ItemType.new,
-      tags: []
-    )
+    create_blank_expense_entry
   end
 
   def create
@@ -28,5 +25,12 @@ class ExpenseEntriesController < ApplicationController
     params
       .require(:expense_entry)
       .permit(:cost, :purchase_date, item_type: :name, tags: [:name])
+  end
+
+  def create_blank_expense_entry
+    @expense_entry = ExpenseEntry.new(
+      item_type: ItemType.new,
+      tags: []
+    )
   end
 end

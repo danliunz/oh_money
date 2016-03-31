@@ -26,4 +26,8 @@ class Account::User < ActiveRecord::Base
     message: "should match password", on: :create
 
   has_secure_password validations: false
+
+  def as_json
+    { name: name }
+  end
 end
