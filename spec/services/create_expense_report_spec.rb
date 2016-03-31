@@ -114,7 +114,7 @@ RSpec.describe CreateExpenseReport, type: :service do
       report = service.call
 
       expect(report).to be_valid
-      expect(report.root_item_type).to be_nil
+      expect(report.root_item_type).not_to be_persisted
 
       expense_history = report.expense_history
       expect(expense_history.length).to eq(4)

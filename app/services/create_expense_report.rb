@@ -26,7 +26,12 @@ class CreateExpenseReport
 
   def validate_and_set_tag
     tag_name = @params[:tag] && @params[:tag][:name]
-    unless tag_name.blank?
+
+    # we need to create Tag instance in all circumstances,
+    # since 'form_for' in HTML view need non-nil model to work with
+    if tag_name.blank?
+      @report.tag = Tag.new
+    else
       unless @report.tag = Tag.find_by_name(tag_name)
         @report.tag = Tag.new(name: tag_name)
         @report.tag.errors.add(:name, "unrecognized tag #{tag_name}")
@@ -36,7 +41,12 @@ class CreateExpenseReport
 
   def validate_and_set_root_item_type
     item_type_name = @params[:root_item_type] && @params[:root_item_type][:name]
-    unless item_type_name.blank?
+
+    # we need to create ItemType instance in all circumstances,
+    # since 'form_for' in HTML view need non-nil model to work with
+    if item_type_name.blank?
+      @report.root_item_type = ItemType.new
+    else
       unless @report.root_item_type = ItemType.find_by_name(item_type_name)
         @report.root_item_type = ItemType.new(name: item_type_name)
         @report.root_item_type.errors.add(:name, "no purchase history for #{item_type_name}")
@@ -71,7 +81,7 @@ class CreateExpenseReport
 
   def item_type_and_its_descendants
     root_item_type = @report.root_item_type
-    if root_item_type
+    if root_item_type.persisted?
       [root_item_type].concat(root_item_type.descendant_types)
     end
   end
@@ -84,7 +94,7 @@ class CreateExpenseReport
       relation = relation.where(item_type: item_types)
     end
 
-    if @report.tag
+    if @report.tag.persisted?
       relation = relation.joins(
         "INNER JOIN expense_entry_tags join_table " +
         "ON join_table.expense_entry_id = expense_entries.id " +
