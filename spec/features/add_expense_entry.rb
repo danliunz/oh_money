@@ -42,14 +42,6 @@ RSpec.describe "Add expense entry", :type => :feature, :js => true do
     end
   end
 
-  context "when no purchase date is given" do
-    it "warns about invalid date" do
-      enter_expense_entry_and_submit_form("wine", 10.5, "@newworld", false)
-
-      expect(all(".text-danger").at(2).text).to include("not valid date")
-    end
-  end
-
   context "when duplicate tags are given" do
     it "fails to save the expense entry" do
       enter_expense_entry_and_submit_form(

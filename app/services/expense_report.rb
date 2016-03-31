@@ -1,3 +1,6 @@
+# Note: the class overrides the ActiveModel valid? mechanism,
+# do not use any ActiveModel validates_* methods for validations.
+# TODO: find a better way to handle validations?
 class ExpenseReport
   include ActiveModel::Model
 

@@ -21,11 +21,7 @@
 
     <%= render partial: "tag_input", locals: { form_builder: f } %>
 
-    <%= render partial: "/shared/date_input",
-      locals: { form_builder: f, field_name: :begin_date, label_text: "Begin date" } %>
-
-    <%= render partial: "/shared/date_input",
-      locals: { form_builder: f, field_name: :end_date, label_text: "End date" } %>
+    <%= render partial: "date_range_input", locals: { form_builder: f} %>
 
     <div class="form-group">
       <div class="col-sm-offset-3 col-sm-8">

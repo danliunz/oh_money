@@ -1,0 +1,23 @@
+<%= render partial: "/shared/date_input",
+  locals: { form_builder: form_builder, field_name: :begin_date, label_text: "Begin date" } %>
+
+<%= render partial: "/shared/date_input",
+  locals: { form_builder: form_builder, field_name: :end_date, label_text: "End date" } %>
+
+<!-- make the two datetime pickers above linked together -->
+<script>
+  $(function() {
+    $("#begin_date_picker").data("DateTimePicker").showClose(true)
+    $("#begin_date_picker").data("DateTimePicker").showClear(true)
+    $("#end_date_picker").data("DateTimePicker").showClose(true)
+    $("#end_date_picker").data("DateTimePicker").showClear(true)
+
+    $("#begin_date_picker").on("dp.change", function(e) {
+      $('#end_date_picker').data("DateTimePicker").minDate(e.date);
+    });
+
+    $("#end_date_picker").on("dp.change", function(e) {
+      $('#begin_date_picker').data("DateTimePicker").maxDate(e.date);
+    });
+  });
+</script>
