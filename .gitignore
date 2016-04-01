@@ -16,4 +16,5 @@
 /tmp
 
 # Ignore ruby debugger file
-/.byebug_history
+/.byebug_historypublic/assets
+public/assets
