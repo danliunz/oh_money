@@ -20,15 +20,25 @@ class ExpenseEntriesController < ApplicationController
   end
 
   def list
-    if params[:list_expense_entries].blank?
-      @expense_entries = []
+    if params[:view_list].blank?
+      relation = ExpenseEntry.none
     else
-      @expense_entries = ExpenseEntry.where(user: current_user)
+      relation = ExpenseEntry.where(user: current_user)
         .includes(:tags)
         .includes(:item_type)
         .order(purchase_date: :desc)
-        .paginate(page: params[:page], per_page: 10)
+
+      unless params[:start_date].blank?
+        relation = relation.where("purchase_date >= ?", params[:start_date])
+      end
+
+      unless params[:end_date].blank?
+        relation = relation.where("purchase_date <= ?", params[:end_date])
+      end
     end
+
+    @expense_entries = relation
+      .paginate(page: params[:page], per_page: 10)
   end
 
   private
