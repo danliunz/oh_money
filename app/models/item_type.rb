@@ -21,20 +21,6 @@ class ItemType < ActiveRecord::Base
     .pluck(:name)
   }
 
-  # TODO: check circular dependency here
-  # TODO: check circular dependency when editing relationship between ItemType
-  # TODO: move this to service as the method below deals with multiple objects
-  def descendant_types
-    descendants = []
-    descendants.concat(children)
-
-    children.each do |child|
-      descendants.concat(child.descendant_types)
-    end
-
-    descendants
-  end
-
   def as_json
     {
       name: name,

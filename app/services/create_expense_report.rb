@@ -81,8 +81,10 @@ class CreateExpenseReport
 
   def item_type_and_its_descendants
     root_item_type = @report.root_item_type
+
     if root_item_type.persisted?
-      [root_item_type].concat(root_item_type.descendant_types)
+      GetItemTypeDescendants.new(root_item_type).call
+        .concat([root_item_type])
     end
   end
 
