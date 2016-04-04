@@ -1,0 +1,83 @@
+<%= javascript_include_tag "expense_entries" %>
+
+<div class="container-fluid">
+  <h3 class="text-center">View Expense Entries</h3>
+  <hr/>
+
+  <!-- TODO: reuse -->
+  <%= form_tag view_expense_entries_path, method: :get, class: "form-horizontal" do %>
+    <div class="form-group">
+      <%= label_tag "start_date", "Start date", class: "col-sm-3 control-label" %>
+      <div class="col-sm-8">
+        <div id="start_date_picker" class="input-group date">
+          <%= text_field_tag "start_date", nil, class: "form-control", readonly: "true" %>
+          <span class="input-group-addon"> <span class="glyphicon glyphicon-calendar"/> </span>
+        </div>
+
+        <script type="text/javascript">
+          $(function() {
+            $('#start_date_picker').datetimepicker({
+              useCurrent: false,
+              format : 'YYYY-MM-DD',
+              ignoreReadonly : true
+            });
+          });
+        </script>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <%= label_tag "end_date", "End date", class: "col-sm-3 control-label" %>
+      <div class="col-sm-8">
+        <div id="end_date_picker" class="input-group date">
+          <%= text_field_tag "end_date", nil, class: "form-control", readonly: "true" %>
+          <span class="input-group-addon"> <span class="glyphicon glyphicon-calendar"/> </span>
+        </div>
+
+        <script type="text/javascript">
+          $(function() {
+            $('#end_date_picker').datetimepicker({
+              useCurrent: false,
+              format : 'YYYY-MM-DD',
+              ignoreReadonly : true
+            });
+          });
+        </script>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-offset-3 col-sm-8">
+        <%= submit_tag "View", name: "list_expense_entries", class: "btn btn-primary" %>
+      </div>
+    </div>
+  <% end %>
+
+  <hr/>
+
+  <table class="table">
+    <tbody>
+      <% current_date = nil %>
+      <% @expense_entries.each do |expense_entry| %>
+        <% if current_date != expense_entry.purchase_date %>
+          <% current_date =  expense_entry.purchase_date %>
+          <tr>
+            <td colspan="3" class="active">
+              <%= current_date.strftime('%Y-%m-%d') %>
+            </td>
+          </tr>
+        <% end %>
+
+        <tr>
+          <th><%= expense_entry.item_type.name %></th>
+          <td><%= expense_entry.cost %></td>
+          <td><%= expense_entry.tags.map(&:name).join(",") %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <div>
+    <%= will_paginate @expense_entries, renderer: BootstrapPagination::Rails %>
+  </div>
+</div>

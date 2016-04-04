@@ -40,6 +40,10 @@ gem 'bootstrap3-datetimepicker-rails', '~> 4.17.37'
 # Chart.js
 gem 'chart-js-rails'
 
+# Pagination
+gem 'will_paginate', '~> 3.0.6'
+gem 'will_paginate-bootstrap'
+
 # Test
 group :test do
   gem 'rspec-rails'

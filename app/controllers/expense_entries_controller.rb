@@ -19,6 +19,18 @@ class ExpenseEntriesController < ApplicationController
     end
   end
 
+  def list
+    if params[:list_expense_entries].blank?
+      @expense_entries = []
+    else
+      @expense_entries = ExpenseEntry.where(user: current_user)
+        .includes(:tags)
+        .includes(:item_type)
+        .order(purchase_date: :desc)
+        .paginate(page: params[:page], per_page: 10)
+    end
+  end
+
   private
 
   def expense_entry_params
