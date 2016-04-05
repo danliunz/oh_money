@@ -63,6 +63,22 @@ RSpec.describe CreateExpenseEntry, type: :service do
           end
         end
       end
+
+      context "with duplicate existing tags" do
+        let(:params) do
+          {
+            item_type: { "name" => "wine" },
+            cost: "15",
+            tags: [{ "name" => "@countdown" }, { "name" => "@countdown" }]
+          }
+        end
+
+        it "removes duplicate tags and creates a entry" do
+          expense_entry = service.value
+
+          expect(expense_entry.tags.map(&:name)).to contain_exactly("@countdown")
+        end
+      end
     end
   end
 end

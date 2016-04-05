@@ -51,7 +51,7 @@ class CreateExpenseEntry
 
   def add_tags_to_expense_entry
     tag_names = @params[:tags] ?
-      @params[:tags].collect { |tag| tag["name"] }.compact : []
+      @params[:tags].collect { |tag| tag["name"] }.compact.uniq : []
 
     tag_names.each do |tag_name|
       @expense_entry.tags << find_or_create_tag(tag_name)
