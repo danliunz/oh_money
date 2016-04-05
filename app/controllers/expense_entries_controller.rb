@@ -21,23 +21,33 @@ class ExpenseEntriesController < ApplicationController
 
   def list
     if params[:view_list].blank?
-      relation = ExpenseEntry.none
+      @expense_history = ExpenseHistory.new(
+        entries: ExpenseEntry.none
+      )
     else
-      relation = ExpenseEntry.where(user: current_user)
+      @expense_history = ExpenseHistory.new(expense_history_params)
+
+      expense_entries = ExpenseEntry.where(user: current_user)
         .includes(:tags)
         .includes(:item_type)
         .order(purchase_date: :desc)
 
-      unless params[:start_date].blank?
-        relation = relation.where("purchase_date >= ?", params[:start_date])
+      unless @expense_history.begin_date.blank?
+        expense_entries = expense_entries.where(
+          "purchase_date >= ?", @expense_history.begin_date
+        )
       end
 
-      unless params[:end_date].blank?
-        relation = relation.where("purchase_date <= ?", params[:end_date])
+      unless @expense_history.end_date.blank?
+        expense_entries = expense_entries.where(
+          "purchase_date <= ?", @expense_history.end_date
+        )
       end
+
+      @expense_history.entries = expense_entries
     end
 
-    @expense_entries = relation
+    @expense_history.entries = @expense_history.entries
       .paginate(page: params[:page], per_page: 10)
   end
 
@@ -47,6 +57,12 @@ class ExpenseEntriesController < ApplicationController
     params
       .require(:expense_entry)
       .permit(:cost, :purchase_date, item_type: :name, tags: [:name])
+  end
+
+  def expense_history_params
+    params
+      .require(:expense_history)
+      .permit(:begin_date, :end_date)
   end
 
   def create_blank_expense_entry
