@@ -20,35 +20,21 @@ class ExpenseEntriesController < ApplicationController
   end
 
   def list
-    if params[:view_list].blank?
-      @expense_history = ExpenseHistory.new(
-        entries: ExpenseEntry.none
-      )
+    if show_expense_history_criteria_form_only?
+      create_empty_expense_history
     else
       @expense_history = ExpenseHistory.new(expense_history_params)
 
-      expense_entries = ExpenseEntry.where(user: current_user)
-        .includes(:tags)
-        .includes(:item_type)
-        .order(purchase_date: :desc)
-
-      unless @expense_history.begin_date.blank?
-        expense_entries = expense_entries.where(
-          "purchase_date >= ?", @expense_history.begin_date
+      if @expense_history.valid?
+        @expense_history.entries = ExpenseEntry.history(
+          current_user, @expense_history.begin_date, @expense_history.end_date
         )
+      else
+        @expense_history.entries = ExpenseEntry.none
       end
-
-      unless @expense_history.end_date.blank?
-        expense_entries = expense_entries.where(
-          "purchase_date <= ?", @expense_history.end_date
-        )
-      end
-
-      @expense_history.entries = expense_entries
     end
 
-    @expense_history.entries = @expense_history.entries
-      .paginate(page: params[:page], per_page: 10)
+    paginate_expense_entries
   end
 
   private
@@ -63,6 +49,19 @@ class ExpenseEntriesController < ApplicationController
     params
       .require(:expense_history)
       .permit(:begin_date, :end_date)
+  end
+
+  def show_expense_history_criteria_form_only?
+    params[:view_history].blank?
+  end
+
+  def create_empty_expense_history
+    @expense_history = ExpenseHistory.new(entries: ExpenseEntry.none)
+  end
+
+  def paginate_expense_entries
+    @expense_history.entries =
+      @expense_history.entries.paginate(page: params[:page], per_page: 10)
   end
 
   def create_blank_expense_entry

@@ -12,4 +12,21 @@ class ExpenseEntry < ActiveRecord::Base
 
   validates_presence_of :item_type, :user
   validates_associated :item_type, :tags
+
+  scope :history, ->(user, begin_date, end_date) do
+    relation = where(user: user)
+      .includes(:tags)
+      .includes(:item_type)
+      .order(purchase_date: :desc)
+
+    unless begin_date.blank?
+      relation = relation.where("purchase_date >= ?", begin_date)
+    end
+
+    unless end_date.blank?
+      relation = relation.where("purchase_date <= ?", end_date)
+    end
+
+    relation
+  end
 end
