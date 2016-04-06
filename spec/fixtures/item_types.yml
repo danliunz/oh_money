@@ -23,6 +23,11 @@ drink:
   name: drink
   user: danlilu
 
+panda:
+  name: panda
+  user: danliu
+  description: something you can never buy
+
 beer_I_do_not_like:
   name: "beer I don't like"
   user: jennifer

@@ -198,5 +198,20 @@ RSpec.describe CreateExpenseReport, type: :service do
         expect(expense_history[Date.parse("2016-01-03")]).to eq(500)
       end
     end
+
+    context "when there is no purchase history for item_type" do
+      let(:params) do
+        {
+          root_item_type: { name: "panda" }
+        }
+      end
+
+      it "add error to item_type model" do
+        report = service.call
+
+        expect(report).not_to be_valid
+        expect(report.root_item_type.errors[:name].first).to include("no purchase history")
+      end
+    end
   end
 end

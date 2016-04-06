@@ -13,11 +13,11 @@
       </tr>
       <tr>
         <th>Start date</th>
-        <td><%= @report.begin_date.strftime("%Y-%m-%d") %></td>
+        <td><%= date_to_display(@report.begin_date) %></td>
       </tr>
       <tr>
         <th>End date</th>
-        <td><%= @report.end_date.strftime("%Y-%m-%d") %></td>
+        <td><%= date_to_display(@report.end_date) %></td>
       </tr>
       <tr>
         <th colspan="2">

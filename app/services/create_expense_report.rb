@@ -73,10 +73,16 @@ class CreateExpenseReport
   def update_by_expense_history
     expense_history = expense_history(item_type_and_its_descendants)
 
-    @report.begin_date ||= begin_date_of(expense_history)
-    @report.end_date ||= end_date_of(expense_history)
+    if expense_history.empty?
+      @report.root_item_type.errors.add(
+        :name, "no purchase history for #{@report.root_item_type.name}"
+      )
+    else
+      @report.begin_date ||= begin_date_of(expense_history)
+      @report.end_date ||= end_date_of(expense_history)
 
-    @report.expense_history = expense_history_as_hash(expense_history)
+      @report.expense_history = expense_history_as_hash(expense_history)
+    end
   end
 
   def item_type_and_its_descendants
@@ -119,7 +125,7 @@ class CreateExpenseReport
       .map do |purchase_date, cost_in_cents|
         {
           purchase_date: sql_datetime_to_date(purchase_date),
-          cost: cost_in_cents / ExpenseEntry::CENTS_MULTIPLIER
+          cost: cost_in_cents
         }
       end
   end
@@ -138,7 +144,7 @@ class CreateExpenseReport
     Date.new(sql_datetime.year, sql_datetime.month, sql_datetime.day)
   end
 
-  # convert array of {purchase_date, cost} to { {purchase_date: cost}, ... }
+  # convert array of {purchase_date, cost} to { :purchase_date => cost }
   def expense_history_as_hash(expense_history)
     result = Hash.new(0)
 
