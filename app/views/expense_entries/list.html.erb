@@ -25,7 +25,11 @@
       <% expense_entries_by_date.each do |expense_entries_of_one_day| %>
         <tr>
           <td colspan="3" class="active date-header">
-            <%= expense_entries_of_one_day[:date].strftime('%Y-%m-%d') %>
+            <%=
+              expense_entries_of_one_day[:date].strftime('%Y-%m-%d') +
+              " | total cost: " +
+              cost_to_display(expense_entries_of_one_day[:total_cost])
+             %>
           </td>
         </tr>
 
