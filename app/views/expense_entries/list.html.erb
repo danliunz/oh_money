@@ -19,24 +19,29 @@
 
   <hr/>
 
-  <table class="table">
+  <table class="table expense_history_table">
     <tbody>
-      <% current_date = nil %>
-      <% @expense_history.entries.each do |expense_entry| %>
-        <% if current_date != expense_entry.purchase_date %>
-          <% current_date =  expense_entry.purchase_date %>
+      <% expense_entries_by_date = group_expense_entries_by_purchase_date(@expense_history.entries) %>
+      <% expense_entries_by_date.each do |expense_entries_of_one_day| %>
+        <tr>
+          <td colspan="3" class="active date-header">
+            <%= expense_entries_of_one_day[:date].strftime('%Y-%m-%d') %>
+          </td>
+        </tr>
+
+        <% expense_entries_of_one_day[:entries].each do |expense_entry| %>
           <tr>
-            <td colspan="3" class="active">
-              <%= current_date.strftime('%Y-%m-%d') %>
+            <th><%= expense_entry.item_type.name %></th>
+            <td><%= cost_to_display(expense_entry.cost) %></td>
+            <td>
+              <% expense_entry.tags.each do |tag| %>
+                <span class="label label-default">
+                  <%= tag.name %>
+                </span>
+              <% end %>
             </td>
           </tr>
         <% end %>
-
-        <tr>
-          <th><%= expense_entry.item_type.name %></th>
-          <td><%= expense_entry.cost %></td>
-          <td><%= expense_entry.tags.map(&:name).join(",") %></td>
-        </tr>
       <% end %>
     </tbody>
   </table>

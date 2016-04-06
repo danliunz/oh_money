@@ -8,11 +8,13 @@
 .tags-panel {
   border: 0px;
   padding-left: 0px;
+  padding-top: 6px;
 
   a[data-toggle="popover"] {
     margin-right: 6px;
     font-size: 90%;
     padding: 3px 6px;
+    margin-top: 3px;
   }
 }
 
@@ -24,4 +26,25 @@
 // control stay closer
 .pagination {
   margin: 0px;
+}
+
+.expense_history_table {
+  table-layout: fixed;
+
+  .date-header {
+    font-style: italic;
+    padding-top: 3px;
+    padding-bottom: 3px;
+  }
+
+  th {
+    font-size: 110%;
+  }
+
+  .label {
+    display: inline-block;
+    margin-bottom: 3px;
+    font-size: 90%;
+    margin-left: 6px;
+  }
 }

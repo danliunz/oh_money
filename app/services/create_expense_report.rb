@@ -88,7 +88,7 @@ class CreateExpenseReport
     end
   end
 
-  # returns array of { purchase_date, cost(in dollar) }
+  # returns array of { purchase_date, cost_in_dollars }
   def expense_history(item_types)
     relation = ExpenseEntry.where(user: @report.user)
 
@@ -119,7 +119,7 @@ class CreateExpenseReport
       .map do |purchase_date, cost_in_cents|
         {
           purchase_date: sql_datetime_to_date(purchase_date),
-          cost: cost_in_cents
+          cost: cost_in_cents / ExpenseEntry::CENTS_MULTIPLIER
         }
       end
   end
