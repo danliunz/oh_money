@@ -1,4 +1,19 @@
 class ItemTypesController < ApplicationController
+  def edit_form
+    @item_type = ItemType.find(params[:id])
+  end
+
+  def edit
+    @item_type = ItemType.find(params[:id])
+
+    if UpdateItemTypeService.new(@item_type, current_user, item_type_params).call
+      flash.notice = "product #{@item_type.name} is updated"
+      redirect_to edit_item_type_form_url(@item_type)
+    else
+      render "edit_form"
+    end
+  end
+
   def suggestions
     prefix = params[:prefix]
 
@@ -10,5 +25,13 @@ class ItemTypesController < ApplicationController
       format.xml { render xml: suggested_names }
       format.json { render json: suggested_names }
     end
+  end
+
+  private
+
+  def item_type_params
+    params
+      .require(:item_type)
+      .permit(:description, parents: [])
   end
 end

@@ -12,6 +12,10 @@ Rails.application.routes.draw do
   get 'users/:id' => 'users#show', as: :show_user
 
   # item type
+  get 'item_types/:id/edit_form' => 'item_types#edit_form',
+    as: :edit_item_type_form
+  patch 'item_types/:id/edit' => 'item_types#edit',
+    as: :edit_item_type
   get 'item_types/suggestions'
 
   # tag
