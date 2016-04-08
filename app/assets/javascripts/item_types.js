@@ -33,6 +33,9 @@ function init_add_parent_item_type() {
     if(event.which == 13) { // enter key
       event.preventDefault();
 
+      // close drop-down menu if any
+      display_item_type_suggestions([]);
+
       add_parent_item_type();
     }
   });
