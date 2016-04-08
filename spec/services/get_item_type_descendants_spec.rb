@@ -10,8 +10,8 @@ RSpec.describe GetItemTypeDescendants, type: :model do
       let(:root_item_type) { ItemType.find_by_name("drink") }
 
       it "returns all descendant types" do
-        expect(service.call).to match_array(
-          ItemType.where(name: ["wine", "beer", "ginger beer", "craft beer"]).to_a
+        expect(service.call.map(&:name)).to contain_exactly(
+          "wine", "beer", "ginger beer", "craft beer", "premium craft beer"
         )
       end
     end

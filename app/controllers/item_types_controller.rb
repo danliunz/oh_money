@@ -6,9 +6,9 @@ class ItemTypesController < ApplicationController
   def edit
     @item_type = ItemType.find(params[:id])
 
-    if UpdateItemTypeService.new(@item_type, current_user, item_type_params).call
+    if UpdateItemType.new(@item_type, item_type_params).call
       flash.notice = "product #{@item_type.name} is updated"
-      redirect_to edit_item_type_form_url(@item_type)
+      redirect_to :back
     else
       render "edit_form"
     end

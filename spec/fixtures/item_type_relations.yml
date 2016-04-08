@@ -14,3 +14,6 @@ rel_4:
   parent: beer
   child: craft_beer
 
+rel_5:
+  parent: craft_beer
+  child: premium_craft_beer

@@ -26,4 +26,12 @@ class ItemType < ActiveRecord::Base
       description: description
     }
   end
+
+  def ancestors
+    ancestors = Array.new(parents)
+
+    parents.each do |parent|
+      ancestors.concat(parent.ancestors)
+    end
+  end
 end

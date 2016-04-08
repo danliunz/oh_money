@@ -18,7 +18,7 @@
     <div class="form-group">
       <%= f.label :description, "Description", class: "col-sm-3 control-label" %>
       <div class="col-sm-8">
-        <%= f.text_field :description, class: "form-control" %>
+        <%= f.text_area :description, class: "form-control", rows: 3 %>
       </div>
     </div>
 
@@ -28,15 +28,19 @@
         <ul class="list-group">
           <% f.object.parents.each do |parent_item_type| %>
             <li class="list-group-item">
-              <%= parent_item_type.name %>
-              <button class="btn btn-primary btn-sm">edit</button>
-              <button class="btn btn-danger btn-sm">delete</button>
+              <%= link_to parent_item_type.name,
+                edit_item_type_form_path(parent_item_type),
+                class: "btn btn-success" %>
+
+              <button type="button" class="close">
+                <span aria-hidden="true">&times;</span>
+              </button>
             </li>
           <% end %>
 
           <li class="list-group-item form-inline item-types-panel">
             <input id="parent_item_type_input" type="text" class="form-control" size="15" />
-            <button id="add_parent_item_type_btn" type="button" class="btn btn-primary btn-sm">add</button>
+            <button id="add_parent_item_type_btn" type="button" class="btn btn-default">add</button>
 
             <!-- dropdown menu for auto-complete -->
             <div class="dropdown">

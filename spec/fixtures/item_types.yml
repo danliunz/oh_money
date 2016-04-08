@@ -19,9 +19,13 @@ craft_beer:
   name: "craft beer"
   user: danliu
 
+premium_craft_beer:
+  name: "premium craft beer"
+  user: danliu
+
 drink:
   name: drink
-  user: danlilu
+  user: danliu
 
 panda:
   name: panda
