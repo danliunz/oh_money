@@ -12,58 +12,11 @@
     url: edit_item_type_path,
     html: { class: "form-horizontal", autocomplete: "off" } do |f| %>
 
-    <div class="form-group">
-      <label class="col-sm-3 control-label">Name</label>
-      <div class="col-sm-8">
-        <p class="form-control-static"><%= f.object.name %></p>
-      </div>
-    </div>
+    <%= render partial: "name", locals: { form_builder: f } %>
 
-    <div class="form-group">
-      <%= f.label :description, "Description", class: "col-sm-3 control-label" %>
-      <div class="col-sm-8">
-        <%= f.text_area :description, class: "form-control", rows: 3 %>
-      </div>
-    </div>
+    <%= render partial: "update_description", locals: { form_builder: f } %>
 
-    <div class="form-group">
-      <%= f.label :parents, "Categories", class: "col-sm-3 control-label" %>
-      <div id="parent_item_types_panel" class="col-sm-8">
-        <ul class="list-group">
-          <% f.object.parents.each do |parent_item_type| %>
-            <li class="list-group-item">
-              <%= link_to parent_item_type.name,
-                edit_item_type_form_path(parent_item_type),
-                class: "btn btn-success" %>
-
-              <button type="button" class="close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </li>
-          <% end %>
-
-          <li class="list-group-item form-inline item-types-panel">
-            <input id="parent_item_type_input" type="text" class="form-control" size="15" />
-            <button id="add_parent_item_type_btn" type="button" class="btn btn-default">add</button>
-
-            <!-- dropdown menu for auto-complete -->
-            <div class="dropdown">
-              <button style="display: none" type="button" data-toggle="dropdown"></button>
-              <ul class="dropdown-menu"></ul>
-            </div>
-          </li>
-        </ul>
-
-        <!-- hidden select input to hold parent item types-->
-        <select name="item_type[parents][]" class="hidden" multiple="true">
-          <% f.object.parents.each do |parent_item_type| %>
-            <option selected="true" value="<%= parent_item_type.name %>">
-              <%= parent_item_type.name %>
-            </option>
-          <% end %>
-        </select>
-      </div>
-    </div>
+    <%= render partial: "update_categories", locals: { form_builder: f } %>
 
     <div class="form-group">
       <div class="col-sm-offset-3 col-sm-8">
