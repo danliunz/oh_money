@@ -2,6 +2,10 @@
 
 <div class="container">
   <h3 class="text-center">Edit Purchased Product</h3>
+
+  <% if alert %>
+    <div class="alert alert-danger"><%= alert%></div>
+  <% end %>
   <hr/>
 
   <%= form_for @item_type,

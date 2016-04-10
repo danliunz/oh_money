@@ -33,5 +33,7 @@ class ItemType < ActiveRecord::Base
     parents.each do |parent|
       ancestors.concat(parent.ancestors)
     end
+
+    ancestors
   end
 end
