@@ -21,13 +21,19 @@ class UpdateItemType
   private
 
   def update
+    update_name
     update_description
     update_parents
+
+    @item_type.save!
+  end
+
+  def update_name
+    @item_type.name = @params[:name]
   end
 
   def update_description
     @item_type.description = @params[:description]
-    @item_type.save!
   end
 
   def update_parents

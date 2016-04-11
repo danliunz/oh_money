@@ -81,6 +81,6 @@ class ItemTypesController < ApplicationController
   def item_type_params
     params
       .require(:item_type)
-      .permit(:description, parents: [])
+      .permit(:name, :description, parents: [])
   end
 end

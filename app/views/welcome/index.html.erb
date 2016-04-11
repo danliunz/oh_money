@@ -14,11 +14,15 @@
   </div>
 
   <div class="row">
-    <div class="col-sm-6 col-xs-12">
+    <div class="col-sm-4 col-xs-12">
       <%= link_to "Enter daily expense", create_expense_entry_path,
         class: "btn btn-default" %>
     </div>
-    <div class="col-sm-6 col-xs-12">
+    <div class="col-sm-4 col-xs-12">
+      <%= link_to "View purchased products", list_item_types_path,
+        class: "btn btn-default" %>
+    </div>
+    <div class="col-sm-4 col-xs-12">
       <%= link_to "Create expense report", expense_report_form_path,
         class: "btn btn-default" %>
     </div>

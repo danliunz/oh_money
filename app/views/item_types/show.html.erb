@@ -4,15 +4,18 @@
   <h4 class="text-center">Edit Purchased Product</h4>
 
   <% if alert %>
-    <div class="alert alert-danger"><%= alert%></div>
+    <div class="alert alert-danger col-sm-offset-3 col-sm-8">
+      <%= alert%>
+    </div>
   <% end %>
+
   <hr/>
 
   <%= form_for @item_type,
     url: edit_item_type_path,
     html: { class: "form-horizontal", autocomplete: "off" } do |f| %>
 
-    <%= render partial: "name", locals: { form_builder: f } %>
+    <%= render partial: "update_name", locals: { form_builder: f } %>
 
     <%= render partial: "update_description", locals: { form_builder: f } %>
 
