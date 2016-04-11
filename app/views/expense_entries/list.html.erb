@@ -19,38 +19,6 @@
 
   <hr/>
 
-  <table class="table expense_history_table">
-    <tbody>
-      <% expense_entries_by_date = group_expense_entries_by_purchase_date(@expense_history.entries) %>
-      <% expense_entries_by_date.each do |expense_entries_of_one_day| %>
-        <tr>
-          <td colspan="3" class="active date-header">
-            <%=
-              expense_entries_of_one_day[:date].strftime('%Y-%m-%d') +
-              " | total cost: " +
-              cost_to_display(expense_entries_of_one_day[:total_cost])
-             %>
-          </td>
-        </tr>
-
-        <% expense_entries_of_one_day[:entries].each do |expense_entry| %>
-          <tr>
-            <th><%= expense_entry.item_type.name %></th>
-            <td><%= cost_to_display(expense_entry.cost) %></td>
-            <td>
-              <% expense_entry.tags.each do |tag| %>
-                <span class="label label-default">
-                  <%= tag.name %>
-                </span>
-              <% end %>
-            </td>
-          </tr>
-        <% end %>
-      <% end %>
-    </tbody>
-  </table>
-
-  <div>
-    <%= will_paginate @expense_history.entries, renderer: BootstrapPagination::Rails %>
-  </div>
+  <%= render partial: "history_table",
+    locals: { expense_history: @expense_history } %>
 </div>
