@@ -1,0 +1,38 @@
+<div class="container-fluid">
+  <h4 class="text-center">Types of Purchased Product</h4>
+  <hr/>
+
+  <% if notice %>
+    <div class="alert alert-success"><%= notice %></div>
+  <% end %>
+
+  <div id="item_types_container"></div>
+  <script>
+    $(function() {
+      init_item_type_jstree();
+    });
+
+    function init_item_type_jstree() {
+      $('#item_types_container').jstree({
+        'core': {
+          'data' : {
+            'url': 'get_children?',
+            'data': function(node) {
+              return { 'id': node.id }
+            }
+          },
+
+          'themes': {
+            'name': 'proton',
+            'responsive': true
+          }
+        }
+      });
+
+      $('#item_types_container').on('select_node.jstree', function(event, data) {
+        var selected_node_id = data.instance.get_selected(true)[0].id
+        window.location = selected_node_id + '/show'
+      });
+    }
+  </script>
+</div>

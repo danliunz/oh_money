@@ -20,6 +20,10 @@ class ItemType < ActiveRecord::Base
     .pluck(:name)
   }
 
+  scope :roots, -> {
+    all.select { |item_type| item_type.parents.empty? }
+  }
+
   def as_json
     {
       name: name,

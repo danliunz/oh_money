@@ -1,5 +1,34 @@
 class ItemTypesController < ApplicationController
-  def edit_form
+  def list
+  end
+
+  def get_children
+    item_type_id = params[:id]
+
+    if item_type_id == "#"
+      # JSTree convention: pass '#' as id when loading root nodes
+      children = ItemType.roots
+    else
+      children = ItemType.find(item_type_id).children
+    end
+
+    response = []
+    children.each do |child|
+      response << { id: child.id, text: child.name, children: true }
+    end
+
+    render json: response
+  end
+
+  def delete
+    item_type = ItemType.find(params[:id])
+    item_type.destroy
+
+    flash.notice = "#{item_type.name} is deleted"
+    redirect_to list_item_types_url
+  end
+
+  def show
     @item_type = ItemType.find(params[:id])
   end
 
@@ -8,11 +37,11 @@ class ItemTypesController < ApplicationController
 
     update_item_type = UpdateItemType.new(@item_type, item_type_params)
     if update_item_type.call
-      flash.notice = "product #{@item_type.name} is updated"
-      redirect_to edit_item_type_form_url(@item_type)
+      flash.notice = "#{@item_type.name} is updated"
+      redirect_to list_item_types_url
     else
       flash.now.alert = update_item_type.error
-      render "edit_form"
+      render "show"
     end
   end
 

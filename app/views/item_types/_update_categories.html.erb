@@ -6,7 +6,7 @@
       <% form_builder.object.parents.each do |parent_item_type| %>
         <li class="list-group-item">
           <%= link_to parent_item_type.name,
-            edit_item_type_form_path(parent_item_type),
+            show_item_type_path(parent_item_type),
             class: "btn btn-success"
            %>
 

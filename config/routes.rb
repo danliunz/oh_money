@@ -12,10 +12,11 @@ Rails.application.routes.draw do
   get 'users/:id' => 'users#show', as: :show_user
 
   # item type
-  get 'item_types/:id/edit_form' => 'item_types#edit_form',
-    as: :edit_item_type_form
-  patch 'item_types/:id/edit' => 'item_types#edit',
-    as: :edit_item_type
+  get 'item_types/list' => 'item_types#list', as: :list_item_types
+  get 'item_types/get_children' => 'item_types#get_children'
+  post 'item_types/:id/delete' => 'item_types#delete', as: :delete_item_type
+  get 'item_types/:id/show' => 'item_types#show', as: :show_item_type
+  patch 'item_types/:id/edit' => 'item_types#edit', as: :edit_item_type
   get 'item_types/suggestions'
 
   # tag
@@ -25,7 +26,6 @@ Rails.application.routes.draw do
   get 'expense_entries/create' => 'expense_entries#create_form',
     as: :create_expense_entry
   post 'expense_entries/create' => 'expense_entries#create'
-
   get 'expense_entries/list' => 'expense_entries#list',
     as: :view_expense_entries
 
