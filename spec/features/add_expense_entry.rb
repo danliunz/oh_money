@@ -11,7 +11,7 @@ RSpec.describe "Add expense entry", :type => :feature, :js => true do
     it "prompts that an expense entry is saved" do
       enter_expense_entry_and_submit_form("wine", 10.5, "@countdown")
 
-      expect(page).to have_content("expense entry for wine is saved")
+      expect(page).to have_content("Expense entry for wine is saved")
     end
 
     it "redirects to a blank form for entering new entry" do
@@ -43,12 +43,12 @@ RSpec.describe "Add expense entry", :type => :feature, :js => true do
   end
 
   context "when duplicate tags are given" do
-    it "fails to save the expense entry" do
+    it "saves the entry with duplicated tag removed" do
       enter_expense_entry_and_submit_form(
         "wine", 30, ["@countdown", "@countdown"]
       )
 
-      expect(find('.alert-danger').text).to include("Fail to save expense entry")
+      expect(page).to have_content("Expense entry for wine is saved")
     end
   end
   private

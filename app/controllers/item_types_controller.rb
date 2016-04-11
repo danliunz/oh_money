@@ -1,12 +1,13 @@
 class ItemTypesController < ApplicationController
+  before_action :require_authorized_user, only: [:get_children, :delete, :show, :edit]
+
   def list
   end
 
   def get_children
     item_type_id = params[:id]
 
-    if item_type_id == "#"
-      # JSTree convention: pass '#' as id when loading root nodes
+    if wildcard_id?(item_type_id)
       children = ItemType.roots(current_user)
     else
       children = ItemType.find(item_type_id).children
@@ -59,6 +60,23 @@ class ItemTypesController < ApplicationController
   end
 
   private
+
+  # JSTree convention: pass '#' as id when loading root nodes
+  def wildcard_id?(item_type_id)
+    item_type_id == "#"
+  end
+
+  def require_authorized_user
+    item_type_id = params[:id]
+
+    if item_type_id && !wildcard_id?(item_type_id)
+      item_type = ItemType.find(item_type_id)
+
+      if item_type.user != current_user
+        redirect_to signin_url, alert: "Authorization failure. Try signin as another user"
+      end
+    end
+  end
 
   def item_type_params
     params

@@ -23,7 +23,8 @@
         <%= f.submit "Save", class: "btn btn-primary" %>
 
         <%= link_to "Delete", delete_item_type_path(f.object),
-          method: :post, class: "btn btn-danger" %>
+          method: :post, class: "btn btn-danger",
+          data: { confirm: "This will also delete expense entries of the product" } %>
       </div>
     </div>
   <% end %>
