@@ -37,4 +37,14 @@ RSpec.describe ItemType, type: :model do
       end
     end
   end
+
+  describe "#roots" do
+    let(:user) { users(:danliu) }
+
+    it "returns all item types with no parent" do
+      expect(ItemType.roots(user).map(&:name)).to contain_exactly(
+        "beer pong", "drink", "panda"
+      )
+    end
+  end
 end

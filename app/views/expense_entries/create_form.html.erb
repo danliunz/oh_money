@@ -7,7 +7,7 @@
     <row>
       <div class="col-sm-offset-3 col-sm-8 alert alert-success">
         Expense entry for <%= @last_item_type.name %> is saved<br/>
-        <%= link_to "Edit #{@last_item_type.name} ?", show_item_type_path(@last_item_type) %>
+        <%= link_to "Edit #{@last_item_type.name}", show_item_type_path(@last_item_type) %>
       </div>
     </row>
   <% end %>

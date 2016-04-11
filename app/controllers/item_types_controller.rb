@@ -7,7 +7,7 @@ class ItemTypesController < ApplicationController
 
     if item_type_id == "#"
       # JSTree convention: pass '#' as id when loading root nodes
-      children = ItemType.roots
+      children = ItemType.roots(current_user)
     else
       children = ItemType.find(item_type_id).children
     end

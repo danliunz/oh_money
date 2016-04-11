@@ -20,8 +20,13 @@ class ItemType < ActiveRecord::Base
     .pluck(:name)
   }
 
-  scope :roots, -> {
-    all.select { |item_type| item_type.parents.empty? }
+  # return owner's ItemTypes with no parent
+  scope :roots, ->(owner) {
+    where(user: owner)
+    .where(
+      "NOT EXISTS(SELECT 1 FROM item_type_relations " +
+      "WHERE item_types.id = item_type_relations.child_id)"
+    )
   }
 
   def as_json
