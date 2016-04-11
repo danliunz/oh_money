@@ -14,7 +14,7 @@ class ItemTypesController < ApplicationController
     end
 
     response = []
-    children.each do |child|
+    children.sort_by { |a| a.name }.each do |child|
       response << { id: child.id, text: child.name, children: !child.children.empty? }
     end
 

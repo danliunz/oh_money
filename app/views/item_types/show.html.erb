@@ -24,10 +24,12 @@
     <div class="form-group">
       <div class="col-sm-offset-3 col-sm-8">
         <%= f.submit "Save", class: "btn btn-primary" %>
+        <%= link_to "Cancel", request.env["HTTP_REFERER"], class: "btn btn-primary" %>
 
         <%= link_to "Delete", delete_item_type_path(f.object),
           method: :post, class: "btn btn-danger",
           data: { confirm: "This will also delete expense entries of the product" } %>
+
       </div>
     </div>
   <% end %>
