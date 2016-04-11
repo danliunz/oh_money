@@ -1,7 +1,7 @@
 <%= javascript_include_tag "item_types"%>
 
 <div class="container">
-  <h3 class="text-center">Edit Purchased Product</h3>
+  <h4 class="text-center">Edit Purchased Product</h4>
 
   <% if alert %>
     <div class="alert alert-danger"><%= alert%></div>
@@ -21,6 +21,9 @@
     <div class="form-group">
       <div class="col-sm-offset-3 col-sm-8">
         <%= f.submit "Save", class: "btn btn-primary" %>
+
+        <%= link_to "Delete", delete_item_type_path(f.object),
+          method: :post, class: "btn btn-danger" %>
       </div>
     </div>
   <% end %>
