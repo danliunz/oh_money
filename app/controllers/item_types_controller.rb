@@ -14,7 +14,7 @@ class ItemTypesController < ApplicationController
 
     response = []
     children.each do |child|
-      response << { id: child.id, text: child.name, children: true }
+      response << { id: child.id, text: child.name, children: !child.children.empty? }
     end
 
     render json: response

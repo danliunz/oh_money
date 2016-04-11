@@ -1,5 +1,9 @@
 class ExpenseEntriesController < ApplicationController
   def create_form
+    if flash[:last_item_type_id]
+      @last_item_type = ItemType.find(flash[:last_item_type_id])
+    end
+
     create_blank_expense_entry
   end
 
@@ -9,8 +13,9 @@ class ExpenseEntriesController < ApplicationController
 
     if create_expense_entry.call
       expense_entry = create_expense_entry.value
-      redirect_to create_expense_entry_url,
-        notice: "expense entry for #{expense_entry.item_type.name} is saved"
+
+      flash[:last_item_type_id] = expense_entry.item_type.id
+      redirect_to create_expense_entry_url
     else
       @expense_entry = create_expense_entry.value
       flash.now.alert = create_expense_entry.error
