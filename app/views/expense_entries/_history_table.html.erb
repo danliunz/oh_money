@@ -20,7 +20,8 @@
             <a href="<%= show_expense_entry_path(expense_entry) %>" class="edit hidden">
               <span class="glyphicon glyphicon-edit"><span>
             </a>
-            <a href="<%= delete_expense_entry_path(expense_entry) %>" data-method="post" class="delete hidden">
+            <a href="<%= delete_expense_entry_path(expense_entry) %>"
+               data-method="post" data-confirm="Delete the expense entry?" class="delete hidden">
                <span class="glyphicon glyphicon-remove-circle"><span>
             </a>
           </th>
