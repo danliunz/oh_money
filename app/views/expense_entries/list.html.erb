@@ -3,7 +3,7 @@
   <hr/>
 
   <%= form_for @expense_history, method: :get,
-    url: view_expense_entries_path,
+    url: list_expense_entries_path,
     html: { class: "form-horizontal", autocomplete: "off" } do |f| %>
 
     <%= render partial: "/shared/date_range_input", locals: { form_builder: f }%>
@@ -16,6 +16,10 @@
   <% end %>
 
   <hr/>
+
+  <% if notice %>
+    <div class="alert alert-info"><%= notice %></div>
+  <% end %>
 
   <%= render partial: "history_table",
     locals: { expense_history: @expense_history } %>

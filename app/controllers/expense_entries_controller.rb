@@ -26,6 +26,10 @@ class ExpenseEntriesController < ApplicationController
 
   def show
     @expense_entry = ExpenseEntry.find(params[:id])
+
+    # if user edits or deletes the expense entry from 'show' page,
+    # expect the redirected URL to be one leading to 'show' page (if any)
+    remember_return_url(request.env["HTTP_REFERER"] || list_expense_entries_url)
   end
 
   def edit
@@ -34,10 +38,10 @@ class ExpenseEntriesController < ApplicationController
       UpdateExpenseEntry.new(@expense_entry, expense_entry_params)
 
     if update_expense_entry.call
-      redirect_to view_expense_entries_url,
+      redirect_to take_return_url,
         notice: "Expense entry for #{@expense_entry.item_type.name} is updated"
     else
-      # TODO:
+      render 'show'
     end
   end
 
@@ -99,5 +103,16 @@ class ExpenseEntriesController < ApplicationController
       item_type: ItemType.new,
       tags: []
     )
+  end
+
+  def remember_return_url(url)
+    session[:expense_entries_return_url] = url
+  end
+
+  def take_return_url
+    return_url = session[:expense_entries_return_url]
+    session[:expense_entries_return_url] = nil
+
+    return_url
   end
 end

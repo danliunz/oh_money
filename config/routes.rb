@@ -31,7 +31,7 @@ Rails.application.routes.draw do
   patch 'expense_entries/:id/edit' => 'expense_entries#edit',
     as: :edit_expense_entry
   get 'expense_entries/list' => 'expense_entries#list',
-    as: :view_expense_entries
+    as: :list_expense_entries
   post 'expense_entries/:id/delete' => 'expense_entries#delete',
     as: :delete_expense_entry
 
