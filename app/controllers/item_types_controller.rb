@@ -30,18 +30,18 @@ class ItemTypesController < ApplicationController
 
   def show
     @item_type = ItemType.find(params[:id])
+
+    remember_return_url(request.env["HTTP_REFERER"] || list_item_types_url)
   end
 
   def edit
     @item_type = ItemType.find(params[:id])
-
     update_item_type = UpdateItemType.new(@item_type, item_type_params)
+
     if update_item_type.call
-      flash.notice = "#{@item_type.name} is updated"
-      redirect_to list_item_types_url
+      redirect_to take_return_url, notice: "#{@item_type.name} is updated"
     else
-      flash.now.alert = update_item_type.error
-      render "show"
+      render "show", alert: update_item_type.error
     end
   end
 
@@ -81,5 +81,16 @@ class ItemTypesController < ApplicationController
     params
       .require(:item_type)
       .permit(:name, :description, parents: [])
+  end
+
+  def remember_return_url(url)
+    session[:item_types_return_url] = url
+  end
+
+  def take_return_url
+    url = session[:item_types_return_url]
+    session[:item_types_return_url] = nil
+
+    url
   end
 end
