@@ -1,0 +1,33 @@
+<%= javascript_include_tag "expense_entries" %>
+
+<div class="container">
+  <h3 class="text-center">Edit Your Expense</h3>
+  <hr/>
+
+  <%= form_for @expense_entry,
+    method: :patch,
+    url: edit_expense_entry_path,
+    html: { class: "form-horizontal", autocomplete: "off" } do |f| %>
+
+    <div class="form-group">
+      <%= f.label :name, class: "col-sm-3 control-label" %>
+      <div class="col-sm-8">
+        <p class="form-control-static"><%= f.object.item_type.name %></p>
+      </div>
+    </div>
+
+    <%= render partial: "cost_input", locals: { form_builder: f } %>
+
+    <%= render partial: "/shared/date_input",
+      locals: { form_builder: f, field_name: :purchase_date, label_text: "When" } %>
+
+    <%= render partial: "tags_input", locals: { form_builder: f } %>
+
+    <div class="form-group">
+      <div class="col-sm-offset-3 col-sm-8">
+        <%= f.submit "Save", class: "btn btn-primary" %>
+        <%= link_to "Cancel", request.env["HTTP_REFERER"], class: "btn btn-primary" %>
+      </div>
+    </div>
+  <% end %>
+</div>

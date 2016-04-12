@@ -24,6 +24,23 @@ class ExpenseEntriesController < ApplicationController
     end
   end
 
+  def show
+    @expense_entry = ExpenseEntry.find(params[:id])
+  end
+
+  def edit
+    @expense_entry = ExpenseEntry.find(params[:id])
+    update_expense_entry =
+      UpdateExpenseEntry.new(@expense_entry, expense_entry_params)
+
+    if update_expense_entry.call
+      redirect_to view_expense_entries_url,
+        notice: "Expense entry for #{@expense_entry.item_type.name} is updated"
+    else
+      # TODO:
+    end
+  end
+
   def list
     if show_expense_history_criteria_form_only?
       create_empty_expense_history
@@ -40,6 +57,14 @@ class ExpenseEntriesController < ApplicationController
     end
 
     paginate_expense_entries
+  end
+
+  def delete
+    expense_entry = ExpenseEntry.find(params[:id])
+    expense_entry.destroy
+
+    redirect_to :back,
+      notice: "expense entry for #{expense_entry.item_type.name} is deleted"
   end
 
   private

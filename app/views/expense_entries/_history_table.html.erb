@@ -1,4 +1,4 @@
-<table class="table expense_history_table">
+<table class="table table-hover expense_history_table">
   <tbody>
     <% expense_entries_by_date = group_expense_entries_by_purchase_date(expense_history.entries) %>
     <% expense_entries_by_date.each do |expense_entries_of_one_day| %>
@@ -11,11 +11,18 @@
       </tr>
 
       <% expense_entries_of_one_day[:entries].each do |expense_entry| %>
-        <tr>
+        <tr class="expense_entry_row">
           <th>
             <%= link_to expense_entry.item_type.name,
               show_item_type_path(expense_entry.item_type),
               class: "btn btn-default"%>
+
+            <a href="<%= show_expense_entry_path(expense_entry) %>" class="edit hidden">
+              <span class="glyphicon glyphicon-edit"><span>
+            </a>
+            <a href="<%= delete_expense_entry_path(expense_entry) %>" data-method="post" class="delete hidden">
+               <span class="glyphicon glyphicon-remove-circle"><span>
+            </a>
           </th>
           <td><%= cost_to_display(expense_entry.cost) %></td>
           <td>
@@ -32,3 +39,18 @@
 <div>
   <%= will_paginate expense_history.entries, renderer: BootstrapPagination::Rails %>
 </div>
+
+<script>
+  $(document).ready(function() {
+    $('.expense_entry_row').hover(
+      function(event) {
+        $(this).find("a.edit").removeClass("hidden");
+        $(this).find("a.delete").removeClass("hidden");
+      },
+      function(event) {
+        $(this).find("a.edit").addClass("hidden");
+        $(this).find("a.delete").addClass("hidden");
+      }
+    )
+  });
+</script>

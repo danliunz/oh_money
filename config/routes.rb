@@ -26,8 +26,14 @@ Rails.application.routes.draw do
   get 'expense_entries/create' => 'expense_entries#create_form',
     as: :create_expense_entry
   post 'expense_entries/create' => 'expense_entries#create'
+  get 'expense_entries/:id/show' =>  'expense_entries#show',
+    as: :show_expense_entry
+  patch 'expense_entries/:id/edit' => 'expense_entries#edit',
+    as: :edit_expense_entry
   get 'expense_entries/list' => 'expense_entries#list',
     as: :view_expense_entries
+  post 'expense_entries/:id/delete' => 'expense_entries#delete',
+    as: :delete_expense_entry
 
   # expense report
   get 'expense_reports/criteria_form' => 'expense_reports#criteria_form',

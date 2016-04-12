@@ -25,8 +25,7 @@ class ItemTypesController < ApplicationController
     item_type = ItemType.find(params[:id])
     item_type.destroy
 
-    flash.notice = "#{item_type.name} is deleted"
-    redirect_to list_item_types_url
+    redirect_to list_item_types_url, notice: "#{item_type.name} is deleted"
   end
 
   def show

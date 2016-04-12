@@ -50,5 +50,11 @@
 
   .btn {
     padding: 2px 12px;
+    font-weight: bold;
+    margin-right: 6px;
+  }
+
+  a.delete, a.edit {
+    padding-left: 3px;
   }
 }

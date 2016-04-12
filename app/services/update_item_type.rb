@@ -29,11 +29,15 @@ class UpdateItemType
   end
 
   def update_name
-    @item_type.name = @params[:name]
+    if @params[:name]
+      @item_type.name = @params[:name]
+    end
   end
 
   def update_description
-    @item_type.description = @params[:description]
+    if @params[:description]
+      @item_type.description = @params[:description]
+    end
   end
 
   def update_parents
