@@ -48,7 +48,7 @@ function add_tag(tag) {
   $('.tags-panel a:last-of-type').popover(
     {
       container: 'body',
-      // trigger: 'focus',
+      trigger: 'focus',
       html: true,
       content: function() {
         index = $('.tags-panel a').index(this);
