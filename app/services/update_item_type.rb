@@ -11,7 +11,7 @@ class UpdateItemType
 
   def call
     ItemType.transaction { update }
-  rescue => exception
+  rescue CircularDependency => exception
     @error = exception.to_s
     false
   else

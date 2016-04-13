@@ -1,4 +1,6 @@
 class ExpenseEntriesController < ApplicationController
+  before_action :require_authorized_user, only: [:show, :edit, :delete]
+
   def create_form
     if flash[:last_item_type_id]
       @last_item_type = ItemType.find(flash[:last_item_type_id])
@@ -114,5 +116,11 @@ class ExpenseEntriesController < ApplicationController
     session[:expense_entries_return_url] = nil
 
     return_url
+  end
+
+  def require_authorized_user
+    if ExpenseEntry.find(params[:id]).user != current_user
+      redirect_to signin_url, alert: "Authorization failure. Try signin as another user"
+    end
   end
 end
