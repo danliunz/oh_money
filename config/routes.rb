@@ -38,7 +38,7 @@ Rails.application.routes.draw do
   # expense report
   get 'expense_reports/criteria_form' => 'expense_reports#criteria_form',
     as: :expense_report_form
-  get 'expense_reports/aggregate_by_day' => 'expense_reports#aggregate_by_day',
+  get 'expense_reports/create' => 'expense_reports#create',
     as: :create_expense_report
 
   # The priority is based upon order of creation: first created -> highest priority.

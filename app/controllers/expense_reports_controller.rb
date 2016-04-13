@@ -1,5 +1,5 @@
 class ExpenseReportsController < ApplicationController
-  def aggregate_by_day
+  def create
     create_report  = CreateExpenseReport.new(current_user, expense_report_params)
 
     @report = create_report.call
