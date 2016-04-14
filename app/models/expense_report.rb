@@ -4,7 +4,6 @@
 class ExpenseReport
   include ActiveModel::Model
 
-
   # report criteria
   attr_accessor :user, :root_item_type, :tag, :begin_date, :end_date, :aggregation_mode
 
@@ -35,6 +34,8 @@ class ExpenseReport
       tag: tag && tag.as_json,
       begin_date: begin_date,
       end_date: end_date,
+      begin_time_unit: begin_time_unit,
+      end_time_unit: end_time_unit,
       expense_history: expense_history
     }
   end

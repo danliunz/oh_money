@@ -20,8 +20,20 @@ class CreateExpenseReport
     validate_and_set_root_item_type
     validate_and_set_tag
     validate_and_set_date_range
+    validate_and_set_aggregation_mode
 
     @report.valid?
+  end
+
+
+  def validate_and_set_aggregation_mode
+    mode = @params[:aggregation_mode]
+
+    if ExpenseReport.aggregation_modes.include?(mode)
+      @report.aggregation_mode = mode
+    else
+      @report.errors.add(:aggregation_mode, "invalid aggregation mode #{mode}")
+    end
   end
 
   def validate_and_set_tag
@@ -78,8 +90,8 @@ class CreateExpenseReport
         :name, "no purchase history for #{@report.root_item_type.name}"
       )
     else
-      @report.begin_date ||= begin_date_of(expense_history)
-      @report.end_date ||= end_date_of(expense_history)
+      @report.begin_time_unit = expense_history.first[0]
+      @report.end_time_unit = expense_history.last[0]
 
       @report.expense_history = expense_history_as_hash(expense_history)
     end
@@ -118,38 +130,37 @@ class CreateExpenseReport
       relation = relation.where("purchase_date <= ?", @report.end_date)
     end
 
-    relation
-      .group(:purchase_date)
-      .order(purchase_date: :asc)
-      .pluck(:purchase_date, 'SUM(cost) as cost')
-      .map do |purchase_date, cost_in_cents|
-        {
-          purchase_date: sql_datetime_to_date(purchase_date),
-          cost: cost_in_cents
-        }
-      end
+    aggregate(relation)
   end
 
-  def begin_date_of(expense_history)
-    time = expense_history.first[:purchase_date]
-    Date.new(time.year, time.month, time.day)
-  end
-
-  def end_date_of(expense_history)
-    time = expense_history.last[:purchase_date]
-    Date.new(time.year, time.month, time.day)
-  end
-
-  def sql_datetime_to_date(sql_datetime)
-    Date.new(sql_datetime.year, sql_datetime.month, sql_datetime.day)
+  def aggregate(relation)
+    case @report.aggregation_mode
+    when "daily"
+      relation
+        .group(:purchase_date)
+        .order(purchase_date: :asc)
+        .pluck("purchase_date as time_unit", "SUM(cost) as cost")
+    when "weekly"
+      # TODO: MySQL specific SQL?
+      relation
+        .group("yearweek(purchase_date)")
+        .order("yearweek(purchase_date) ASC")
+        .pluck("yearweek(purchase_date) as time_unit", "SUM(cost) as cost")
+    when "monthly"
+      # TODO: MySQL specific SQL?
+      relation
+        .group("extract(year_month from purchase_date)")
+        .order("extract(year_month from purchase_date) ASC")
+        .pluck("extract(year_month from purchase_date) as time_unit", "SUM(cost) as cost")
+    end
   end
 
   # convert array of {purchase_date, cost} to { :purchase_date => cost }
   def expense_history_as_hash(expense_history)
     result = Hash.new(0)
 
-    expense_history.each do |expense_entry|
-      result[expense_entry[:purchase_date]] = expense_entry[:cost]
+    expense_history.each do |time_unit, cost|
+      result[time_unit] = cost
     end
 
     result
