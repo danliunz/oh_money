@@ -176,5 +176,44 @@ RSpec.describe CreateExpenseReport, type: :service do
         expect(report.expense_history).to be_empty
       end
     end
+
+    context "when aggregation_mode is weekly" do
+      let(:root_item_type) { nil }
+      let(:begin_date) { Date.parse("2016-1-1") }
+      let(:end_date) { Date.parse("2016-01-06") }
+      let(:aggregation_mode) { "weekly" }
+
+      it "creates report aggregating data by week" do
+        report = service.call
+
+        expect(report.begin_time_unit).to eq(201552)
+        expect(report.end_time_unit).to eq(201601)
+
+        expense_history = report.expense_history
+        expect(expense_history.size).to eq(2)
+        expect(expense_history[201551]).to eq(0)
+        expect(expense_history[201552]).to eq(1000 + 2000 + 1000)
+        expect(expense_history[201601]).to eq(500 + 1510 + 450 + 1300)
+      end
+    end
+
+    context "when aggregation_mode is montly" do
+      let(:root_item_type) { item_types(:drink) }
+      let(:begin_date) { nil }
+      let(:end_date) { nil }
+      let(:aggregation_mode) { "monthly" }
+
+      it "creates report aggregating data by month" do
+        report = service.call
+
+        expect(report.begin_time_unit).to eq(201601)
+        expect(report.end_time_unit).to eq(201601)
+
+        expense_history = report.expense_history
+        expect(expense_history.size).to eq(1)
+        expect(expense_history[201512]).to eq(0)
+        expect(expense_history[201601]).to eq(1000 + 2000 + 1000 +  500 + 450)
+      end
+    end
   end
 end
