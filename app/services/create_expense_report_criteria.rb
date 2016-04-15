@@ -74,10 +74,12 @@ class CreateExpenseReportCriteria
   def validate_and_set_aggregation_mode
     mode = @params[:aggregation_mode]
 
-    if ExpenseReport::Criteria::AGGREGATION_MODES.include?(mode)
-      @criteria.aggregation_mode = mode
-    else
-      @criteria.errors.add(:aggregation_mode, "invalid aggregation mode #{mode}")
+    unless mode.blank?
+      if ExpenseReport::Criteria::AGGREGATION_MODES.include?(mode)
+        @criteria.aggregation_mode = mode
+      else
+        @criteria.errors.add(:aggregation_mode, "invalid aggregation mode #{mode}")
+      end
     end
   end
 
