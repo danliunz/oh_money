@@ -5,19 +5,19 @@
     <tbody>
       <tr>
         <th>What you buy</th>
-        <td><%= @report.root_item_type.name || "<all>" %></td>
+        <td><%= @report.criteria.root_item_type.name || "<all>" %></td>
       </tr>
       <tr>
         <th>Tag of the purchases</th>
-        <td><%= @report.tag.name || "<all>" %></td>
+        <td><%= @report.criteria.tag.name || "<all>" %></td>
       </tr>
       <tr>
         <th>Start date</th>
-        <td><%= date_to_display(@report.begin_date) %></td>
+        <td><%= date_to_display(@report.criteria.begin_date) %></td>
       </tr>
       <tr>
         <th>End date</th>
-        <td><%= date_to_display(@report.end_date) %></td>
+        <td><%= date_to_display(@report.criteria.end_date) %></td>
       </tr>
       <tr>
         <th colspan="2">

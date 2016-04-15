@@ -12,7 +12,7 @@
     </row>
   <% end %>
 
-  <%= form_for @report, method: :get,
+  <%= form_for @report_criteria, method: :get,
     url: create_expense_report_path,
     html: { class: "form-horizontal", autocomplete: "off" } do |f| %>
 
@@ -21,19 +21,9 @@
 
     <%= render partial: "tag_input", locals: { form_builder: f } %>
 
-    <%= render partial: "/shared/date_range_input", locals: { form_builder: f} %>
+    <%= render partial: "/shared/date_range_input", locals: { form_builder: f } %>
 
-    <div class="form-group">
-      <%= f.label :aggregation_mode, "Aggregation", class: "col-sm-3 control-label" %>
-      <div class="col-sm-8">
-        <% ExpenseReport.aggregation_modes.each do |mode| %>
-         <label class="radio-inline">
-          <%= f.radio_button :aggregation_mode, mode %>
-          <%= mode %>
-         </label>
-        <% end %>
-      </div>
-    </div>
+    <%= render partial: "aggregation_mode", locals: { form_builder: f }%>
 
     <div class="form-group">
       <div class="col-sm-offset-3 col-sm-8">

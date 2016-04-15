@@ -27,7 +27,7 @@ class Account::User < ActiveRecord::Base
 
   has_secure_password validations: false
 
-  def as_json
+  def as_json(options = nil)
     { name: name }
   end
 end

@@ -11,7 +11,7 @@ class Tag < ActiveRecord::Base
     .pluck(:name)
   }
 
-  def as_json
+  def as_json(options = nil)
     { name: name, description: description }
   end
 end

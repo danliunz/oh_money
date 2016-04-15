@@ -1,6 +1,8 @@
 module ExpenseReportsHelper
   def report_as_data_points(report)
-    case report.aggregation_mode
+    return "" if report.expense_history.empty?
+
+    case report.criteria.aggregation_mode
     when "daily"
       daily_report_as_data_points(report)
     when "weekly"
@@ -17,23 +19,9 @@ module ExpenseReportsHelper
   private
 
   def daily_report_as_data_points(report)
-    expense_history = Hash.new(0)
-    report.expense_history.each do |datetime, cost|
-      expense_history[Date.new(datetime.year, datetime.month, datetime.day)] = cost
-    end
-
-    begin_day = Date.new(
-      report.begin_time_unit.year, report.begin_time_unit.month,
-      report.begin_time_unit.day
-    )
-    end_day = Date.new(
-      report.end_time_unit.year, report.end_time_unit.month,
-      report.end_time_unit.day
-    )
-
-    (begin_day .. end_day).map do |day|
-      "{ x: new Date(#{day.year}, #{day.month - 1}, #{day.day})," +
-      "  y: #{expense_history[day] / ExpenseEntry::CENTS_MULTIPLIER} }"
+    (report.begin_time_unit .. report.end_time_unit).map do |date|
+      "{ x: new Date(#{date.year}, #{date.month - 1}, #{date.day})," +
+      "  y: #{report.expense_history[date] / ExpenseEntry::CENTS_MULTIPLIER} }"
     end.join(",")
   end
 
