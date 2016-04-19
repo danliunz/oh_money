@@ -67,10 +67,14 @@ class ExpenseEntriesController < ApplicationController
 
   def delete
     expense_entry = ExpenseEntry.find(params[:id])
-    expense_entry.destroy
 
-    redirect_to :back,
-      notice: "expense entry for #{expense_entry.item_type.name} is deleted"
+    if expense_entry.destroy
+      redirect_to :back,
+        notice: "expense entry for #{expense_entry.item_type.name} is deleted"
+    else
+      redirect_to :back,
+        alert: "fail to delete expense entry for #{expense_entry.item_type.name}"
+    end
   end
 
   private

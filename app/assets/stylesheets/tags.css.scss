@@ -1,0 +1,17 @@
+.tags-table {
+  table-layout: fixed;
+
+  thead tr {
+    th:first-child {
+      width: 50%;
+    }
+  }
+
+  .label {
+    font-size: 90%;
+  }
+
+  .edit, .delete, .save, .cancel {
+    margin-left: 9px;
+  }
+}

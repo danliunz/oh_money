@@ -1,0 +1,119 @@
+<div class="container">
+  <h4 class="text-center">View Tags</h4>
+  <hr/>
+
+  <div class="alert alert-info <%= 'hidden' if !notice %>">
+    <%= notice %>
+  </div>
+  <div class"alert alert-danger <%= 'hidden' if !alert %>">
+    <%= alert %>
+  </div>
+
+  <table class="table table-hover table-striped tags-table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @tags.each do |tag| %>
+        <tr>
+          <td>
+            <form class="form-inline">
+              <div class="form-group">
+                <label class="label label-default"><%= tag.name %></label>
+                <input name="tag_name" type="text" class="form-control hidden" />
+                <input name="tag_id" type="hidden" value="<%= tag.id %>" />
+              </div>
+
+              <a href="javascript:void(0)" title="edit the tag" class="hidden edit">
+                <span class="glyphicon glyphicon-pencil"><span>
+              </a>
+              <a href="javascript:void(0)" title="save the change" class="hidden save">
+                <span class="glyphicon glyphicon-ok"><span>
+              </a>
+              <a href="javascript:void(0)" title="cancel the change" class="hidden cancel">
+                <span class="glyphicon glyphicon-circle-arrow-left"><span>
+              </a>
+
+              <%= link_to delete_tag_path(tag), method: :post,
+                title: "delete the tag", class: "hidden delete",
+                data: { confirm: "Delete the tag permanently?" } do %>
+                <span class="glyphicon glyphicon-remove"><span>
+              <% end %>
+            </form>
+          </td>
+          <td><%= tag.description %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <div>
+    <%= will_paginate @tags, renderer: BootstrapPagination::Rails %>
+  </div>
+
+  <script>
+    $(document).ready(function() {
+      var $tags_table_row = $('.tags-table tbody tr')
+
+      // hover on the row to reveal 'edit' and 'delete' buttons if not in 'save' mode
+      $tags_table_row.hover(
+        function(event) {
+          if ($(this).find('.save').hasClass('hidden')) {
+            $(this).find('.delete, .edit').removeClass('hidden')
+          }
+        },
+        function(event) {
+          $(this).find('.delete, .edit').addClass('hidden')
+        }
+      );
+
+      // click the 'edit' button to reveal text input
+      $tags_table_row.find('.edit').click(function(event) {
+        var $form = $(this).parent();
+
+        $form.find('.label, .edit, .delete').addClass('hidden');
+
+        $form.find('input[type=text]')
+          .val($form.find('.label').text())
+          .removeClass('hidden')
+          .focus();
+
+        $form.find('.save, .cancel').removeClass('hidden');
+      });
+
+      // click the 'save' button to save change and fall back to 'edit'/'delete' modes
+      $tags_table_row.find('.save').click(function(event) {
+        var $form = $(this).parent();
+
+        // save the change by AJAX
+        var url = '/tags/' + $form.find('[name=tag_id]').val() + '/edit.json';
+        $.post(
+          url,
+          { 'tag[name]': $form.find('[name=tag_name]').val().trim() }
+        )
+        .done(function(data) {
+          $('.alert-info:first-of-type').removeClass('hidden').text(data.message);
+        })
+        .fail(function(data) {
+          $('.alert-danger:first-of-type').removeClass('hidden').text(data.message);
+        });
+
+        $form.find('.label').text($form.find('input[type=text]').val().trim());
+        $form.find('.save, .cancel, input[type=text]').addClass('hidden');
+        $form.find('.label, .edit, .delete').removeClass('hidden');
+      });
+
+      // click the 'cancel' button to discard change and fall back to 'edit'/'delete' modes
+      $tags_table_row.find('.cancel').click(function(event) {
+        var $form = $(this).parent();
+
+        $form.find('.save, .cancel, input[type=text]').addClass('hidden');
+        $form.find('.label, .edit, .delete').removeClass('hidden');
+      });
+    });
+  </script>
+</div>
+

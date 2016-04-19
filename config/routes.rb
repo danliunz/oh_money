@@ -19,8 +19,11 @@ Rails.application.routes.draw do
   patch 'item_types/:id/edit' => 'item_types#edit', as: :edit_item_type
   get 'item_types/suggestions'
 
-  # tag
+  # tags
   get 'tags/suggestions'
+  get 'tags/list' => 'tags#list', as: :list_tags
+  post 'tags/:id/delete' => 'tags#delete', as: :delete_tag
+  post 'tags/:id/edit' => 'tags#edit', as: :edit_tag
 
   # expense entry
   get 'expense_entries/create' => 'expense_entries#create_form',

@@ -1,4 +1,11 @@
 class TagsController < ApplicationController
+  def list
+    @tags = Tag
+      .where(user: current_user)
+      .order(name: :asc)
+      .paginate(page: params[:page], per_page: 10)
+  end
+
   def suggestions
     prefix = params[:prefix]
 
@@ -10,5 +17,38 @@ class TagsController < ApplicationController
       format.xml { render xml: suggested_names }
       format.json { render json: suggested_names }
     end
+  end
+
+  def delete
+    tag = Tag.find(params[:id])
+    if tag.destroy
+      redirect_to :back, notice: "tag '#{tag.name}' is deleted"
+    else
+      redirect_to :back, alert: "fail to delete tag '#{tag.name}'"
+    end
+  end
+
+  def edit
+    tag = Tag.find(params[:id])
+
+    if tag.update(tag_params)
+      respond_to do |format|
+        format.json { render json: { message: "tag '#{tag.name}' is updated"} }
+      end
+    else
+      respond_to do |format|
+        format.json do
+          render json: {
+            message: "fail to update tag '#{tag.name}': #{tag.errors.full_messages.join(' | ')}"
+          }
+        end
+      end
+    end
+  end
+
+  private
+
+  def tag_params
+    params.require(:tag).permit(:name, :description)
   end
 end
