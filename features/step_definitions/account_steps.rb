@@ -7,11 +7,11 @@ def sign_in(username, password)
 
   fill_in("user[name]", :with => username)
   fill_in("user[password]", :with => password)
-  click_on("Sign in")
+  click_button("Sign in")
 end
 
 Given(/^no signed\-up user named "([^"]*)"$/) do |username|
-  Account::User.delete_all(name: "diablo")
+  Account::User.delete_all(name: username)
 end
 
 Given(/^a user signed\-up with name "([^"]*)" and password "([^"]*)"$/) do |username, password|
