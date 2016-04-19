@@ -42,6 +42,7 @@ class CreateExpenseReport
       relation = relation.where(item_type: item_types)
     end
 
+    # TODO: use object name instead of table name
     if @criteria.tag.id
       relation = relation.joins(
         "INNER JOIN expense_entry_tags join_table " +
@@ -61,6 +62,7 @@ class CreateExpenseReport
     aggregate(relation)
   end
 
+  # TODO: use strategy pattern to create report and help rendering
   def aggregate(relation)
     case @criteria.aggregation_mode
     when "daily"
@@ -69,6 +71,7 @@ class CreateExpenseReport
         .order(purchase_date: :asc)
         .pluck("purchase_date as time_unit", "SUM(cost) as cost")
         .map do |datetime, cost|
+          # TODO: datetime.midnight
           [Date.new(datetime.year, datetime.month, datetime.day), cost]
         end
     when "weekly"
@@ -88,6 +91,7 @@ class CreateExpenseReport
 
   # convert array of {purchase_date, cost} to { :purchase_date => cost }
   def expense_history_as_hash(expense_history)
+    # TODO: set default value 0 later
     result = Hash.new(0)
 
     expense_history.each do |time_unit, cost|

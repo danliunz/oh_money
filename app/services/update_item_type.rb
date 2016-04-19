@@ -40,6 +40,7 @@ class UpdateItemType
     end
   end
 
+  # TODO: add tons of test cases here
   def update_parents
     parents = parents_param.map do |parent_name|
       begin
@@ -93,6 +94,8 @@ class UpdateItemType
 
   # return true if _item_type_ is ancestor of at least one of _other_item_types_
   def is_ancestor_of(item_type, other_item_types)
+
+    # TODO: use any?
     other_item_types.each do |other_item_type|
       return true if other_item_type.ancestors.include?(item_type)
     end

@@ -56,6 +56,7 @@ class CreateExpenseReportCriteria
   end
 
   def validate_and_set_date_range
+    # TODO: try unless
     begin
       @criteria.begin_date = @params[:begin_date].blank? ?
         nil : Date.parse(@params[:begin_date])

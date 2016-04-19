@@ -5,6 +5,9 @@
   <% if notice %>
     <div class="alert alert-success"><%= notice %></div>
   <% end %>
+  <% if alert %>
+    <div class="alert alert-danger"><%= alert %></div>
+  <% end %>
 
   <div id="item_types_container"></div>
   <script>
@@ -18,7 +21,7 @@
           'data' : {
             'url': 'get_children?',
             'data': function(node) {
-              return { 'id': node.id }
+              return { 'id': node.id === "#" ? "#" : node.data }
             }
           },
 
@@ -31,7 +34,7 @@
       });
 
       $('#item_types_container').on('select_node.jstree', function(event, data) {
-        var selected_node_id = data.instance.get_selected(true)[0].id
+        var selected_node_id = data.instance.get_selected(true)[0].data
         window.location = selected_node_id + '/show'
       });
     }

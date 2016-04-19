@@ -15,7 +15,7 @@ class ItemTypesController < ApplicationController
 
     response = []
     children.sort_by { |a| a.name }.each do |child|
-      response << { id: child.id, text: child.name, children: !child.children.empty? }
+      response << { data: child.id, text: child.name, children: !child.children.empty? }
     end
 
     render json: response
@@ -23,9 +23,12 @@ class ItemTypesController < ApplicationController
 
   def delete
     item_type = ItemType.find(params[:id])
-    item_type.destroy
 
-    redirect_to list_item_types_url, notice: "#{item_type.name} is deleted"
+    if item_type.destroy
+      redirect_to list_item_types_url, notice: "#{item_type.name} is deleted"
+    else
+      redirect_to list_item_types_url, alert: "fail to delete #{item_type.name}"
+    end
   end
 
   def show
@@ -41,7 +44,8 @@ class ItemTypesController < ApplicationController
     if update_item_type.call
       redirect_to take_return_url, notice: "#{@item_type.name} is updated"
     else
-      render "show", alert: update_item_type.error
+      flash.now.alert = "update failure: " + update_item_type.error
+      render "show"
     end
   end
 
