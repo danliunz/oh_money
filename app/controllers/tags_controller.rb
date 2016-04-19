@@ -38,8 +38,8 @@ class TagsController < ApplicationController
     else
       respond_to do |format|
         format.json do
-          render json: {
-            message: "fail to update tag '#{tag.name}': #{tag.errors.full_messages.join(' | ')}"
+          render status: :bad_request, json: {
+            message: tag.errors.full_messages.join(' | ')
           }
         end
       end

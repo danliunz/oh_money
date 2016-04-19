@@ -2,11 +2,17 @@
   <h4 class="text-center">View Tags</h4>
   <hr/>
 
-  <div class="alert alert-info <%= 'hidden' if !notice %>">
-    <%= notice %>
+  <div class="alert alert-info alert-dismissible fade in <%= 'hidden' if !notice %>">
+    <button type="button" class="close" data-dismiss="alert">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <p><%= notice %></p>
   </div>
-  <div class"alert alert-danger <%= 'hidden' if !alert %>">
-    <%= alert %>
+  <div class="alert alert-danger alert-dismissible fade in <%= 'hidden' if !alert %>">
+    <button type="button" class="close" data-dismiss="alert">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <p><%= alert %></p>
   </div>
 
   <table class="table table-hover table-striped tags-table">
@@ -76,7 +82,7 @@
 
         $form.find('.label, .edit, .delete').addClass('hidden');
 
-        $form.find('input[type=text]')
+        $form.find('input[name=tag_name]')
           .val($form.find('.label').text())
           .removeClass('hidden')
           .focus();
@@ -84,25 +90,38 @@
         $form.find('.save, .cancel').removeClass('hidden');
       });
 
+      // press enter on the tag name input will NOT submit form
+      $('input[name=tag_name]').keypress(function(event) {
+        if(event.keyCode == 13) {
+          event.preventDefault();
+          return false;
+        }
+      });
+
       // click the 'save' button to save change and fall back to 'edit'/'delete' modes
       $tags_table_row.find('.save').click(function(event) {
         var $form = $(this).parent();
+        var tag_id = $form.find('[name=tag_id]').val();
+        var tag_name = $form.find('input[name=tag_name]').val().trim();
 
         // save the change by AJAX
-        var url = '/tags/' + $form.find('[name=tag_id]').val() + '/edit.json';
-        $.post(
-          url,
-          { 'tag[name]': $form.find('[name=tag_name]').val().trim() }
-        )
-        .done(function(data) {
-          $('.alert-info:first-of-type').removeClass('hidden').text(data.message);
-        })
-        .fail(function(data) {
-          $('.alert-danger:first-of-type').removeClass('hidden').text(data.message);
-        });
+        var url = '/tags/' + tag_id + '/edit.json';
+        $.post(url, { 'tag[name]': tag_name })
+          .done(function(data) {
+            $('.alert-info').removeClass('hidden').find('p').text(data.message);
 
-        $form.find('.label').text($form.find('input[type=text]').val().trim());
-        $form.find('.save, .cancel, input[type=text]').addClass('hidden');
+            $form.find('.label').text(tag_name);
+          })
+          .fail(function(data) {
+            $('.alert-danger')
+              .removeClass('hidden')
+              .find(p)
+              .text("fail to update tag '" + tag_name + "': "
+                + (data.message ? data.message : "unkown error")
+              );
+          });
+
+        $form.find('.save, .cancel, input[name=tag_name]').addClass('hidden');
         $form.find('.label, .edit, .delete').removeClass('hidden');
       });
 
@@ -110,7 +129,7 @@
       $tags_table_row.find('.cancel').click(function(event) {
         var $form = $(this).parent();
 
-        $form.find('.save, .cancel, input[type=text]').addClass('hidden');
+        $form.find('.save, .cancel, input[name=tag_name]').addClass('hidden');
         $form.find('.label, .edit, .delete').removeClass('hidden');
       });
     });
