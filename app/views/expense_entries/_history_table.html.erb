@@ -13,30 +13,8 @@
       <% expense_entries_of_one_day[:entries].each do |expense_entry| %>
         <tr class="expense_entry_row">
           <th>
-            <div class="dropdown">
-              <button id="expense_entry_<%= expense_entry.id %>_dropdown_trigger"
-                type="button" class="btn btn-default dropdown-toggle"
-                data-toggle="dropdown">
-                <span class="glyphicon glyphicon-align-justify"></span>
-              </button>
-              <ul class="dropdown-menu">
-                <li>
-                  <a href="<%= show_expense_entry_path(expense_entry) %>"
-                    title="edit the entry">
-                    <span class="glyphicon glyphicon-edit"></span>
-                    <span>edit</span>
-                  </a>
-                </li>
-                <li>
-                  <a href="<%= delete_expense_entry_path(expense_entry) %>"
-                    data-method="post" data-confirm="Delete the expense entry permanently?"
-                    title="delete the entry">
-                    <span class="glyphicon glyphicon-remove-circle"></span>
-                    <span>delete</span>
-                  </a>
-                </li>
-              </ul>
-            </div>
+            <%= render partial: "history_table_dropdown_menu",
+              locals: { expense_entry: expense_entry} %>
 
             <%= link_to expense_entry.item_type.name,
               show_item_type_path(expense_entry.item_type),
