@@ -58,3 +58,4 @@ Given(/^I sign in as user "([^"]*)"$/) do |username|
   register_user(username, "password")
   sign_in(username, "password")
 end
+

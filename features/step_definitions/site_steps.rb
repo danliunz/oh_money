@@ -10,3 +10,4 @@ end
 Then(/^I should see name "([^"]*)"$/) do |username|
   expect(page).to have_content(username)
 end
+
