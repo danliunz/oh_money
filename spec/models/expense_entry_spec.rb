@@ -25,7 +25,7 @@ RSpec.describe ExpenseEntry, type: :model do
     end
 
     context "when begin_date is given" do
-      let(:begin_date) { "2016-01-02"}
+      let(:begin_date) { "2016-01-02" }
       let(:end_date) { "" }
 
       it "returns expense entries after the begin_date" do
