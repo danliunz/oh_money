@@ -9,7 +9,6 @@ When(/^I visit the page of listing tags$/) do
 end
 
 Then(/^I should see the first page of listed tages$/) do
-  byebug
   expect(page).to have_content("@countdown")
   expect(page).to have_content("@newworld")
   expect(page).to have_content("birthday")
