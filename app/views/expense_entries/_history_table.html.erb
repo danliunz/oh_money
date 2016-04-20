@@ -13,21 +13,38 @@
       <% expense_entries_of_one_day[:entries].each do |expense_entry| %>
         <tr class="expense_entry_row">
           <th>
+            <div class="dropdown">
+              <button id="expense_entry_<%= expense_entry.id %>_dropdown_trigger"
+                type="button" class="btn btn-default dropdown-toggle"
+                data-toggle="dropdown">
+                <span class="glyphicon glyphicon-align-justify"></span>
+              </button>
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="<%= show_expense_entry_path(expense_entry) %>"
+                    title="edit the entry">
+                    <span class="glyphicon glyphicon-edit"></span>
+                    <span>edit</span>
+                  </a>
+                </li>
+                <li>
+                  <a href="<%= delete_expense_entry_path(expense_entry) %>"
+                    data-method="post" data-confirm="Delete the expense entry permanently?"
+                    title="delete the entry">
+                    <span class="glyphicon glyphicon-remove-circle"></span>
+                    <span>delete</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+
             <%= link_to expense_entry.item_type.name,
               show_item_type_path(expense_entry.item_type),
-              class: "btn btn-default"%>
-
-            <a href="<%= show_expense_entry_path(expense_entry) %>" class="edit hidden"
-              title="edit the entry">
-              <span class="glyphicon glyphicon-edit"><span>
-            </a>
-            <a href="<%= delete_expense_entry_path(expense_entry) %>"
-               data-method="post" data-confirm="Delete the expense entry permanently?"
-               title="delete the entry" class="delete hidden">
-               <span class="glyphicon glyphicon-remove-circle"><span>
-            </a>
+              class: "btn btn-default" %>
           </th>
+
           <td><%= cost_to_display(expense_entry.cost) %></td>
+
           <td>
             <% expense_entry.tags.each do |tag| %>
               <span class="label label-default"><%= tag.name %></span>
@@ -42,18 +59,3 @@
 <div>
   <%= will_paginate expense_history.entries, renderer: BootstrapPagination::Rails %>
 </div>
-
-<script>
-  $(document).ready(function() {
-    $('.expense_entry_row').hover(
-      function(event) {
-        $(this).find("a.edit").removeClass("hidden");
-        $(this).find("a.delete").removeClass("hidden");
-      },
-      function(event) {
-        $(this).find("a.edit").addClass("hidden");
-        $(this).find("a.delete").addClass("hidden");
-      }
-    )
-  });
-</script>

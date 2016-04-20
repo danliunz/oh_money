@@ -29,8 +29,6 @@
 }
 
 .expense_history_table {
-  table-layout: fixed;
-
   .date-header {
     font-style: italic;
     padding-top: 3px;
@@ -41,6 +39,17 @@
     font-size: 110%;
   }
 
+  .dropdown {
+    display: inline-block;
+  }
+
+  .dropdown-menu {
+    .glyphicon {
+      margin-left: -10px;
+      margin-right: 10px;
+    }
+  }
+
   .label {
     display: inline-block;
     margin-bottom: 3px;
@@ -49,7 +58,7 @@
   }
 
   .btn {
-    padding: 2px 12px;
+    padding: 2px 6px;
     font-weight: bold;
     margin-right: 6px;
   }
