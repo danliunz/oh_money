@@ -115,7 +115,7 @@
           .fail(function(data) {
             $('.alert-danger')
               .removeClass('hidden')
-              .find(p)
+              .find('p')
               .text("fail to update tag '" + tag_name + "': "
                 + (data.message ? data.message : "unkown error")
               );
