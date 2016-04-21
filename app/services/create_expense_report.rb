@@ -64,28 +64,26 @@ class CreateExpenseReport
 
   # TODO: use strategy pattern to create report and help rendering
   def aggregate(relation)
+    relation = relation.group("time_unit").order("time_unit asc")
+
     case @criteria.aggregation_mode
     when "daily"
       relation
-        .group(:purchase_date)
-        .order(purchase_date: :asc)
         .pluck("purchase_date as time_unit", "SUM(cost) as cost")
         .map do |datetime, cost|
           # TODO: datetime.midnight
           [Date.new(datetime.year, datetime.month, datetime.day), cost]
         end
     when "weekly"
-      # TODO: MySQL specific SQL?
-      relation
-        .group("yearweek(purchase_date)")
-        .order("yearweek(purchase_date) ASC")
-        .pluck("yearweek(purchase_date) as time_unit", "SUM(cost) as cost")
+      relation.pluck(
+        "cast(extract(isoyear from purchase_date) * 100 + extract(week from purchase_date) as integer) as time_unit",
+        "sum(cost) as cost"
+      )
     when "monthly"
-      # TODO: MySQL specific SQL?
-      relation
-        .group("extract(year_month from purchase_date)")
-        .order("extract(year_month from purchase_date) ASC")
-        .pluck("extract(year_month from purchase_date) as time_unit", "SUM(cost) as cost")
+      relation.pluck(
+        "cast(extract(year from purchase_date) * 100 + extract(month from purchase_date) as integer) as time_unit",
+        "SUM(cost) as cost"
+      )
     end
   end
 

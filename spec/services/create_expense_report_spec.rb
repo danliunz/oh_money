@@ -186,14 +186,14 @@ RSpec.describe CreateExpenseReport, type: :service do
       it "creates report aggregating data by week" do
         report = service.call
 
-        expect(report.begin_time_unit).to eq(201552)
+        expect(report.begin_time_unit).to eq(201553)
         expect(report.end_time_unit).to eq(201601)
 
         expense_history = report.expense_history
         expect(expense_history.size).to eq(2)
-        expect(expense_history[201551]).to eq(0)
-        expect(expense_history[201552]).to eq(1000 + 2000 + 1000)
-        expect(expense_history[201601]).to eq(500 + 1510 + 450 + 1300)
+        expect(expense_history[201552]).to eq(0)
+        expect(expense_history[201553]).to eq(1000 + 2000 + 1000 + 500 + 1510)
+        expect(expense_history[201601]).to eq(450 + 1300)
       end
     end
 
