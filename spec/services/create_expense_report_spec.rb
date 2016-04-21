@@ -197,7 +197,7 @@ RSpec.describe CreateExpenseReport, type: :service do
       end
     end
 
-    context "when aggregation_mode is montly" do
+    context "when aggregation_mode is monthly" do
       let(:root_item_type) { item_types(:drink) }
       let(:begin_date) { nil }
       let(:end_date) { nil }
