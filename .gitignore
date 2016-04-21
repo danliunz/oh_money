@@ -17,6 +17,3 @@
 
 # Ignore ruby debugger file
 /.byebug_history
-
-# Ignore precompiled asset files
-/public/assets
