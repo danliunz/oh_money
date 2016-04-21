@@ -21,8 +21,8 @@ Rails.application.configure do
 
   # Disable Rails's static asset server (Apache or nginx will already do this).
   # TODO: avoid copying bootstrap fonts from vendor/assets/fonts to public/assets
-  # TODO: avoid copying jstree images and fonts to public/assets
-  config.serve_static_assets = true
+  #       avoid copying jstree images and fonts to public/assets
+  config.serve_static_assets = false
 
   # Compress JavaScripts and CSS.
   config.assets.js_compressor = :uglifier
