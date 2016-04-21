@@ -1,6 +1,6 @@
 class CreateItemTypeRelations < ActiveRecord::Migration
   def change
-    create_table :item_type_relations, options: 'ENGINE=InnoDB DEFAULT CHARSET=utf8' do |t|
+    create_table :item_type_relations do |t|
       t.integer :child_id, null: false
       t.integer :parent_id, null: false
 

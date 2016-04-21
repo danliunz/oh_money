@@ -1,6 +1,6 @@
 class CreateExpenseEntryTags < ActiveRecord::Migration
   def change
-    create_table :expense_entry_tags, id: false, options: 'ENGINE=InnoDB DEFAULT CHARSET=utf8' do |t|
+    create_table :expense_entry_tags, id: false do |t|
       t.integer :expense_entry_id, null: false
       t.integer :tag_id, null: false
 
