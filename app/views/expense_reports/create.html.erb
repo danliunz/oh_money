@@ -36,7 +36,7 @@
             data: [
               {
                 type: "spline",
-                dataPoints: [ <%= raw report_as_data_points(@report) %> ]
+                dataPoints: [ <%= raw aggregated_data_as_json(@report) %> ]
               }
             ]
          });

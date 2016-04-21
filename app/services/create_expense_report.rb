@@ -1,4 +1,6 @@
 class CreateExpenseReport
+  include ReportAggregationPolicy
+
   attr_reader :criteria
 
   def initialize(criteria)
@@ -59,32 +61,7 @@ class CreateExpenseReport
       relation = relation.where("purchase_date <= ?", @criteria.end_date)
     end
 
-    aggregate(relation)
-  end
-
-  # TODO: use strategy pattern to create report and help rendering
-  def aggregate(relation)
-    relation = relation.group("time_unit").order("time_unit asc")
-
-    case @criteria.aggregation_mode
-    when "daily"
-      relation
-        .pluck("purchase_date as time_unit", "SUM(cost) as cost")
-        .map do |datetime, cost|
-          # TODO: datetime.midnight
-          [Date.new(datetime.year, datetime.month, datetime.day), cost]
-        end
-    when "weekly"
-      relation.pluck(
-        "cast(extract(isoyear from purchase_date) * 100 + extract(week from purchase_date) as integer) as time_unit",
-        "sum(cost) as cost"
-      )
-    when "monthly"
-      relation.pluck(
-        "cast(extract(year from purchase_date) * 100 + extract(month from purchase_date) as integer) as time_unit",
-        "SUM(cost) as cost"
-      )
-    end
+    aggregate_by_sql(relation, @criteria.aggregation_mode)
   end
 
   # convert array of {purchase_date, cost} to { :purchase_date => cost }

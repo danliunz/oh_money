@@ -4,7 +4,6 @@ class ExpenseReportsController < ApplicationController
       current_user, report_criteria_params
     )
 
-    # TODO: get rid of .value if possible
     if create_criteria.call
       @report = CreateExpenseReport.new(create_criteria.value).call
 
