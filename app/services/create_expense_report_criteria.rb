@@ -56,17 +56,18 @@ class CreateExpenseReportCriteria
   end
 
   def validate_and_set_date_range
-    # TODO: try unless
     begin
-      @criteria.begin_date = @params[:begin_date].blank? ?
-        nil : Date.parse(@params[:begin_date])
+      unless @params[:begin_date].blank?
+        @criteria.begin_date = Date.parse(@params[:begin_date])
+      end
     rescue ArgumentError
       @criteria.errors.add(:begin_date, "invalid date format")
     end
 
     begin
-      @criteria.end_date = @params[:end_date].blank? ?
-        nil : Date.parse(@params[:end_date])
+      unless @params[:end_date].blank?
+        @criteria.end_date = Date.parse(@params[:end_date])
+      end
     rescue ArgumentError
       @criteria.errors.add(:end_date, "invalid date format")
     end
