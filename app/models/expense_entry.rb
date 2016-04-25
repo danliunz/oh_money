@@ -17,7 +17,7 @@ class ExpenseEntry < ActiveRecord::Base
     relation = where(user: user)
       .includes(:tags)
       .includes(:item_type)
-      .order(purchase_date: :desc)
+      .order(purchase_date: :desc, created_at: :desc)
 
     unless begin_date.blank?
       relation = relation.where("purchase_date >= ?", begin_date)
