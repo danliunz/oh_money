@@ -1,7 +1,7 @@
 <div class="table-responsive">
 <table class="table table-hover expense_history_table">
   <tbody>
-    <% expense_entries_by_date = group_expense_entries_by_purchase_date(expense_history.entries) %>
+    <% expense_entries_by_date = group_expense_entries_by_purchase_date(expense_history) %>
     <% expense_entries_by_date.each do |expense_entries_of_one_day| %>
       <tr>
         <td colspan="3" class="active date-header">

@@ -1,7 +1,7 @@
 class ExpenseHistory
   include ActiveModel::Model
 
-  attr_accessor :begin_date, :end_date, :entries
+  attr_accessor :begin_date, :end_date, :date_to_cost_sum, :entries
 
   validates_each :begin_date, :end_date, allow_blank: true do |record, attr, value|
     begin

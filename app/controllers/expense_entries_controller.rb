@@ -51,18 +51,11 @@ class ExpenseEntriesController < ApplicationController
     if show_expense_history_criteria_form_only?
       create_empty_expense_history
     else
-      @expense_history = ExpenseHistory.new(expense_history_params)
+      @expense_history = CreateExpenseHistory.new(current_user, expense_history_params).call
 
-      if @expense_history.valid?
-        @expense_history.entries = ExpenseEntry.history(
-          current_user, @expense_history.begin_date, @expense_history.end_date
-        )
-      else
-        @expense_history.entries = ExpenseEntry.none
-      end
+      @expense_history.entries =
+        @expense_history.entries.paginate(page: params[:page], per_page: 10)
     end
-
-    paginate_expense_entries
   end
 
   def delete
@@ -97,11 +90,6 @@ class ExpenseEntriesController < ApplicationController
 
   def create_empty_expense_history
     @expense_history = ExpenseHistory.new(entries: ExpenseEntry.none)
-  end
-
-  def paginate_expense_entries
-    @expense_history.entries =
-      @expense_history.entries.paginate(page: params[:page], per_page: 10)
   end
 
   def create_blank_expense_entry

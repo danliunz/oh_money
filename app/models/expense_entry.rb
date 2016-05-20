@@ -13,20 +13,22 @@ class ExpenseEntry < ActiveRecord::Base
   validates_presence_of :item_type, :user
   validates_associated :item_type, :tags
 
+  scope :at_or_after_date, ->(date) { where("purchase_date >=?", date) unless date.blank? }
+  scope :at_or_before_date, ->(date) { where("purchase_date <= ?", date) unless date.blank? }
+
   scope :history, ->(user, begin_date, end_date) do
-    relation = where(user: user)
+     where(user: user)
+      .at_or_after_date(begin_date)
+      .at_or_before_date(end_date)
       .includes(:tags)
       .includes(:item_type)
       .order(purchase_date: :desc, created_at: :desc)
+  end
 
-    unless begin_date.blank?
-      relation = relation.where("purchase_date >= ?", begin_date)
-    end
-
-    unless end_date.blank?
-      relation = relation.where("purchase_date <= ?", end_date)
-    end
-
-    relation
+  scope :group_cost_by_day, ->(user, begin_date, end_date) do
+    group(:purchase_date)
+      .at_or_after_date(begin_date)
+      .at_or_before_date(end_date)
+      .pluck("purchase_date, sum(cost)")
   end
 end
