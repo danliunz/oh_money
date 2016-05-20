@@ -52,10 +52,10 @@ class ExpenseEntriesController < ApplicationController
       create_empty_expense_history
     else
       @expense_history = CreateExpenseHistory.new(current_user, expense_history_params).call
-
-      @expense_history.entries =
-        @expense_history.entries.paginate(page: params[:page], per_page: 10)
     end
+
+    @expense_history.entries =
+      @expense_history.entries.paginate(page: params[:page], per_page: 10)
   end
 
   def delete
