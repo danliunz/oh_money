@@ -18,8 +18,4 @@ module ExpenseEntriesHelper
 
     expense_entries_by_date
   end
-
-  def cost_to_display(cost)
-    number_to_currency(cost / ExpenseEntry::CENTS_MULTIPLIER)
-  end
 end

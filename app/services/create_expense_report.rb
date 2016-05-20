@@ -10,14 +10,15 @@ class CreateExpenseReport
   def call
     @report = ExpenseReport.new(@criteria)
 
-    update_report_by_expense_history
+    query_expense_history
+    calculate_average_cost_by_time_unit
 
     @report
   end
 
   private
 
-  def update_report_by_expense_history
+  def query_expense_history
     expense_history = expense_history(item_type_and_its_descendants)
 
     if expense_history.any?

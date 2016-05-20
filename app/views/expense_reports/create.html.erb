@@ -20,6 +20,10 @@
         <td><%= date_to_display(@report.criteria.end_date) %></td>
       </tr>
       <tr>
+        <th>Average Cost</th>
+        <td><%= cost_to_display(@report.average_cost_by_time_unit) %></td>
+      </tr>
+      <tr>
         <th colspan="2">
           <%= link_to "Back", expense_report_form_path, class: "btn btn-default" %>
        </th>
@@ -36,7 +40,7 @@
             data: [
               {
                 type: "spline",
-                dataPoints: [ <%= raw aggregated_data_as_json(@report) %> ]
+                dataPoints: [ <%= raw aggregated_data_as_json %> ]
               }
             ]
          });
