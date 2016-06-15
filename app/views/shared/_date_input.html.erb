@@ -9,8 +9,12 @@
     <script type="text/javascript">
       $(function() {
         $('#<%= field_name %>_picker').datetimepicker({
-          <%= "defaultDate: #{default_date}," if defined?(default_date) %>
-          useCurrent: false,
+          <% if defined?(default_date) && default_date %>
+            <%= raw "defaultDate: '#{default_date}'," %>
+          <% else %>
+            <%= "defaultDate: new Date()," %>
+          <% end %>
+
           format : 'YYYY-MM-DD',
           ignoreReadonly : true
         });

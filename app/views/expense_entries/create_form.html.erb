@@ -3,11 +3,12 @@
 <div class="container">
   <h4 class="text-center">Add Your Expense</h4>
   <hr/>
-  <% if @last_item_type %>
+  <% if @last_expense_entry %>
+    <% last_item_type = @last_expense_entry.item_type %>
     <row>
       <div class="col-sm-offset-3 col-sm-8 alert alert-success">
-        Expense entry for <%= @last_item_type.name %> is saved<br/>
-        Edit <%= link_to "#{@last_item_type.name}", show_item_type_path(@last_item_type) %>
+        Expense entry for <%= last_item_type.name %> is saved<br/>
+        Edit <%= link_to "#{last_item_type.name}", show_item_type_path(last_item_type) %>
         for better reporting
       </div>
     </row>
@@ -31,8 +32,11 @@
     <%= render partial: "cost_input", locals: { form_builder: f } %>
 
     <%= render partial: "/shared/date_input",
-      locals: { form_builder: f, field_name: :purchase_date,
-                label_text: "When", default_date: "new Date()" } %>
+      locals: { form_builder: f,
+                field_name: :purchase_date,
+                label_text: "When",
+                default_date: @last_expense_entry && @last_expense_entry.purchase_date.to_date.to_s }
+    %>
 
     <%= render partial: "tags_input", locals: { form_builder: f } %>
 

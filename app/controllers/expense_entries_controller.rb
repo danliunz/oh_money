@@ -2,8 +2,8 @@ class ExpenseEntriesController < ApplicationController
   before_action :require_authorized_user, only: [:show, :edit, :delete]
 
   def create_form
-    if flash[:last_item_type_id]
-      @last_item_type = ItemType.find(flash[:last_item_type_id])
+    if flash[:last_expense_entry_id]
+      @last_expense_entry = ExpenseEntry.find(flash[:last_expense_entry_id])
     end
 
     create_blank_expense_entry
@@ -16,7 +16,7 @@ class ExpenseEntriesController < ApplicationController
     if create_expense_entry.call
       expense_entry = create_expense_entry.value
 
-      flash[:last_item_type_id] = expense_entry.item_type.id
+      flash[:last_expense_entry_id] = expense_entry.id
       redirect_to create_expense_entry_url
     else
       @expense_entry = create_expense_entry.value
