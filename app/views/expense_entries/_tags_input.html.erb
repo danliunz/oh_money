@@ -18,7 +18,7 @@
     </div>
   </div>
 
-  <!-- popover to remove tag -->
+  <!-- panel showing all tags, with popover to remove tag -->
   <div class="col-sm-offset-3 col-sm-8">
     <div class="tags-panel">
       <!-- popover of the tag element must be initialized by javascript -->
@@ -26,6 +26,13 @@
         $(document).ready(function() {
           <% form_builder.object.tags.each do |tag| %>
             add_tag('<%= tag.name %>');
+          <% end %>
+
+          <!-- for better user experience, pre-add tags from last expense entry so we don't have to repeat -->
+          <% if defined?(tags_of_last_expense_entry) && tags_of_last_expense_entry %>
+            <% tags_of_last_expense_entry.each do |tag| %>
+              add_tag('<%= tag.name %>')
+            <% end %>
           <% end %>
         });
       </script>

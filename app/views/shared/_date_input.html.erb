@@ -12,7 +12,7 @@
           <% if defined?(default_date) && default_date %>
             <%= raw "defaultDate: '#{default_date}'," %>
           <% else %>
-            <%= "defaultDate: new Date()," %>
+            <%= "userCurrent: false," %>
           <% end %>
 
           format : 'YYYY-MM-DD',
