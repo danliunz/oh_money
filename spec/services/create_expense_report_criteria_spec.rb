@@ -7,20 +7,25 @@ RSpec.describe CreateExpenseReportCriteria, type: :service do
   subject(:service) { described_class.new(user, params) }
 
   describe "#call" do
-    context "when another user has item of the same name" do
+    context "when multiple users own items of the same name" do
       let(:params) do
-        {
-          root_item_type: { name: "wine" }
-        }
+        { root_item_type: { name: "wine" } }
       end
 
-      it "succeeds" do
+      it "chooses the item type belonging to the specified user" do
         expect(service.call).to be true
+        expect(service.value.root_item_type).to eq(ItemType.find_by(name: "wine", user: user))
+      end
+    end
+
+    context "when anothe user owns a tag of the same name" do
+      let(:params) do
+        { tag: { name: "@countdown" } }
       end
 
-      it "chooses the item type belonging to current user" do
-        service.call
-        expect(service.value.root_item_type).to eq(ItemType.find_by(name: "wine", user: user))
+      it "chooses the tag belonging to the specified user" do
+        expect(service.call).to be true
+        expect(service.value.tag). to eq(Tag.find_by(name: "@countdown", user: user))
       end
     end
 

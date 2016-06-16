@@ -9,3 +9,7 @@ at_newworld:
 birthday:
   name: birthday
   user: danliu
+
+at_countdown_of_another_user:
+  name: '@countdown'
+  user: jennifer

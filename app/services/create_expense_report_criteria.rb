@@ -45,7 +45,7 @@ class CreateExpenseReportCriteria
     tag_name = @params[:tag] && @params[:tag][:name]
 
     unless tag_name.blank?
-      tag = Tag.find_by_name(tag_name)
+      tag = Tag.find_by(name: tag_name, user: user)
 
       if tag
         @criteria.tag = tag
