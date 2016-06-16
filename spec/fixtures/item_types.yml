@@ -36,3 +36,7 @@ beer_I_do_not_like:
   name: "beer I don't like"
   user: jennifer
 
+wine_of_another_user:
+  name: "wine"
+  user: jennifer
+

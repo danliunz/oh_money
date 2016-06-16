@@ -7,10 +7,27 @@ RSpec.describe CreateExpenseReportCriteria, type: :service do
   subject(:service) { described_class.new(user, params) }
 
   describe "#call" do
+    context "when another user has item of the same name" do
+      let(:params) do
+        {
+          root_item_type: { name: "wine" }
+        }
+      end
+
+      it "succeeds" do
+        expect(service.call).to be true
+      end
+
+      it "chooses the item type belonging to current user" do
+        service.call
+        expect(service.value.root_item_type).to eq(ItemType.find_by(name: "wine", user: user))
+      end
+    end
+
     context "when unrecongizned item_type name is given " do
       let(:params) do
         {
-          root_item_type: { name: "not_exist" },
+          root_item_type: { name: "not_exist" }
         }
       end
 

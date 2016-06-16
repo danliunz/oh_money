@@ -31,7 +31,7 @@ class CreateExpenseReportCriteria
     item_type_name = @params[:root_item_type] && @params[:root_item_type][:name]
 
     unless item_type_name.blank?
-      item_type = ItemType.find_by_name(item_type_name)
+      item_type = ItemType.find_by(name: item_type_name, user: user)
 
       if item_type
         @criteria.root_item_type = item_type
