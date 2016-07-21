@@ -6,6 +6,7 @@ RSpec.describe CreateExpenseReport, type: :service do
   let(:user) { users(:danliu) }
   let(:aggregation_mode) { "daily" }
   let(:tag) { nil }
+  let(:high_price_threshold)  { nil }
 
   let(:report_criteria) do
      ExpenseReport::Criteria.new(
@@ -18,7 +19,10 @@ RSpec.describe CreateExpenseReport, type: :service do
      )
   end
   subject(:service)  { described_class.new(report_criteria) }
-  before(:each) { @report = service.call }
+  before(:each) do
+    CreateExpenseReport::HIGH_PRICE_THRESHOLD = high_price_threshold if high_price_threshold
+    @report = service.call
+  end
 
   describe "#call" do
     describe "calculates average cost" do
@@ -182,12 +186,14 @@ RSpec.describe CreateExpenseReport, type: :service do
 
       it "returns report of whole expense history on all items" do
         expense_history = @report.expense_history
-        expect(expense_history.length).to eq(5)
+        expect(expense_history.length).to eq(6)
         expect(expense_history[Date.parse("2016-01-01")]).to eq(1000 + 2000)
         expect(expense_history[Date.parse("2016-01-02")]).to eq(1000)
         expect(expense_history[Date.parse("2016-01-03")]).to eq(500 + 1510)
+        expect(expense_history[Date.parse("2016-01-04")]).to eq(0)
         expect(expense_history[Date.parse("2016-01-05")]).to eq(450)
         expect(expense_history[Date.parse("2016-01-06")]).to eq(1300)
+        expect(expense_history[Date.parse("2016-01-07")]).to eq(400 + 1100 + 500)
       end
     end
 
@@ -279,6 +285,33 @@ RSpec.describe CreateExpenseReport, type: :service do
           expect(expense_history[201512]).to eq(0)
           expect(expense_history[201601]).to eq(1000 + 2000 + 1000 +  500 + 450)
         end
+      end
+    end
+
+    describe "purchase with high price is evenly distributed to all time units to avoid spike" do
+      # by overriding default threshold, we ensure expense entries in fixture
+      # represent all possible combinations of 'low-price' and 'high-price' entries within each day
+      let(:high_price_threshold) { 499 }
+
+      let(:root_item_type) { nil }
+      let(:begin_date) { nil }
+      let(:end_date) { nil }
+      let(:aggregation_mode) { "daily" }
+
+      it "evently distributes cost from high-price purchases into all time units" do
+        expense_history = @report.expense_history
+
+        expect(expense_history.size).to eq(6)
+
+        # average cost calculated from all high-price purchases then distributed to all time units:
+        # ((1000 + 2000 + 1000 + 500 + 1510 + 1300 + 1100 + 500 ) / 7.0).round = 1273
+        expect(expense_history[Date.parse("2016-01-01")]).to eq(1273)
+        expect(expense_history[Date.parse("2016-01-02")]).to eq(1273)
+        expect(expense_history[Date.parse("2016-01-03")]).to eq(1273)
+        expect(expense_history[Date.parse("2016-01-04")]).to eq(1273)
+        expect(expense_history[Date.parse("2016-01-05")]).to eq(450 + 1273)
+        expect(expense_history[Date.parse("2016-01-06")]).to eq(1273)
+        expect(expense_history[Date.parse("2016-01-07")]).to eq(400 + 1273)
       end
     end
   end

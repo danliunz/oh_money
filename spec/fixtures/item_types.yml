@@ -23,6 +23,10 @@ premium_craft_beer:
   name: "premium craft beer"
   user: danliu
 
+milk:
+  name: milk
+  user: danliu
+
 drink:
   name: drink
   user: danliu

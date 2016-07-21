@@ -14,7 +14,7 @@ RSpec.describe ExpenseEntry, type: :model do
       let(:end_date) { " " }
 
       it "returns all expense entries for the user" do
-        expect(@expense_entries.size).to eq(7)
+        expect(@expense_entries.size).to eq(10)
       end
 
       it "returns expense entries ordered by purchase_date descendingly" do
@@ -29,7 +29,7 @@ RSpec.describe ExpenseEntry, type: :model do
       let(:end_date) { "" }
 
       it "returns expense entries after the begin_date" do
-        expect(@expense_entries.size).to eq(5)
+        expect(@expense_entries.size).to eq(8)
         expect(@expense_entries.last.item_type.name).to eq("wine")
       end
     end

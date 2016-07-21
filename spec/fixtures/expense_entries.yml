@@ -41,6 +41,24 @@ entry_7:
   purchase_date: 2016-01-06
 
 entry_8:
+  user: danliu
+  item_type: milk
+  cost: 400
+  purchase_date: 2016-01-07
+
+entry_9:
+  user: danliu
+  item_type: milk
+  cost: 1100
+  purchase_date: 2016-01-07
+
+entry_10:
+  user: danliu
+  item_type: milk
+  cost: 500
+  purchase_date: 2016-01-07
+
+entry_11:
   user: jennifer
   item_type: wine
   cost: 1500

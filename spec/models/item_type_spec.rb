@@ -43,7 +43,7 @@ RSpec.describe ItemType, type: :model do
 
     it "returns all item types with no parent" do
       expect(ItemType.roots(user).map(&:name)).to contain_exactly(
-        "beer pong", "drink", "panda"
+        "beer pong", "drink", "panda", "milk"
       )
     end
   end

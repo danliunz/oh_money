@@ -1,5 +1,6 @@
 module ReportAggregationPolicy
-  def aggregate_by_sql(db_relation, aggregation_mode)
+  # return array of [time_unit, average_cost]
+  def aggregate_cost_by_time_unit(db_relation, aggregation_mode)
     db_relation = db_relation.group("time_unit").order("time_unit asc")
 
     case aggregation_mode
