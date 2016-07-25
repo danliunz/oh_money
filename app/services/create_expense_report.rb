@@ -1,7 +1,7 @@
 class CreateExpenseReport
   include ReportAggregationPolicy
 
-  HIGH_PRICE_THRESHOLD = 200 * 100 # $20
+  HIGH_PRICE_THRESHOLD = 150 * 100 # $150
 
   attr_reader :criteria
 
