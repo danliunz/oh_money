@@ -10,6 +10,7 @@ Things you may want to cover:
 * System dependencies
 
 * Configuration
+1. Before deploying to heroku, remember to run `bundle exec rake assets:precompile` first
 
 * Database creation
 
