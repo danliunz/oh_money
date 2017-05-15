@@ -25,6 +25,9 @@ class ExpenseReportsController < ApplicationController
     create_empty_report_criteria
   end
 
+  def create_v2
+  end
+
   private
 
   def report_criteria_params
