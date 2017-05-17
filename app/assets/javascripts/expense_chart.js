@@ -11,9 +11,9 @@ function ExpenseChart(options) {
   this.column_gap_width = 1;
   this.columns_bounding_box = {
     top: 20,
-    left: 20,
+    left: 30,
     bottom: 20,
-    right: 20,
+    right: 10,
     width: function() { return options.canvas.width() - this.left - this.right; },
     height: function() { return options.canvas.height() - this.top - this.bottom; }
   };
@@ -87,17 +87,42 @@ ExpenseChart.prototype.render_coordinate_system = function() {
 
   // 1. render horizontal axis lines
   var number_of_horizontal_lines = 5;
-  var width_of_horizontal_line = 3;
-  var horizontal_line_distance = (this.$canvas.height() - number_of_horizontal_lines * width_of_horizontal_line) / (number_of_horizontal_lines + 1);
+  var width_of_horizontal_line = 1;
+  var horizontal_line_gap_width = (this.columns_bounding_box.height() - number_of_horizontal_lines * width_of_horizontal_line) / (number_of_horizontal_lines - 1);
+
+  ctx.save();
 
   ctx.beginPath();
+
+  // note when line width > 1, ctx.lineTo(x, y) treats y as middle of line cap
+  ctx.translate(this.columns_bounding_box.left, this.columns_bounding_box.top + width_of_horizontal_line / 2);
+  ctx.lineWidth = width_of_horizontal_line;
   ctx.strokeStyle = '#a7aaaf';
-  for(var i = 1; i <= number_of_horizontal_lines; i++) {
-    var y = i * horizontal_line_distance + (i - 1) * width_of_horizontal_line;
+  for(var i = 0; i < number_of_horizontal_lines; i++) {
+    var y = i * (horizontal_line_gap_width + width_of_horizontal_line);
     ctx.moveTo(0, y);
-    ctx.lineTo(this.$canvas.width(), y);
+    ctx.lineTo(this.columns_bounding_box.width(), y);
   }
   ctx.stroke();
+  ctx.restore();
+
+  ctx.save();
+  ctx.font = $('body').css('font');
+  ctx.textBaseline = 'middle';
+
+  // 2. render the number associated with each horizontal axis
+  var base_amount = Math.ceil(this.max_amount / (number_of_horizontal_lines - 1));
+  this.max_amount_in_cooridnate_system = base_amount * (number_of_horizontal_lines - 1);
+
+  for(var i = 0; i < number_of_horizontal_lines; i++) {
+    var amount = base_amount * (number_of_horizontal_lines - 1 - i);
+    var x = 5;
+    var y = this.columns_bounding_box.top + i * (horizontal_line_gap_width + width_of_horizontal_line);
+
+    ctx.fillText(amount, x, y, this.columns_bounding_box.left - x);
+  }
+
+  ctx.restore();
 };
 
 ExpenseChart.prototype.render_column = function(column_index) {
@@ -111,7 +136,7 @@ ExpenseChart.prototype.render_column = function(column_index) {
   ctx.fillStyle = (column_index == this.active_column_index ? '#5b92ea' : '#1356c1');
 
   var x = this.column_gap_width + (this.column_gap_width + this.column_width) * column_index;
-  var height = bounding_box.height() / this.max_amount * this.data[column_index].amount;
+  var height = bounding_box.height() / this.max_amount_in_cooridnate_system * this.data[column_index].amount;
   var y = bounding_box.height() - height;
 
   ctx.fillRect(x, y, this.column_width, height);
