@@ -16,9 +16,9 @@ function ExpenseChart(options) {
   this.column_gap_width = 1;
   this.columns_bounding_box = {
     top: 20,
-    left: 30,
+    left: 40,
     bottom: 20,
-    right: 10,
+    right: 40,
     width: function() { return options.canvas.width() - this.left - this.right; },
     height: function() { return options.canvas.height() - this.top - this.bottom; }
   };
@@ -80,12 +80,20 @@ ExpenseChart.prototype.setup_events = function() {
     $(this).css('cursor', 'default');
   });
 
-  this.$canvas.parent().mousemove(function(event) {
+  this.$canvas.mouseout(function(event) {
+    chart.active_column_index = -1;
+    chart.hide_float_tip();
+
+    chart.render();
+  });
+
+  this.$canvas.mousemove(function(event) {
     if(chart.drag_event.started) return;
 
     // find the active column under mouse pointer, hightlight it and show float tip
     var x = event.pageX - $(this).offset().left;
     var y = event.pageY - $(this).offset().top;
+    chart.render_float_tip(x, y);
 
     var index = chart.get_column(x, y);
     if (chart.active_column_index === index) return;
@@ -95,8 +103,6 @@ ExpenseChart.prototype.setup_events = function() {
 
     chart.render_column(prior_active_column_index);
     chart.render_column(chart.active_column_index);
-
-    chart.render_float_tip(x, y);
 
     debug('n = ' + index);
   });
@@ -145,8 +151,8 @@ ExpenseChart.prototype.render_coordinate_system = function() {
   ctx.strokeStyle = '#a7aaaf';
   for(var i = 0; i < number_of_horizontal_lines; i++) {
     var y = i * (horizontal_line_gap_width + width_of_horizontal_line);
-    ctx.moveTo(0, y);
-    ctx.lineTo(this.columns_bounding_box.width(), y);
+    ctx.moveTo(-10, y);
+    ctx.lineTo(this.columns_bounding_box.width() + 10, y);
   }
   ctx.stroke();
   ctx.restore();
@@ -159,13 +165,35 @@ ExpenseChart.prototype.render_coordinate_system = function() {
   var base_amount = Math.ceil(this.max_amount / (number_of_horizontal_lines - 1));
   this.max_amount_in_cooridnate_system = base_amount * (number_of_horizontal_lines - 1);
 
-  for(var i = 0; i < number_of_horizontal_lines; i++) {
+  for(var i = 0; i < number_of_horizontal_lines - 1; i++) {
     var amount = base_amount * (number_of_horizontal_lines - 1 - i);
     var x = 5;
     var y = this.columns_bounding_box.top + i * (horizontal_line_gap_width + width_of_horizontal_line);
 
     ctx.fillText(amount, x, y, this.columns_bounding_box.left - x);
   }
+
+  ctx.restore();
+
+  // 3. render dates at bottom of the chart
+  ctx.save();
+  ctx.font = $('body').css('font');
+  ctx.textBaseline = 'hanging';
+  ctx.textAlign = 'center';
+
+  var indexes = [
+    this.viewport.start_column_index,
+    this.viewport.end_column_index,
+    Math.ceil((this.viewport.start_column_index + this.viewport.end_column_index) / 2)
+  ];
+  for(var i = 0; i < indexes.length; i++) {
+    var date = this.data[indexes[i]].date;
+    ctx.fillText(
+      date.toLocaleDateString(),
+      this.columns_bounding_box.left + this.columns_bounding_box.width() * i / (indexes.length - 1),
+      this.$canvas.height() - this.columns_bounding_box.bottom + 5
+    );
+  };
 
   ctx.restore();
 };
