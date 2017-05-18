@@ -1,3 +1,7 @@
+function debug(text) {
+  $('#console').empty().text(text);
+}
+
 function ExpenseChart(options) {
   if(!options.canvas) {
     throw "ExpenseChart canvas not specified";
@@ -7,6 +11,7 @@ function ExpenseChart(options) {
   this.max_amount = Math.max.apply(null, this.data.map(function(obj) { return obj.amount; }));
 
   this.$canvas = options.canvas;
+
   this.column_width = 5;
   this.column_gap_width = 1;
   this.columns_bounding_box = {
@@ -17,21 +22,73 @@ function ExpenseChart(options) {
     width: function() { return options.canvas.width() - this.left - this.right; },
     height: function() { return options.canvas.height() - this.top - this.bottom; }
   };
-  
+
   this.active_column_index = -1;
+
+  this.drag_event = {};
+  this.viewport = { start_column_index: 0 };
+  this.calculate_viewport();
+
   this.setup_events();
 }
+
+ExpenseChart.prototype.calculate_viewport = function(column_offset = 0) {
+  var max_num_of_columns_fitting_bounding_box =
+    Math.ceil(this.columns_bounding_box.width() / (this.column_width + this.column_gap_width));
+
+  this.viewport.start_column_index += column_offset;
+  if(this.viewport.start_column_index + max_num_of_columns_fitting_bounding_box >= this.data.length) {
+    this.viewport.start_column_index = this.data.length - max_num_of_columns_fitting_bounding_box;
+  }
+  if(this.viewport.start_column_index < 0) {
+    this.viewport.start_column_index = 0;
+  }
+
+  this.viewport.end_column_index = Math.min(
+    this.viewport.start_column_index + max_num_of_columns_fitting_bounding_box - 1,
+    this.data.length - 1
+  );
+};
 
 ExpenseChart.prototype.setup_events = function() {
   var chart = this;
   var ctx = this.$canvas.get(0).getContext('2d');
 
+  this.$canvas.mousedown(function(event) {
+    chart.active_column_index = -1;
+    chart.hide_float_tip();
+
+    chart.drag_event.started = true;
+    chart.drag_event.original_pos = { x: event.pageX, y: event.pageY };
+
+    $(this).css('cursor', 'move');
+  });
+
+  this.$canvas.mouseup(function(event) {
+    var original_pos = chart.drag_event.original_pos;
+    var delta = { x: event.pageX - original_pos.x, y: event.pageY - original_pos.y };
+    debug('delta (x: ' + delta.x + ', y: ' + delta.y + ')');
+
+    // render updated viewport based on how far the user drags the mouse on the canvas
+    var column_offset = Math.ceil(delta.x / (chart.column_width + chart.column_gap_width));
+    chart.calculate_viewport(column_offset);
+    chart.render();
+
+    chart.drag_event.started = false;
+    chart.drag_event.original_pos = null;
+
+    $(this).css('cursor', 'default');
+  });
+
   this.$canvas.parent().mousemove(function(event) {
+    if(chart.drag_event.started) return;
+
+    // find the active column under mouse pointer, hightlight it and show float tip
     var x = event.pageX - $(this).offset().left;
     var y = event.pageY - $(this).offset().top;
 
     var index = chart.get_column(x, y);
-    if(chart.active_column_index === index) return;
+    if (chart.active_column_index === index) return;
 
     var prior_active_column_index = chart.active_column_index;
     chart.active_column_index = index;
@@ -41,33 +98,17 @@ ExpenseChart.prototype.setup_events = function() {
 
     chart.render_float_tip(x, y);
 
-    $('#console').empty();
-    if(index >= 0) {
-      $('#console').text('n = ' + index);
-    }
+    debug('n = ' + index);
   });
 };
 
 ExpenseChart.prototype.get_column = function(x, y) {
   x -= this.columns_bounding_box.left;
+  if(x < 0) return -1;
 
-  var n = Math.ceil(x / (this.column_width + this.column_gap_width));
-  if(x >= n * this.column_gap_width + (n - 1) * this.column_width && n <= this.data.length) {
-    return n - 1;
-  } else {
-    return -1;
-  }
-
-  // if(n > this.data.length || x < n * this.column_gap_width + (n - 1) * this.column_width) {
-    // return -1;
-  // }
-
-  // var height = this.$canvas.height() / this.max_amount * this.data[n - 1].amount;
-  // if(y >= this.$canvas.height() - height && y <= this.$canvas.height()) {
-    // return n - 1;
-  // } else {
-    // return -1;
-  // }
+  var column_index_in_viewport = Math.floor(x / (this.column_width + this.column_gap_width));
+  var column_index = column_index_in_viewport + this.viewport.start_column_index;
+  return column_index <= this.viewport.end_column_index ? column_index : -1;
 };
 
 ExpenseChart.prototype.render_float_tip = function(mouse_x, mouse_y) {
@@ -80,6 +121,10 @@ ExpenseChart.prototype.render_float_tip = function(mouse_x, mouse_y) {
   } else {
     $tip.hide();
   }
+};
+
+ExpenseChart.prototype.hide_float_tip = function() {
+  $('#float_tip').hide();
 };
 
 ExpenseChart.prototype.render_coordinate_system = function() {
@@ -135,7 +180,8 @@ ExpenseChart.prototype.render_column = function(column_index) {
   ctx.translate(bounding_box.left, bounding_box.top);
   ctx.fillStyle = (column_index == this.active_column_index ? '#5b92ea' : '#1356c1');
 
-  var x = this.column_gap_width + (this.column_gap_width + this.column_width) * column_index;
+  var column_index_in_viewport = column_index - this.viewport.start_column_index;
+  var x = this.column_gap_width + (this.column_gap_width + this.column_width) * column_index_in_viewport;
   var height = bounding_box.height() / this.max_amount_in_cooridnate_system * this.data[column_index].amount;
   var y = bounding_box.height() - height;
 
@@ -145,12 +191,14 @@ ExpenseChart.prototype.render_column = function(column_index) {
 };
 
 ExpenseChart.prototype.render_columns = function() {
-  for(var i = 0; i < this.data.length; i++) {
+  for(var i = this.viewport.start_column_index; i <= this.viewport.end_column_index; i++) {
     this.render_column(i);
   }
 };
 
 ExpenseChart.prototype.render = function() {
+  this.$canvas.get(0).getContext('2d').clearRect(0, 0, this.$canvas.width(), this.$canvas.height());
+
   this.render_coordinate_system();
   this.render_columns();
 };

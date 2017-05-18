@@ -17,10 +17,10 @@
    function get_expense_data() {
      data = [];
 
-     for(var i = 0; i < 100; ++i) {
+     for(var i = 0; i < 150; ++i) {
        var date = new Date();
        date.setDate(date.getDate() + i);
-       data.push({ date: date, amount: (i < 50 ? i + 1 : 100 - i)});
+       data.push({ date: date, amount: (i < 75 ? i + 1 : 150 - i)});
      }
 
      return data;
