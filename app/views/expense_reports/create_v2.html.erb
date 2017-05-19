@@ -1,14 +1,47 @@
 <%= javascript_include_tag "expense_chart" %>
+<div class="container-fluid">
+  <h3 class="text-center">Expense Report</h3>
 
-<div id="expense_chart">
-  <script>
-   $(function() {
-     var chart = new ExpenseChart({
-       data: [ <%= raw aggregated_data_as_json_v2 %> ],
-       $root_element: $('#expense_chart')
+  <table class="table table-striped expense_report_criteria_table">
+    <tbody>
+      <tr>
+        <th>What you buy</th>
+        <td><%= @report.criteria.root_item_type.name || "<all>" %></td>
+      </tr>
+      <tr>
+        <th>Tag of the purchases</th>
+        <td><%= @report.criteria.tag.name || "<all>" %></td>
+      </tr>
+      <tr>
+        <th>Start date</th>
+        <td><%= date_to_display(@report.criteria.begin_date) %></td>
+      </tr>
+      <tr>
+        <th>End date</th>
+        <td><%= date_to_display(@report.criteria.end_date) %></td>
+      </tr>
+      <tr>
+        <th>Average Cost</th>
+        <td><%= cost_to_display(@report.average_cost_by_time_unit) %></td>
+      </tr>
+      <tr>
+        <th colspan="2">
+          <%= link_to "Back", expense_report_form_path, class: "btn btn-default" %>
+       </th>
+      </tr>
+    </tbody>
+  </table>
+
+  <div id="expense_chart">
+    <script>
+     $(function() {
+       var chart = new ExpenseChart({
+         data: [ <%= raw aggregated_data_as_json_v2 %> ],
+         $root_element: $('#expense_chart')
+       });
+
+       chart.render();
      });
-
-     chart.render();
-   });
-  </script>
+    </script>
+  </div>
 </div>

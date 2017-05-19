@@ -15,7 +15,7 @@ function ExpenseChart(options) {
   this.$float_tip =$('<div class="float_tip"></div>')
     .appendTo(this.$root_element);
 
-  this.column_width = 3;
+  this.column_width = 5;
   this.column_gap_width = 1;
   this.columns_bounding_box = {
     top: 20,
