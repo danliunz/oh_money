@@ -3,14 +3,17 @@ function debug(text) {
 }
 
 function ExpenseChart(options) {
-  if(!options.canvas) {
-    throw "ExpenseChart canvas not specified";
-  }
-
   this.data = options.data || [];
   this.max_amount = Math.max.apply(null, this.data.map(function(obj) { return obj.amount; }));
 
-  this.$canvas = options.canvas;
+  this.$root_element = options.$root_element;
+  this.$canvas = $('<canvas></canvas>')
+    .attr({ width: this.$root_element.width(), height: this.$root_element.height() })
+    .width(this.$root_element.width())
+    .height(this.$root_element.height())
+    .prependTo(this.$root_element);
+  this.$float_tip =$('<div class="float_tip"></div>')
+    .appendTo(this.$root_element);
 
   this.column_width = 5;
   this.column_gap_width = 1;
@@ -19,8 +22,8 @@ function ExpenseChart(options) {
     left: 40,
     bottom: 20,
     right: 40,
-    width: function() { return options.canvas.width() - this.left - this.right; },
-    height: function() { return options.canvas.height() - this.top - this.bottom; }
+    width: function() { return options.$root_element.width() - this.left - this.right; },
+    height: function() { return options.$root_element.height() - this.top - this.bottom; }
   };
 
   this.active_column_index = -1;
@@ -122,7 +125,7 @@ ExpenseChart.prototype.get_column = function(x, y) {
 };
 
 ExpenseChart.prototype.render_float_tip = function(mouse_x, mouse_y) {
-  var $tip = $('#float_tip'); // TODO: create the float tip element dynamically so users don't have to specify them in HTML
+  var $tip = this.$float_tip;
   if(this.active_column_index >= 0) {
     $tip.css('left', (mouse_x + 15) + 'px');
     $tip.css('top', (mouse_y- 10) + 'px');
@@ -134,7 +137,7 @@ ExpenseChart.prototype.render_float_tip = function(mouse_x, mouse_y) {
 };
 
 ExpenseChart.prototype.hide_float_tip = function() {
-  $('#float_tip').hide();
+  this.$float_tip.hide();
 };
 
 ExpenseChart.prototype.render_coordinate_system = function() {

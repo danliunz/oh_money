@@ -1,20 +1,14 @@
 <%= javascript_include_tag "expense_chart" %>
 
 <div id="expense_chart">
-  <canvas width="600" height="300"></canvas>
-  <div id="float_tip"></div>
-
   <script>
    $(function() {
      var chart = new ExpenseChart({
        data: [ <%= raw aggregated_data_as_json_v2 %> ],
-       canvas: $('#expense_chart canvas'),
+       $root_element: $('#expense_chart')
      });
 
      chart.render();
    });
   </script>
 </div>
-
-<!-- debugging console -->
-<div id="console" style="width: 600px; height: 100px; border: 1px solid blue; padding: 10px; margin-left: 20px; margin-top: 20px;"/>
