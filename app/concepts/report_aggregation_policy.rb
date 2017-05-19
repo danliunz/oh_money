@@ -69,6 +69,13 @@ module ReportAggregationPolicy
     end
   end
 
+  def aggregated_data_as_json_v2
+    (@report.begin_time_unit .. @report.end_time_unit).map do |date|
+      "{ date: new Date(#{date.year}, #{date.month - 1}, #{date.day})," +
+      "  amount: #{@report.expense_history[date] / ExpenseEntry::CENTS_MULTIPLIER} }"
+    end.join(",")
+  end
+
   private
 
   def get_yearweek(date)

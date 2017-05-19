@@ -36,7 +36,7 @@ ExpenseChart.prototype.calculate_viewport = function(column_offset = 0) {
   var max_num_of_columns_fitting_bounding_box =
     Math.ceil(this.columns_bounding_box.width() / (this.column_width + this.column_gap_width));
 
-  this.viewport.start_column_index += column_offset;
+  this.viewport.start_column_index -= column_offset;
   if(this.viewport.start_column_index + max_num_of_columns_fitting_bounding_box >= this.data.length) {
     this.viewport.start_column_index = this.data.length - max_num_of_columns_fitting_bounding_box;
   }
@@ -84,6 +84,10 @@ ExpenseChart.prototype.setup_events = function() {
     chart.active_column_index = -1;
     chart.hide_float_tip();
 
+    chart.drag_event.started = false;
+    chart.drag_event.original_pos = null;
+    $(this).css('cursor', 'default');
+
     chart.render();
   });
 
@@ -120,7 +124,7 @@ ExpenseChart.prototype.get_column = function(x, y) {
 ExpenseChart.prototype.render_float_tip = function(mouse_x, mouse_y) {
   var $tip = $('#float_tip'); // TODO: create the float tip element dynamically so users don't have to specify them in HTML
   if(this.active_column_index >= 0) {
-    $tip.css('left', (mouse_x + 10) + 'px');
+    $tip.css('left', (mouse_x + 15) + 'px');
     $tip.css('top', (mouse_y- 10) + 'px');
     $tip.text('date: ' + this.data[this.active_column_index].date.toLocaleDateString() + ', amount: ' + this.data[this.active_column_index].amount);
     $tip.show();
@@ -183,8 +187,8 @@ ExpenseChart.prototype.render_coordinate_system = function() {
 
   var indexes = [
     this.viewport.start_column_index,
-    this.viewport.end_column_index,
-    Math.ceil((this.viewport.start_column_index + this.viewport.end_column_index) / 2)
+    Math.ceil((this.viewport.start_column_index + this.viewport.end_column_index) / 2),
+    this.viewport.end_column_index
   ];
   for(var i = 0; i < indexes.length; i++) {
     var date = this.data[indexes[i]].date;
@@ -206,13 +210,13 @@ ExpenseChart.prototype.render_column = function(column_index) {
 
   var bounding_box = this.columns_bounding_box;
   ctx.translate(bounding_box.left, bounding_box.top);
-  ctx.fillStyle = (column_index == this.active_column_index ? '#5b92ea' : '#1356c1');
 
   var column_index_in_viewport = column_index - this.viewport.start_column_index;
   var x = this.column_gap_width + (this.column_gap_width + this.column_width) * column_index_in_viewport;
   var height = bounding_box.height() / this.max_amount_in_cooridnate_system * this.data[column_index].amount;
   var y = bounding_box.height() - height;
 
+  ctx.fillStyle = (column_index == this.active_column_index ? '#5fa5ef' : '#3849d1');
   ctx.fillRect(x, y, this.column_width, height);
 
   ctx.restore();

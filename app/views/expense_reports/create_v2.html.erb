@@ -7,24 +7,12 @@
   <script>
    $(function() {
      var chart = new ExpenseChart({
-       data: get_expense_data(),
+       data: [ <%= raw aggregated_data_as_json_v2 %> ],
        canvas: $('#expense_chart canvas'),
      });
 
      chart.render();
    });
-
-   function get_expense_data() {
-     data = [];
-
-     for(var i = 0; i < 150; ++i) {
-       var date = new Date();
-       date.setDate(date.getDate() + i);
-       data.push({ date: date, amount: (i < 75 ? i + 1 : 150 - i)});
-     }
-
-     return data;
-   }
   </script>
 </div>
 

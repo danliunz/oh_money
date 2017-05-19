@@ -44,7 +44,8 @@ Rails.application.routes.draw do
   get 'expense_reports/create' => 'expense_reports#create',
     as: :create_expense_report
 
-  get 'expense_reports/create_v2' => 'expense_reports#create_v2'
+  get 'expense_reports/create_v2' => 'expense_reports#create_v2',
+    as: :create_expense_report_v2
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

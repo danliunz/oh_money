@@ -13,7 +13,7 @@
   <% end %>
 
   <%= form_for @report_criteria, method: :get,
-    url: create_expense_report_path,
+    url: create_expense_report_v2_path,
     html: { class: "form-horizontal", autocomplete: "off" } do |f| %>
 
     <%= render partial: "/shared/item_type_input",

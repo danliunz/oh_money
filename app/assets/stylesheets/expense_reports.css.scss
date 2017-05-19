@@ -15,7 +15,7 @@
   position: relative;
   margin-left: 20px;
   canvas {
-    background-color: #f2f3f4;
+    background-color: #e6e8ef;
     // border: 1px solid #a7aaaf;
   }
   #float_tip {
@@ -24,6 +24,7 @@
     position: absolute;
     background-color: #a2a6ad;
     border: 1px solid #818489;
+    border-radius: 5px;
     padding: 5px;
   }
 }
