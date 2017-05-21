@@ -13,14 +13,13 @@
 // next-generation expense chart
 #expense_chart {
   position: relative;
-  margin-left: 20px;
-  margin-right: 20px;
   min-height: 330px;
   canvas {
-    background-color: #e6e8ef;
+    background-color: #f9f9f9;
   }
   .float_tip {
     display: none;
+    max-width: 250px;
     z-index: 1000;
     position: absolute;
     background-color: #a2a6ad;

@@ -139,10 +139,22 @@ ExpenseChart.prototype.get_column = function(x, y) {
 
 ExpenseChart.prototype.render_float_tip = function(mouse_x, mouse_y) {
   var $tip = this.$float_tip;
+  var gap_between_mouse_and_tip = 10;
   if(this.active_column_index >= 0) {
-    $tip.css('left', (mouse_x + 15) + 'px');
-    $tip.css('top', (mouse_y- 10) + 'px');
     $tip.text('date: ' + this.data[this.active_column_index].date.toLocaleDateString() + ', amount: ' + this.data[this.active_column_index].amount);
+
+    var left = mouse_x + gap_between_mouse_and_tip;
+    if(left + $tip.outerWidth() > this.$canvas.width()) {
+      left = mouse_x - $tip.outerWidth() - gap_between_mouse_and_tip;
+    }
+
+    var top = mouse_y - 10;
+    if(top + $tip.outerHeight() > this.$canvas.height()) {
+      top = this.$canvas.height() - $tip.outerHeight();
+    }
+
+    $tip.css('left', left + 'px');
+    $tip.css('top', top + 'px');
     $tip.show();
   } else {
     $tip.hide();
