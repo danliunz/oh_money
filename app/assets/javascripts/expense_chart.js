@@ -96,7 +96,7 @@ ExpenseChart.prototype.setup_events = function() {
     $(this).css('cursor', 'default');
   });
 
-  this.$canvas.mouseout(function(event) {
+  this.$canvas.parent().mouseleave(function(event) {
     chart.active_column_index = -1;
     chart.hide_float_tip();
 
@@ -107,7 +107,7 @@ ExpenseChart.prototype.setup_events = function() {
     chart.render();
   });
 
-  this.$canvas.mousemove(function(event) {
+  this.$canvas.parent().mousemove(function(event) {
     if(chart.drag_event.started) return;
 
     // find the active column under mouse pointer, hightlight it and show float tip
