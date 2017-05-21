@@ -32,13 +32,11 @@ class ExpenseReportsController < ApplicationController
 
     if create_criteria.call
       @report = CreateExpenseReport.new(create_criteria.value).call
-
       respond_to do |format|
         format.html
       end
     else
       @report_criteria = create_criteria.value
-
       respond_to do |format|
         format.html { render "criteria_form" }
       end

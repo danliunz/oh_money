@@ -35,12 +35,12 @@
   <div id="expense_chart">
     <script>
      $(function() {
-       var chart = new ExpenseChart({
+       expense_chart = new ExpenseChart({
          data: [ <%= raw aggregated_data_as_json_v2 %> ],
          $root_element: $('#expense_chart')
        });
 
-       chart.render();
+       expense_chart.render();
      });
     </script>
   </div>

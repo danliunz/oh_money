@@ -12,6 +12,7 @@ function ExpenseChart(options) {
     .width(this.$root_element.width())
     .height(this.$root_element.height())
     .prependTo(this.$root_element);
+  this.canvas_ctx = this.$canvas.get(0).getContext('2d');
   this.$float_tip =$('<div class="float_tip"></div>')
     .appendTo(this.$root_element);
 
@@ -29,15 +30,28 @@ function ExpenseChart(options) {
   this.active_column_index = -1;
 
   this.drag_event = {};
-  this.viewport = { start_column_index: 0 };
-  this.calculate_viewport();
+  this.init_viewport();
 
   this.setup_events();
 }
 
-ExpenseChart.prototype.calculate_viewport = function(column_offset = 0) {
+ExpenseChart.prototype.init_viewport = function() {
+  var end_column_index = this.data.length - 1;
+
   var max_num_of_columns_fitting_bounding_box =
-    Math.ceil(this.columns_bounding_box.width() / (this.column_width + this.column_gap_width));
+    Math.floor(this.columns_bounding_box.width() / (this.column_width + this.column_gap_width));
+  var start_column_index = end_column_index - max_num_of_columns_fitting_bounding_box + 1;
+  if(start_column_index < 0) { start_column_index = 0; }
+
+  this.viewport = {
+    start_column_index: start_column_index,
+    end_column_index: end_column_index
+  };
+};
+
+ExpenseChart.prototype.shift_viewport = function(column_offset) {
+  var max_num_of_columns_fitting_bounding_box =
+    Math.floor(this.columns_bounding_box.width() / (this.column_width + this.column_gap_width));
 
   this.viewport.start_column_index -= column_offset;
   if(this.viewport.start_column_index + max_num_of_columns_fitting_bounding_box >= this.data.length) {
@@ -55,7 +69,6 @@ ExpenseChart.prototype.calculate_viewport = function(column_offset = 0) {
 
 ExpenseChart.prototype.setup_events = function() {
   var chart = this;
-  var ctx = this.$canvas.get(0).getContext('2d');
 
   this.$canvas.mousedown(function(event) {
     chart.active_column_index = -1;
@@ -72,9 +85,9 @@ ExpenseChart.prototype.setup_events = function() {
     var delta = { x: event.pageX - original_pos.x, y: event.pageY - original_pos.y };
     debug('delta (x: ' + delta.x + ', y: ' + delta.y + ')');
 
-    // render updated viewport based on how far the user drags the mouse on the canvas
+    // shift viewport based on how far the user drags the mouse on canvas
     var column_offset = Math.ceil(delta.x / (chart.column_width + chart.column_gap_width));
-    chart.calculate_viewport(column_offset);
+    chart.shift_viewport(column_offset);
     chart.render();
 
     chart.drag_event.started = false;
@@ -141,7 +154,7 @@ ExpenseChart.prototype.hide_float_tip = function() {
 };
 
 ExpenseChart.prototype.render_coordinate_system = function() {
-  var ctx = this.$canvas.get(0).getContext('2d');
+  var ctx = this.canvas_ctx;
 
   // 1. render horizontal axis lines
   var number_of_horizontal_lines = 5;
@@ -149,7 +162,6 @@ ExpenseChart.prototype.render_coordinate_system = function() {
   var horizontal_line_gap_width = (this.columns_bounding_box.height() - number_of_horizontal_lines * width_of_horizontal_line) / (number_of_horizontal_lines - 1);
 
   ctx.save();
-
   ctx.beginPath();
 
   // note when line width > 1, ctx.lineTo(x, y) treats y as middle of line cap
@@ -188,16 +200,19 @@ ExpenseChart.prototype.render_coordinate_system = function() {
   ctx.textBaseline = 'hanging';
   ctx.textAlign = 'center';
 
-  var indexes = [
-    this.viewport.start_column_index,
-    Math.ceil((this.viewport.start_column_index + this.viewport.end_column_index) / 2),
-    this.viewport.end_column_index
-  ];
+  var indexes = [this.viewport.start_column_index];
+  if(this.viewport.end_column_index - this.viewport.start_column_index > 10) {
+    indexes.push(Math.ceil((this.viewport.start_column_index + this.viewport.end_column_index) / 2));
+  }
+  if(this.viewport.end_column_index > this.viewport.start_column_index) {
+    indexes.push(this.viewport.end_column_index);
+  }
+
   for(var i = 0; i < indexes.length; i++) {
     var date = this.data[indexes[i]].date;
     ctx.fillText(
       date.toLocaleDateString(),
-      this.columns_bounding_box.left + this.columns_bounding_box.width() * i / (indexes.length - 1),
+      this.columns_bounding_box.left + (indexes[i] - this.viewport.start_column_index) * (this.column_width + this.column_gap_width),
       this.$canvas.height() - this.columns_bounding_box.bottom + 10
     );
   };
@@ -208,7 +223,7 @@ ExpenseChart.prototype.render_coordinate_system = function() {
 ExpenseChart.prototype.render_column = function(column_index) {
   if(column_index == null || column_index < 0 || column_index >= this.data.length) return;
 
-  var ctx = this.$canvas.get(0).getContext('2d');
+  var ctx = this.canvas_ctx;
   ctx.save();
 
   var bounding_box = this.columns_bounding_box;
@@ -232,7 +247,7 @@ ExpenseChart.prototype.render_columns = function() {
 };
 
 ExpenseChart.prototype.render = function() {
-  this.$canvas.get(0).getContext('2d').clearRect(0, 0, this.$canvas.width(), this.$canvas.height());
+  this.canvas_ctx.clearRect(0, 0, this.$canvas.width(), this.$canvas.height());
 
   this.render_coordinate_system();
   this.render_columns();
