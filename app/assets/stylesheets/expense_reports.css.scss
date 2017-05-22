@@ -12,6 +12,8 @@
 
 // next-generation expense chart
 #expense_chart {
+  width: 100%;
+  max-width: 100%;
   position: relative;
   min-height: 300px;
   canvas {

@@ -89,7 +89,24 @@ ExpenseChart.prototype.setup_events = function() {
     chart.support_touch_events = true;
 
     var touch_point = event.originalEvent.changedTouches[0];
+    chart.drag_event.original_pos = { x: touch_point.pageX, y: touch_point.pageY };
     chart.hightlight_active_column(touch_point.pageX, touch_point.pageY);
+  });
+
+  this.$canvas.on('touchmove', function(event) {
+    chart.active_column_index = -1;
+    chart.hide_float_tip();
+  });
+
+  this.$canvas.on('touchend', function(event) {
+    var original_pos = chart.drag_event.original_pos;
+    var touch_point = event.originalEvent.changedTouches[0];
+    var delta = { x: touch_point.pageX - original_pos.x, y: touch_point.pageY - original_pos.y };
+
+    // shift viewport based on how far the user moves the touch point on canvas
+    var column_offset = Math.ceil(delta.x / (chart.column_width + chart.column_gap_width));
+    chart.shift_viewport(column_offset);
+    chart.render();
   });
 
   this.$canvas.mousedown(function(event) {
