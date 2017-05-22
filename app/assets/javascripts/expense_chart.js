@@ -32,6 +32,7 @@ function ExpenseChart(options) {
   this.drag_event = {};
   this.init_viewport();
 
+  this.support_touch_events = false;
   this.setup_events();
 }
 
@@ -66,11 +67,34 @@ ExpenseChart.prototype.shift_viewport = function(column_offset) {
     this.data.length - 1
   );
 };
+ExpenseChart.prototype.hightlight_active_column = function(pageX, pageY) {
+  var prior_active_column_index = this.active_column_index;
+
+  var x = pageX - this.$canvas.offset().left;
+  var y = pageY - this.$canvas.offset().top;
+  this.active_column_index = this.get_column(x, y);
+
+  this.render_float_tip(x, y);
+
+  if (this.active_column_index != prior_active_column_index) {
+    this.render_column(prior_active_column_index);
+    this.render_column(this.active_column_index);
+  }
+};
 
 ExpenseChart.prototype.setup_events = function() {
   var chart = this;
 
+  this.$canvas.on('touchstart', function(event) {
+    chart.support_touch_events = true;
+
+    var touch_point = event.originalEvent.changedTouches[0];
+    chart.hightlight_active_column(touch_point.pageX, touch_point.pageY);
+  });
+
   this.$canvas.mousedown(function(event) {
+    if(chart.support_touch_events) return;
+
     chart.active_column_index = -1;
     chart.hide_float_tip();
 
@@ -81,6 +105,8 @@ ExpenseChart.prototype.setup_events = function() {
   });
 
   this.$canvas.mouseup(function(event) {
+    if(chart.support_touch_events) return;
+
     var original_pos = chart.drag_event.original_pos;
     var delta = { x: event.pageX - original_pos.x, y: event.pageY - original_pos.y };
     debug('delta (x: ' + delta.x + ', y: ' + delta.y + ')');
@@ -97,6 +123,8 @@ ExpenseChart.prototype.setup_events = function() {
   });
 
   this.$canvas.parent().mouseleave(function(event) {
+    if(chart.support_touch_events) return;
+
     chart.active_column_index = -1;
     chart.hide_float_tip();
 
@@ -108,23 +136,11 @@ ExpenseChart.prototype.setup_events = function() {
   });
 
   this.$canvas.parent().mousemove(function(event) {
+    if(chart.support_touch_events) return;
     if(chart.drag_event.started) return;
 
     // find the active column under mouse pointer, hightlight it and show float tip
-    var x = event.pageX - $(this).offset().left;
-    var y = event.pageY - $(this).offset().top;
-    chart.render_float_tip(x, y);
-
-    var index = chart.get_column(x, y);
-    if (chart.active_column_index === index) return;
-
-    var prior_active_column_index = chart.active_column_index;
-    chart.active_column_index = index;
-
-    chart.render_column(prior_active_column_index);
-    chart.render_column(chart.active_column_index);
-
-    debug('n = ' + index);
+    chart.hightlight_active_column(event.pageX, event.pageY);
   });
 };
 
@@ -132,7 +148,7 @@ ExpenseChart.prototype.get_column = function(x, y) {
   x -= this.columns_bounding_box.left;
   if(x < 0) return -1;
 
-  var column_index_in_viewport = Math.floor(x / (this.column_width + this.column_gap_width));
+  var column_index_in_viewport = Math.ceil(x / (this.column_width + this.column_gap_width)) - 1;
   var column_index = column_index_in_viewport + this.viewport.start_column_index;
   return column_index <= this.viewport.end_column_index ? column_index : -1;
 };
