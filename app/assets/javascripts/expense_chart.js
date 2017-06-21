@@ -279,7 +279,7 @@ ExpenseChart.prototype.render_column = function(column_index) {
   var height = bounding_box.height() / this.max_amount_in_cooridnate_system * this.data[column_index].amount;
   var y = bounding_box.height() - height;
 
-  ctx.fillStyle = (column_index == this.active_column_index ? '#5fa5ef' : '#3849d1');
+  ctx.fillStyle = (column_index === this.active_column_index ? '#5fa5ef' : '#3849d1');
   ctx.fillRect(x, y, this.column_width, height);
 
   ctx.restore();
