@@ -58,10 +58,11 @@
       </ul>
 
       <ul class="nav navbar-nav navbar-right">
-        <% if @current_user %>
+        <% if user_signed_in? %>
           <li>
             <p class="navbar-text">Welcome, <em><strong><%= @current_user.name %></strong></em></p>
           </li>
+          <li><%= link_to "Change password", change_password_path %></li>
           <li><%= link_to "Sign out", signout_path, method: :post %></li>
         <% else %>
           <li><%= link_to "Sign in", signin_path %></li>

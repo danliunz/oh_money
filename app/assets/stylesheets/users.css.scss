@@ -2,12 +2,20 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-.signup {
+.signup, .change-password {
   margin-top: 10px;
   background-color: #f1f1f1;
   max-width: 700px;
 }
 
+.change-password {
+  h3 {
+    margin-bottom: 1em;
+  }
+  .text-danger {
+    margin-bottom: 3px;
+  }
+}
 .signin {
   margin-top: 10px;
   padding-top: 10px;

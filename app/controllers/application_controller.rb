@@ -6,6 +6,8 @@ class ApplicationController < ActionController::Base
   # Almost all views need to display current user's info
   include ManageUserSession
 
+  helper_method :user_signed_in?, :current_user
+
   # User authorization
   before_action :require_user_signin
 end

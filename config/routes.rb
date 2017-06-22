@@ -9,6 +9,8 @@ Rails.application.routes.draw do
   get 'users/signin' => 'users#signin_form', as: :signin
   post 'users/signin' => 'users#signin'
   post 'users/signout' => 'users#signout', as: :signout
+  get 'users/change_password' => 'users#change_password_form', as: :change_password
+  post 'users/change_password' => 'users#change_password'
   get 'users/:id' => 'users#show', as: :show_user
 
   # item type

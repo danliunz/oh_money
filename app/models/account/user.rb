@@ -20,10 +20,8 @@ class Account::User < ActiveRecord::Base
   validates_uniqueness_of :name, message: "has been taken by others",
     if: proc { |user| user.errors[:name].empty? }
 
-  validates_length_of :password, within: PASSWORD_LENGTH_RANGE, on: :create
-
-  validates_confirmation_of :password, allow_blank: true,
-    message: "should match password", on: :create
+  validates_length_of :password, within: PASSWORD_LENGTH_RANGE
+  validates_confirmation_of :password, message: "should match password"
 
   has_secure_password validations: false
 

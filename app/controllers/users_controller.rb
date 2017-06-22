@@ -42,6 +42,23 @@ class UsersController < ApplicationController
     end
   end
 
+  def change_password
+    if !current_user.authenticate(params[:old_password])
+      flash.now[:old_password_error] = "Incorrect old password"
+    elsif params[:old_password] == params[:new_password]
+      current_user.errors.add(:password, :same_as_old_password, :message => "must be different from old password")
+    else
+      current_user.password = params[:new_password]
+      current_user.password_confirmation = params[:new_password_confirmation]
+      if current_user.save
+        flash.notice = "Your password is updated successfully"
+        return redirect_to :back
+      end
+    end
+
+    render "change_password_form"
+  end
+
   def signout
     destroy_current_session
 
