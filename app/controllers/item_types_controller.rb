@@ -1,4 +1,6 @@
 class ItemTypesController < ApplicationController
+  include ERB::Util
+
   before_action :require_authorized_user, only: [:get_children, :delete, :show, :edit]
 
   def list
@@ -15,7 +17,7 @@ class ItemTypesController < ApplicationController
 
     response = []
     children.sort_by { |a| a.name }.each do |child|
-      response << { data: child.id, text: child.name, children: !child.children.empty? }
+      response << { data: child.id, text: html_escape(child.name), children: !child.children.empty? }
     end
 
     render json: response
@@ -58,7 +60,7 @@ class ItemTypesController < ApplicationController
     respond_to do |format|
       format.html { head :bad_request }
       format.xml { render xml: suggested_names }
-      format.json { render json: suggested_names }
+      format.json { render json: suggested_names.map { |name| html_escape(name) } }
     end
   end
 

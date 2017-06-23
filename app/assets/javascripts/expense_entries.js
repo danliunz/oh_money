@@ -8,7 +8,6 @@ $(document).ready(function() {
 });
 
 function init_add_tag() {
-  // click on 'add tag' button
   $('#add_tag_btn').click(function(event) {
     add_tag();
 
@@ -30,20 +29,22 @@ function init_add_tag() {
   });
 }
 
+function unescape_html(text) {
+  return $('<textarea/>').html(text).text();
+}
+
 function add_tag(tag) {
-  var tag = tag ? tag : $('#tag_input').val().trim();
+  var tag = tag ? unescape_html(tag) : $('#tag_input').val().trim();
   if (!tag) return;
 
   $('.tags-panel')
     .append(
-      '<a tabindex="0"  class="btn btn-success" role="button"' +
-      '  data-toggle="popover" >' +
-        tag +
-      '</a>'
+      $('<a tabindex="0"  class="btn btn-success" role="button" data-toggle="popover"/>')
+        .text(tag)
     )
     .append(
-      '<input type="hidden" name="expense_entry[tags][][name]"' +
-      '  value="' + tag + '" />'
+      $('<input type="hidden" name="expense_entry[tags][][name]"/>')
+        .attr("value", tag)
     );
 
   // initialize popover for removing the newly added tag control

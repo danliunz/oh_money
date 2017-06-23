@@ -1,4 +1,6 @@
 class TagsController < ApplicationController
+  include ERB::Util
+
   def list
     @tags = Tag
       .where(user: current_user)
@@ -15,7 +17,7 @@ class TagsController < ApplicationController
     respond_to do |format|
       format.html { head :bad_request }
       format.xml { render xml: suggested_names }
-      format.json { render json: suggested_names }
+      format.json { render json: suggested_names.map { |name| html_escape(name) } }
     end
   end
 

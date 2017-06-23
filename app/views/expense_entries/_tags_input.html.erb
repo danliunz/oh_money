@@ -7,7 +7,8 @@
         <span class="input-group-btn">
           <button id="add_tag_btn" type="button" class="btn btn-default">
             Add
-          </button> </span>
+          </button>
+        </span>
       </div>
 
       <!-- dropdown menu for auto-complete-->
@@ -31,7 +32,7 @@
           <!-- for better user experience, pre-add tags from last expense entry so we don't have to repeat -->
           <% if defined?(tags_of_last_expense_entry) && tags_of_last_expense_entry %>
             <% tags_of_last_expense_entry.each do |tag| %>
-              add_tag('<%= tag.name %>')
+              add_tag('<%= j tag.name %>')
             <% end %>
           <% end %>
         });

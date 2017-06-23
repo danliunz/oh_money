@@ -28,7 +28,7 @@
           <td>
             <form class="form-inline">
               <div class="form-group">
-                <label class="label label-default"><%= tag.name %></label>
+                <label class="label label-default"><%= h(tag.name) %></label>
                 <input name="tag_name" type="text" class="form-control hidden" />
                 <input name="tag_id" type="hidden" value="<%= tag.id %>" />
               </div>
