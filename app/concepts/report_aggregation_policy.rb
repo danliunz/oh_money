@@ -70,6 +70,8 @@ module ReportAggregationPolicy
   end
 
   def aggregated_data_as_json_v2
+    return "" if @report.expense_history.empty?
+
     (@report.begin_time_unit .. @report.end_time_unit).map do |date|
       "{ date: new Date(#{date.year}, #{date.month - 1}, #{date.day})," +
       "  amount: #{@report.expense_history[date] / ExpenseEntry::CENTS_MULTIPLIER} }"

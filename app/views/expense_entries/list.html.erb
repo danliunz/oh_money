@@ -19,6 +19,9 @@
     <div class="alert alert-info"><%= notice %></div>
   <% end %>
 
-  <%= render partial: "history_table",
-    locals: { expense_history: @expense_history } %>
+  <% if @expense_history.entries.empty? && params[:view_history] %>
+    <div class="col-sm-offset-3 col-sm-8 alert alert-info">Empty expense history</div>
+  <% else %>
+    <%= render partial: "history_table", locals: { expense_history: @expense_history } %>
+  <% end %>
 </div>
